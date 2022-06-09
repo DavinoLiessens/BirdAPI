@@ -8,12 +8,11 @@ using Wwsv.Domain.SeedWork;
 
 namespace BirdAPI.Domain.AggregatesModel.OwnerAggregate
 {
-    public class Owner : Entity
+    public class OwnerBird : EntityLong
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
-        public ICollection<Bird> Birds { get; set; }
+        public long OwnerId { get; set; }
+        public virtual Owner Owner { get; set; }
+        public long BirdId { get; set; }
+        public virtual Bird Bird { get; set; }
     }
 }
