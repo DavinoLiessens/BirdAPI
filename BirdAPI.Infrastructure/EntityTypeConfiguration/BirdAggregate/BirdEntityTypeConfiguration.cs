@@ -21,6 +21,11 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.BirdAggregate
                 .HasForeignKey(b => b.OwnerId)
                 .IsRequired();
 
+            builder.HasOne(b => b.Breeder)
+                .WithMany(o => o.Birds)
+                .HasForeignKey(b => b.BreederId)
+                .IsRequired();
+
             builder.Ignore(b => b.DomainEvents);
         }
     }

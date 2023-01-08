@@ -16,6 +16,7 @@ namespace BirdAPI.Infrastructure
     {
         public DbSet<Bird> Birds { get; set; }
         public DbSet<Owner> Owners { get; set; }
+        public DbSet<OwnerBird> OwnerBirds { get; set; }
 
         public BirdAPIContext()
         {
