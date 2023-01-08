@@ -17,17 +17,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Application\Features\Bird\Commands\" />
     <Folder Include="Application\Features\Bird\ResponseModels\" />
-    <Folder Include="Application\Features\Bird\Queries\" />
     <Folder Include="Application\Features\Owner\Commands\" />
     <Folder Include="Application\Features\Owner\Queries\" />
     <Folder Include="Application\Features\Owner\ResponseModels\" />
-    <Folder Include="BaseModels\" />
     <Folder Include="Infrastructure\Migrations\" />
     <Folder Include="Infrastructure\Services\" />
   </ItemGroup>
