@@ -10,6 +10,11 @@ namespace BirdAPI.Domain.AggregatesModel.OwnerAggregate
         public long BirdId { get; set; }
         public virtual Bird Bird { get; set; }
 
+        public OwnerBird()
+        {
+
+        }
+
         public OwnerBird(int ownerId, Bird bird)
         {
             OwnerId = ownerId;
