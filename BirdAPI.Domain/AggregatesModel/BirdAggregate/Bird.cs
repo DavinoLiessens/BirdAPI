@@ -1,4 +1,6 @@
-﻿using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
+﻿using BirdAPI.Domain.AggregatesModel.BreederAggregate;
+using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
+using BirdAPI.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,33 +13,37 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
     public class Bird : Entity
     {
         public string RingNumber { get; set; }
-        public string Sex { get; set; }
-        public string KindOfBird { get; set; }
-        public string AgeOfBirth { get; set; }
+        public string Gender { get; set; }
+        public BirdType BirdType { get; set; }
+        public DateTime BirthDate { get; set; }
         public string Color { get; set; }
         public int CageNumber { get; set; }
-        public string Creator { get; set; }
-        public Owner Owner { get; set; }
+        public virtual Breeder Breeder { get; set; }
+        public int BreederId { get; set; }
+        public virtual Owner Owner { get; set; }
         public int OwnerId { get; set; }
         public string Description { get; set; }
-        public bool Dead { get; set; }
+        public bool? IsDead { get; set; }
+        public bool? IsChild { get; set; }
+        public bool? IsFather { get; set; }
+        public bool? IsMother { get; set; }
 
         protected Bird()
         {
 
         }
 
-        public Bird(string ringNumber, string sex, string kindOfBird, string ageOfBirth, string color, int cageNumber, string creator, string description, bool dead = false)
+        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, int cageNumber, string description, bool dead = false, bool isChild = false)
         {
             RingNumber = ringNumber;
-            Sex = sex;
-            KindOfBird = kindOfBird;
-            AgeOfBirth = ageOfBirth;
+            Gender = gender;
+            BirdType = birdType;
+            BirthDate = birthDate;
             Color = color;
             CageNumber = cageNumber;
-            Creator = creator;
             Description = description;
-            Dead = dead;
+            IsDead = dead;
+            IsChild = isChild;
         }
 
         public Bird BelongsToOwner(Owner owner)
@@ -48,11 +54,40 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             return this;
         }
 
-        public Bird UpdateBird(int? cageNumber, string? description, bool? dead)
+        public Bird BelongsToBreeder(Breeder breeder)
         {
-            CageNumber = cageNumber.Value;
+            Breeder = breeder;
+            BreederId = breeder.Id;
+
+            return this;
+        }
+
+        public Bird UpdateBird(int cageNumber, string description, bool dead)
+        {
+            CageNumber = cageNumber;
             Description = description;
-            Dead = dead.Value;
+            IsDead = dead;
+
+            return this;
+        }
+
+        public Bird BirdIsChild()
+        {
+            IsChild = true;
+
+            return this;
+        }
+
+        public Bird BirdIsFather()
+        {
+            IsFather = true;
+
+            return this;
+        }
+
+        public Bird BirdIsMother()
+        {
+            IsMother = true;
 
             return this;
         }

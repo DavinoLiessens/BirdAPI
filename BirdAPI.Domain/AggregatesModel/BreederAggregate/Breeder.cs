@@ -1,14 +1,9 @@
 ﻿using BirdAPI.Domain.AggregatesModel.BirdAggregate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Wwsv.Domain.SeedWork;
 
-namespace BirdAPI.Domain.AggregatesModel.OwnerAggregate
+namespace BirdAPI.Domain.AggregatesModel.BreederAggregate
 {
-    public class Owner : Entity
+    public class Breeder : Entity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -17,12 +12,12 @@ namespace BirdAPI.Domain.AggregatesModel.OwnerAggregate
         public readonly List<Bird> _birds;
         public IReadOnlyCollection<Bird> Birds => _birds;
 
-        public Owner() : base()
+        public Breeder() : base()
         {
             _birds = new List<Bird>();
         }
 
-        public Owner(string firstName, string lastName, string email, string phoneNumber) : this()
+        public Breeder(string firstName, string lastName, string email, string phoneNumber) : this()
         {
             FirstName = firstName;
             LastName = lastName;
