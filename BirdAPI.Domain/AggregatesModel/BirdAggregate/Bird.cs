@@ -13,7 +13,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
     public class Bird : Entity
     {
         public string RingNumber { get; set; }
-        public string Sex { get; set; }
+        public string Gender { get; set; }
         public BirdType BirdType { get; set; }
         public DateTime BirthDate { get; set; }
         public string Color { get; set; }
@@ -24,8 +24,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
         public int OwnerId { get; set; }
         public string Description { get; set; }
         public bool? IsDead { get; set; }
-        public bool? IsChildMale { get; set; }
-        public bool? IsChildFemale { get; set; }
+        public bool? IsChild { get; set; }
         public bool? IsFather { get; set; }
         public bool? IsMother { get; set; }
 
@@ -34,16 +33,17 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
 
         }
 
-        public Bird(string ringNumber, string sex, BirdType birdType, DateTime birthDate, string color, int cageNumber, string description, bool dead = false)
+        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, int cageNumber, string description, bool dead = false, bool isChild = false)
         {
             RingNumber = ringNumber;
-            Sex = sex;
+            Gender = gender;
             BirdType = birdType;
             BirthDate = birthDate;
             Color = color;
             CageNumber = cageNumber;
             Description = description;
             IsDead = dead;
+            IsChild = isChild;
         }
 
         public Bird BelongsToOwner(Owner owner)
@@ -71,16 +71,9 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             return this;
         }
 
-        public Bird BirdIsChildMale()
+        public Bird BirdIsChild()
         {
-            IsChildMale = true;
-
-            return this;
-        }
-
-        public Bird BirdIsChildFemale()
-        {
-            IsChildFemale = true;
+            IsChild = true;
 
             return this;
         }

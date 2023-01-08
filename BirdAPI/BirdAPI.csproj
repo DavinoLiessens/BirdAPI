@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Features\Bird\Commands\" />
     <Folder Include="Application\Features\Bird\ResponseModels\" />
     <Folder Include="Application\Features\Owner\Commands\" />
     <Folder Include="Application\Features\Owner\Queries\" />
