@@ -36,6 +36,8 @@ namespace BirdAPI.Application.Features.Bird.Commands
                                                         request.Model.Dead,
                                                         request.Model.IsChild
                                                         );
+            // write check if breeder || owner is null
+            // create just the bird
             var result = _mapper.Map<BirdResponseModel>(bird);
 
             return new BaseResponse<BirdResponseModel>(result);
