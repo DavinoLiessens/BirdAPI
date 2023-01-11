@@ -15,7 +15,12 @@ namespace BirdAPI.Domain.AggregatesModel.BreederAggregate
         public long BirdId { get; set; }
         public virtual Bird Bird { get; set; }
 
-        public BreederBird(int breederId, Bird bird)
+        public BreederBird()
+        {
+
+        }
+
+        public BreederBird(int breederId, Bird bird) : this()
         {
             BreederId = breederId;
             Bird = bird;

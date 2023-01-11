@@ -3,6 +3,7 @@ using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
 using MediatR;
+using System.Net;
 
 namespace BirdAPI.Application.Features.Bird.Commands
 {
@@ -36,7 +37,28 @@ namespace BirdAPI.Application.Features.Bird.Commands
                                                         request.Model.Dead,
                                                         request.Model.IsChild
                                                         );
-            // write check if breeder || owner is null
+
+            // get breeder from db
+            var breeder = "";
+
+            if (breeder == null)
+            {
+                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.NotFound)
+                    .AddError($"No breeder found with id '{request.Model.Breeder}'");
+            }
+
+            // get owner from db
+            var owner = "";
+
+            if (owner == null)
+            {
+                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.NotFound)
+                    .AddError($"No owner found with id '{request.Model.Breeder}'");
+            }
+
+            //bird.BelongsToBreeder(breeder);
+            //bird.BelongsToOwner(owner);
+
             // create just the bird
             var result = _mapper.Map<BirdResponseModel>(bird);
 

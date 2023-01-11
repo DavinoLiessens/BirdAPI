@@ -1,4 +1,5 @@
 ﻿using BirdAPI.Domain.AggregatesModel.BirdAggregate;
+using BirdAPI.Domain.AggregatesModel.BreederAggregate;
 using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,9 @@ namespace BirdAPI.Infrastructure
     {
         public DbSet<Bird> Birds { get; set; }
         public DbSet<Owner> Owners { get; set; }
+        public DbSet<Breeder> Breeders { get; set; }
+        public DbSet<OwnerBird> OwnerBird { get; set; }
+        public DbSet<BreederBird> BreederBird { get; set; }
 
         public BirdAPIContext()
         {
