@@ -4,6 +4,7 @@ using BirdAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirdAPI.Migrations
 {
     [DbContext(typeof(BirdAPIContext))]
-    partial class BirdAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20230108130252_InitialDbSet")]
+    partial class InitialDbSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,11 +55,10 @@ namespace BirdAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool?>("IsChildFemale")
+                        .HasColumnType("bit");
 
-                    b.Property<bool?>("IsChild")
+                    b.Property<bool?>("IsChildMale")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsDead")
@@ -76,6 +77,10 @@ namespace BirdAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("RingNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sex")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
