@@ -25,7 +25,7 @@ export class ApiService {
   // ***** BIRD CALLS *****
   GetAllBirds() {
     //return this._http.get<Bird[]>(`http://localhost:4000/api/v1/birds?name=${query}&length=${this.noBirds}&sort=${this.sortItemBirds}`);
-    return this._http.get<Bird[]>(`${this.baseUrl}/birds`);
+    return this._http.get<Bird[]>(`${this.baseUrl}/birds?page=1&pageSize=10`);
   }
 
   GetBird(id: number) {
@@ -56,7 +56,9 @@ export class ApiService {
   // ***** OWNER CALLS *****
   GetAllOwners() {
     //http://localhost:4000/api/v1/owners?name=davino&sort=voornaam&length=10&dir=asc
-    return this._http.get<Owner[]>(`${this.baseUrl}/owners?name=${this.searchnameOwner}&sort=${this.sortItemOwners}&length=${this.noOwners}&dir=asc`);
+    // return this._http.get<Owner[]>(`${this.baseUrl}/owners?name=${this.searchnameOwner}&sort=${this.sortItemOwners}&length=${this.noOwners}&dir=asc`);
+    return this._http.get<Owner[]>(`${this.baseUrl}/owners`);
+
   }
 
   GetOwner(id: number) {
