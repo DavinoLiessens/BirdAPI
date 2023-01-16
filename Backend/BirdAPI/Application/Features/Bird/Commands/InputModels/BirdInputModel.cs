@@ -10,8 +10,8 @@ namespace BirdAPI.Application.Features.Bird.Commands.InputModels
         public DateTime BirthDate { get; set; }
         public int CageNumber { get; set; }
         public string Color { get; set; }
-        public Breeder Breeder { get; set; }
-        public Domain.AggregatesModel.OwnerAggregate.Owner Owner { get; set; }
+        public int BreederId { get; set; }
+        public int OwnerId { get; set; }
         public string Description { get; set; }
         public BirdType BirdType { get; set; }
         public bool IsChild { get; set; }

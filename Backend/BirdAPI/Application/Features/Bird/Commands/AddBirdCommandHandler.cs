@@ -44,7 +44,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             if (breeder == null)
             {
                 return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.NotFound)
-                    .AddError($"No breeder found with id '{request.Model.Breeder}'");
+                    .AddError($"No breeder found with id '{request.Model.BreederId}'");
             }
 
             // get owner from db
@@ -53,7 +53,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             if (owner == null)
             {
                 return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.NotFound)
-                    .AddError($"No owner found with id '{request.Model.Breeder}'");
+                    .AddError($"No owner found with id '{request.Model.OwnerId}'");
             }
 
             //bird.BelongsToBreeder(breeder);

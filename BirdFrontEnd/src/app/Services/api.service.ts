@@ -136,9 +136,11 @@ export interface CreateBird{
   jaartal: number;
   kotnummer: number;
   eigenaarID: number;
-  kweker: string;
+  kwekerID: string;
   kleur: string;
   omschrijving: string;
+  isDood: boolean;
+  isJong: boolean;
 }
 
 export interface ChangeBird {
