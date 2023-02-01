@@ -1,6 +1,6 @@
-﻿namespace BirdAPI.Application.Features.Owner.ResponseModels
+﻿namespace BirdAPI.Application.Features.Breeder.ResponseModels
 {
-    public class OwnerResponseModel
+    public class BreederResponseModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
