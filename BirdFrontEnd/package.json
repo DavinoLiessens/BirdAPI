@@ -23,6 +23,7 @@
     "@ngrx/effects": "^15.2.1",
     "@ngrx/store": "^15.2.1",
     "@ngrx/store-devtools": "^15.2.1",
+    "ngx-toastr": "^16.0.2",
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
     "primeng": "^11.3.1",
