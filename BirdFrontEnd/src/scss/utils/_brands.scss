@@ -1,0 +1,13 @@
+// -------------------------------------------------------------------
+// :: BRANDS
+// -------------------------------------------------------------------
+.u-brand-van-breda  {
+	// Brand identity colors
+	--primary-color: #0D62A5;
+	--primary-light-color: hsl(206, 85%, 40%);
+	--primary-dark-color: #173879;
+	--accent-color: #E50570;
+	--accent-dark-color: hsl(331, 96%, 42%);
+	--accent-light-color: hsl(331, 96%, 98%);
+	--checkmark-icon: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='9' r='9' fill='%23173879'/%3E%3Cpath d='M13.7598 5.66797L7.40392 12.0238L4.72596 9.34585L4.19727 9.87455L7.13957 12.8169L7.40392 13.0697L7.66827 12.8169L14.2885 6.19666L13.7598 5.66797Z' fill='white'/%3E%3C/svg%3E");
+}

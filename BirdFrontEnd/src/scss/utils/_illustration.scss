@@ -1,0 +1,14 @@
+// -------------------------------------------------------------------
+// :: Illustration
+// -------------------------------------------------------------------
+.u-illustration {
+	width: rem(380px);
+	max-width: 90%;
+}
+
+// Modifiers
+.u-illustration--small {
+	width: rem(220px);
+	max-height: rem(196px);
+	object-fit: contain;
+}

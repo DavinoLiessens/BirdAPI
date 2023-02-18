@@ -1,0 +1,15 @@
+// -------------------------------------------------------------------
+// :: Select (ng-select)
+// -------------------------------------------------------------------
+
+// Root
+.sdwds-slide-in.md {
+
+	@include respond-underneath($screen-md) {
+		width: 70%;
+	}
+
+	@include respond-underneath($screen-sm) {
+		width: 100%;
+	}
+}

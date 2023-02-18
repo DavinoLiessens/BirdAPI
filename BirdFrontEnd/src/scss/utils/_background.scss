@@ -1,0 +1,51 @@
+// -------------------------------------------------------------------
+// :: BACKGROUND
+// -------------------------------------------------------------------
+.u-bg-brand {
+	position: relative;
+
+	&::after {
+		content: "";
+		z-index: $z-index-low - 1;
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 42vh;
+
+		background-color: var(--accent-color);
+	}
+
+	// Take primary color for brands different than the SD Worx brand (e.g. VanBreda)
+	&[class*="u-brand-"] {
+		&::after {
+			background-color: var(--primary-color);
+		}
+	}
+}
+
+.u-bg-brand--full {
+	&::after {
+		height: 80vh;
+	}
+}
+
+.u-bg-gray {
+	padding-bottom: rem(40px);
+	position: relative;
+
+	&::after {
+		content: "";
+		z-index: $z-index-low - 1;
+
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		width: calc(99vw - 8px);
+		height: 56%;
+
+		background-color: var(--tuna-gray-20-color);
+		transform: translate3d(-50%, 0, 0);
+	}
+}

@@ -1,0 +1,18 @@
+// ==========================================================================
+// List group
+// ==========================================================================
+.list-group {
+	.list-group-item {
+		padding: rem(32px) 0;
+
+		&:first-child {
+			padding-top: 0;
+		}
+	}
+}
+
+.list-group--compact {
+	.list-group-item {
+		padding: rem(8px) 0;
+	}
+}

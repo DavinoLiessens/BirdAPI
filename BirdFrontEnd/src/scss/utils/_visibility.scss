@@ -1,0 +1,46 @@
+// ============================================================================
+// :: VISIBILITY UTILS
+// ============================================================================
+.u-hide {
+	display: none;
+}
+
+.u-mobile-hide {
+	@include respond-underneath($screen-xs) {
+		display: none;
+	}
+}
+
+.u-mobile-show {
+	@include respond-above($screen-xs) {
+		display: none;
+	}
+}
+
+.u-tablet-hide {
+	@include respond-underneath($screen-sm) {
+		display: none;
+	}
+}
+
+.u-tablet-show {
+	@include respond-above($screen-sm) {
+		display: none;
+	}
+}
+
+.u-desktop-hide {
+	@include respond-underneath($screen-md) {
+		display: none;
+	}
+}
+
+.u-desktop-show {
+	@include respond-above($screen-md) {
+		display: none;
+	}
+}
+
+.u-invisible {
+	visibility: hidden;
+}
