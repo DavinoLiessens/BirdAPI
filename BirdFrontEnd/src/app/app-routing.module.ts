@@ -53,10 +53,10 @@ const routes: Routes = [
 
   // PAGE NOT FOUND
   { path: "signout", component: PageNotFoundComponent },
-  { path: "**", component: PageNotFoundComponent },
-
+  
   // OTHER  
-  { path: "", redirectTo: "birds", pathMatch: "full" }
+  { path: "", redirectTo: "birds", pathMatch: "full" },
+  { path: "**", redirectTo: "birds", pathMatch: "full" },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
