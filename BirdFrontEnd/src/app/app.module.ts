@@ -39,6 +39,7 @@ import { BreederComponent } from './breeder/breeder.component';
 // *** STORE CONFIG ***
 import { AppStoreModule } from './store/store.module';
 import { CoreStoreModule } from './store/entities/store.module';
+import { BaseService } from './Services/base.service';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,7 @@ import { CoreStoreModule } from './store/entities/store.module';
     OrganizationChartModule,
     CheckboxModule
   ],
-  providers: [],
+  providers: [BaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { BreederService } from "../Services/breeder.service";
+import { IGetBreedersRequest } from "../types/breeder.types";
 
 @Component({
     selector: 'c-breeder-overview',
@@ -7,7 +9,16 @@ import { Component, OnInit } from "@angular/core";
 })
 export class BreederComponent implements OnInit {
 
-    ngOnInit(): void {
+    constructor(
+        private breederService: BreederService
+    ) {}
 
+    ngOnInit(): void {
+        const request: IGetBreedersRequest = {
+            page: 1,
+            pageSize: 10,
+        }
+        this.breederService.getAllBreeders(request);
+        console.log("trigger");
     }
 }

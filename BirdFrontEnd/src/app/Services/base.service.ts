@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root',
 })
 export class BaseService {
-    baseUrl = '';
+    baseUrl = 'https://localhost:7254/api/v1/';
     token = '';
     headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     fileHeaders = new HttpHeaders({ 'Content-Type': 'application/pdf' });
