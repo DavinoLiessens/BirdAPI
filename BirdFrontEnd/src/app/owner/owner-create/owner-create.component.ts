@@ -23,9 +23,9 @@ export class OwnerCreateComponent implements OnInit {
 
   CreateOwner() : void{
     this.newOwner = {
-      voornaam: this.voornaam,
-      achternaam: this.achternaam,
-      telefoon: this.telefoon,
+      firstName: this.voornaam,
+      lastName: this.achternaam,
+      phoneNumber: this.telefoon,
       email: this.email
     };
 

@@ -1,0 +1,28 @@
+// -------------------------------------------------------------------
+// :: Nav (ng-nav)
+// -------------------------------------------------------------------
+
+// Root
+.nav {
+	margin: 0 rem(-16px);
+}
+
+// Elements
+.nav-link {
+	position: relative;
+	margin: 0 rem(16px);
+	padding: rem(4px) 0;
+
+	color: var(--tuna-gray-60-color);
+
+	transition: box-shadow 0.15s ease-in-out;
+}
+
+// States
+.nav-link {
+	&.active {
+		font-weight: $font-weight-bold;
+		color: var(--accent-color);
+		box-shadow: inset 0 -2px 0 0 var(--yellow-brand-color);
+	}
+}

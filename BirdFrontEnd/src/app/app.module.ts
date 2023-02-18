@@ -16,6 +16,7 @@ import { PanelModule } from 'primeng/panel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OrganizationChartModule } from 'primeng/organizationchart';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ToastrModule } from 'ngx-toastr';
 
 // *** COMPONENTS ***
 import { AppComponent } from './app.component';
@@ -31,6 +32,10 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { CoupleComponent } from './couple/couple.component';
 import { CoupleCreateComponent } from './couple/couple-create/couple-create.component';
 import { CoupleDetailComponent } from './couple/couple-detail/couple-detail.component';
+
+// *** STORE CONFIG ***
+import { AppStoreModule } from './store/store.module';
+import { CoreStoreModule } from './store/entities/store.module';
 
 @NgModule({
   declarations: [
@@ -49,6 +54,13 @@ import { CoupleDetailComponent } from './couple/couple-detail/couple-detail.comp
     CoupleDetailComponent
   ],
   imports: [
+    AppStoreModule,
+    CoreStoreModule,
+    ToastrModule.forRoot({
+      maxOpened: 4,
+      preventDuplicates: true,
+      positionClass: 'toast-top-right'
+    }),
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

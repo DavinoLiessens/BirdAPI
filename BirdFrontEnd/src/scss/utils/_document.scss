@@ -1,0 +1,14 @@
+// -------------------------------------------------------------------
+// :: Document
+// -------------------------------------------------------------------
+.u-document {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+
+	background-color: var(--slate-gray-5-color);
+	border-radius: $border-radius;
+	border: $border;
+
+	padding: rem(16px);
+}

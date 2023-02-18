@@ -1,0 +1,42 @@
+// ============================================================================
+// :: Font families
+// ============================================================================
+// Nimbul sans l
+@include get-font(
+	"Nimbus sans l",
+	"src/assets/fonts/nimbus-sans-l/nimbus-sans-l-regular",
+	400,
+	normal
+);
+@include get-font(
+	"Nimbus sans l",
+	"src/assets/fonts/nimbus-sans-l/nimbus-sans-l-bold",
+	700,
+	normal
+);
+
+// Roboto
+@include get-font(
+	"Roboto",
+	"src/assets/fonts/roboto/roboto-light",
+	300,
+	normal
+);
+@include get-font(
+	"Roboto",
+	"src/assets/fonts/roboto/roboto-regular",
+	400,
+	normal
+);
+@include get-font(
+	"Roboto",
+	"src/assets/fonts/roboto/roboto-medium",
+	500,
+	normal
+);
+@include get-font(
+	"Roboto",
+	"src/assets/fonts/roboto/roboto-bold",
+	700,
+	normal
+);

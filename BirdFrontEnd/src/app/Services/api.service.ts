@@ -57,7 +57,7 @@ export class ApiService {
   GetAllOwners() {
     //http://localhost:4000/api/v1/owners?name=davino&sort=voornaam&length=10&dir=asc
     // return this._http.get<Owner[]>(`${this.baseUrl}/owners?name=${this.searchnameOwner}&sort=${this.sortItemOwners}&length=${this.noOwners}&dir=asc`);
-    return this._http.get<Owner[]>(`${this.baseUrl}/owners`);
+    return this._http.get<Owner[]>(`${this.baseUrl}/owners?page=1&pageSize=10`);
 
   }
 
@@ -125,9 +125,9 @@ export interface Bird{
 
 export interface Owner{
   id?: number;
-  voornaam: string;
-  achternaam: string;
-  telefoon: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
   email: string;
 }
 

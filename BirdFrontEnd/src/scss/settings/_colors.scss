@@ -1,0 +1,59 @@
+// stylelint-disable prettier/prettier
+// ==========================================================================
+// Colors
+// ==========================================================================
+:root {
+	// Brand identity colors
+	--primary-color: #e94e0f;
+	--primary-light-color: #f2642c;
+	--primary-background-color: #fef6f3;
+	--accent-color: #870b58;
+	--accent-dark-color: #5e083d;
+	--accent-light-color: #fbd0eb;
+	--yellow-brand-color: #f8ad07;
+
+	// Complementary colors
+	--accent-20-color: #e1c2d5;
+
+	// States
+	--info-color: #415fca;
+	--info-light-color: hsl(227, 56%, 52%, 0.1);
+	--success-color: #21bc5f;
+	--success-light-color: hsla(144, 70%, 43%, 0.1);
+	--warning-color: #ffc700;
+	--warning-light-color: #FDEAC1;
+	--danger-color: #ff005c;
+	--danger-light-color: hsla(338, 100%, 50%, 0.8);
+	--danger-lighter-color: hsla(338, 100%, 90%, 0.8);
+
+	// Extra colors
+	--brand-red-color: #E4003A;
+	--brand-red-20-color: #F8BFCD;
+
+	--brand-orange-color: #E94E0F;
+	--brand-orange-20-color: #F9D2C3;
+
+	--brand-yellow-color: #F8AD07;
+	--brand-yellow-20-color: #FDEAC1;
+
+	--brand-purple-color: #870B58;
+	--brand-purple-20-color: #E1C2D5;
+
+	// Grayscale
+	--tuna-gray-color: #303642;
+	--tuna-gray-80-color: #555d71;
+	--tuna-gray-60-color: #7f8594;
+	--tuna-gray-40-color: #aaaeb8;
+	--tuna-gray-20-color: #f6f6f6;
+
+	--slate-gray-color: #7783a0;
+	--slate-gray-80-color: #929bb3;
+	--slate-gray-60-color: #adb4c6;
+	--slate-gray-40-color: #c8cdd9;
+	--slate-gray-20-color: #e3e6ec;
+	--slate-gray-10-color: #f1f3f5;
+	--slate-gray-5-color: #f8fafc;
+
+	--white-color: #ffffff;
+	--black-color: #000000;
+}

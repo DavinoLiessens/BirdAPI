@@ -1,0 +1,23 @@
+// -------------------------------------------------------------------
+// :: Badge
+// -------------------------------------------------------------------
+
+// Root
+.badge {
+    max-width: 100%;
+	padding-top: rem(5px);
+	padding-left: rem(8px);
+	padding-right: rem(8px);
+	align-self: flex-start;
+	text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+	text-overflow: ellipsis;
+
+	border-radius: $border-radius;
+}
+
+.badge-warning-light,
+.badge-secondary-light {
+	color: var(--tuna-gray-color);
+}
