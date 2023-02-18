@@ -17,13 +17,13 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.BirdAggregate
             builder.Property(b => b.Id).ValueGeneratedOnAdd();
 
             builder.HasOne(b => b.Owner)
-                .WithMany(o => o.Birds)
+                .WithMany()
                 .HasForeignKey(b => b.OwnerId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.Breeder)
-                .WithMany(o => o.Birds)
+                .WithMany()
                 .HasForeignKey(b => b.BreederId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);

@@ -5,7 +5,7 @@ import { OwnerService } from '../Services/owner.service';
 @Component({
   selector: 'app-owner',
   templateUrl: './owner.component.html',
-  styleUrls: ['./owner.component.css']
+  styleUrls: ['./owner.component.scss']
 })
 export class OwnerComponent implements OnInit {
 
