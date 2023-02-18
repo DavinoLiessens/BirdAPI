@@ -1,0 +1,28 @@
+// -------------------------------------------------------------------
+// :: Toastr (ngx-toastr)
+// -------------------------------------------------------------------
+
+// Root
+.toast-container {
+	.ngx-toastr {
+		padding: rem(15px);
+
+		box-shadow: $box-shadow;
+
+		&:hover {
+			box-shadow: $box-shadow-large;
+		}
+	}
+}
+
+// types
+.toast-error,
+.toast-info,
+.toast-success,
+.toast-warning {
+	background-image: none;
+}
+
+.toast-error {
+	background-color: var(--danger-color);
+}

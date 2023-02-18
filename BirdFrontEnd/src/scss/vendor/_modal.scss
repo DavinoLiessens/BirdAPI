@@ -1,0 +1,130 @@
+// -------------------------------------------------------------------
+// :: Modal
+// -------------------------------------------------------------------
+.modal {
+	--desktop-padding: #{rem(32px)};
+	--mobile-padding: #{rem(20px)};
+
+	.modal-header,
+	.modal-footer {
+		border: none;
+	}
+
+	.modal-content {
+		padding: rem(28px) 0;
+
+		box-shadow: $box-shadow-large;
+		border: none;
+	}
+
+	.modal-header {
+		padding-top: 0;
+		padding-bottom: rem(12px);
+		padding-left: var(--desktop-padding);
+		padding-right: var(--desktop-padding);
+
+		@include respond-underneath($screen-md) {
+			padding-left: var(--mobile-padding);
+			padding-right: var(--mobile-padding);
+		}
+	}
+
+	.modal-footer {
+		flex-direction: column;
+		align-items: flex-start;
+		flex-wrap: nowrap;
+		padding-top: rem(12px);
+		padding-bottom: 0;
+		padding-left: var(--desktop-padding);
+		padding-right: var(--desktop-padding);
+
+		@include respond-underneath($screen-md) {
+			padding-left: var(--mobile-padding);
+			padding-right: var(--mobile-padding);
+		}
+	}
+
+	.modal-body {
+		padding: rem(0px) var(--desktop-padding);
+
+		@include respond-underneath($screen-md) {
+			padding: rem(12px) var(--mobile-padding);
+		}
+	}
+
+	.close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		width: rem(32px) !important;
+		height: rem(32px) !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		margin-left: auto !important;
+
+		border-radius: $border-radius-round;
+		border: none;
+		background: none;
+		// background-color: var(--slate-gray-60-color);
+
+		svg {
+			color: var(--tuna-gray-40-color);
+		}
+	}
+}
+
+.c-modal__title {
+	color: var(--primary-color);
+	font-size: rem(16px);
+	font-weight: $font-weight-bold;
+	line-height: 1.2;
+}
+
+.c-modal__description {
+	color: var(--tuna-gray-80-color);
+	font-size: rem(14px);
+}
+
+.c-modal .ui-button {
+	max-height: 85%;
+}
+
+// animation
+.modal-content {
+	animation-name: modal;
+	animation-duration: 0.2s;
+	animation-timing-function: ease-out;
+}
+
+.modal-backdrop {
+	animation-name: backdrop;
+	animation-duration: 0.3s;
+}
+
+@keyframes modal {
+	0% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes backdrop {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+
+// Scopes
+[class*="u-brand-"] {
+	.c-modal__title {
+		color: var(--primary-dark-color);
+	}
+}

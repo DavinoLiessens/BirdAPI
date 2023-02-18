@@ -1,0 +1,50 @@
+// -------------------------------------------------------------------
+// :: Card
+// -------------------------------------------------------------------
+.u-card {
+	display: flex;
+	flex-direction: column;
+
+	background-color: var(--white-color);
+	border-radius: $border-radius;
+	overflow: hidden;
+}
+
+// Elements
+.u-card__header {
+	padding: rem(24px) rem(24px) rem(16px);
+}
+
+.u-card__title {
+	color: var(--primary-color);
+	font-size: rem(14px);
+	font-weight: $font-weight-bold;
+}
+
+.u-card__body {
+	width: 100%;
+	padding: rem(24px);
+}
+
+.u-card__footer {
+	padding: rem(16px) rem(24px) rem(24px);
+}
+
+// Modifiers
+.u-card--small {
+	.u-card__body {
+		padding: rem(24px) rem(16px);
+	}
+}
+
+.u-card--radius-lg {
+	border-radius: $border-radius-lg;
+}
+
+.u-card--shadow {
+	box-shadow: $box-shadow;
+}
+
+.u-card--border {
+	border: rem(1px) solid var(--slate-gray-20-color);
+}

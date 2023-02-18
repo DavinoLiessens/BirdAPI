@@ -1,0 +1,59 @@
+.dropdown-item {
+	display: flex;
+	align-items: center;
+	padding-top: rem(8px);
+	padding-bottom: rem(8px);
+
+	& + .dropdown-item {
+		border-top: $border;
+	}
+
+	&.danger-zone {
+		color: var(--danger-color);
+	  }
+}
+
+.dropdown-menu {
+	border-radius: $border-radius;
+}
+
+.dropdown-toggle {
+	display: inline-flex;
+	align-items: center;
+
+	background: none;
+	border: none;
+
+	cursor: pointer;
+
+	&[aria-expanded="true"] {
+		&:after {
+			transform: rotate(180deg);
+		}
+	}
+}
+
+.dropdown-toggle:not(.dropdown-toggle-split)::after {
+	margin-left: rem(8px) !important;
+}
+
+.dropdown-toggle::after {
+	width: rem(12px);
+	height: rem(8px);
+	margin-bottom: rem(1px);
+
+	border: none !important;
+	background-image: url("data:image/svg+xml,%3Csvg width='12' height='9' viewBox='0 0 12 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.48263 0.75L0 2.23263L6 8.23263L12 2.23263L10.5174 0.75L6 5.26737L1.48263 0.75Z' fill='%23AAAEB8'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+
+	transition: transform 0.2s ease-in-out;
+}
+
+// States
+.dropdown-toggle {
+	&.no-arrow {
+		&::after {
+			content: none;
+		}
+	}
+}

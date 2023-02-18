@@ -1,0 +1,8 @@
+// ==========================================================================
+// TILE
+// ==========================================================================
+@mixin tile {
+	border-radius: $border-radius;
+	box-shadow: $box-shadow-large;
+	background-color: var(--white-color);
+}

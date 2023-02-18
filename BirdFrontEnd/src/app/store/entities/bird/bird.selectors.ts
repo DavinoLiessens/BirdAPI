@@ -4,7 +4,7 @@ import { IBirdState } from './bird.interfaces';
 
 export const selectFullProductState = createSelector(
     selectFeature,
-    (state: IFeatureState) => state.productmanagement
+    (state: IFeatureState) => state.bird
 );
 
 export const selectLoadingAll = createSelector(

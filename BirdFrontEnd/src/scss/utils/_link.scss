@@ -1,0 +1,27 @@
+// -------------------------------------------------------------------
+// :: Link
+// -------------------------------------------------------------------
+.u-link {
+	border: none;
+	background: none;
+	padding: 0;
+	color: var(--slate-gray-80-color);
+	text-decoration: underline;
+}
+
+// Modifiers
+.u-link--branded {
+	color: var(--primary-color);
+}
+
+.u-link--danger {
+	color: var(--danger-color);
+}
+
+.u-link--bold {
+	font-weight: bold;
+}
+
+.u-link--no-underline {
+	text-decoration: none;
+}
