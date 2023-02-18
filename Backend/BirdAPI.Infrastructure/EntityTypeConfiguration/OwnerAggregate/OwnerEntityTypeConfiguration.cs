@@ -16,10 +16,6 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.OwnerAggregate
             builder.HasKey(o => o.Id);
             builder.Property(o => o.Id).ValueGeneratedOnAdd();
 
-            builder.HasMany(o => o.Birds)
-                .WithOne(b => b.Owner)
-                .HasForeignKey(b => b.OwnerId);
-
             builder.Ignore(o => o.DomainEvents);
         }
     }

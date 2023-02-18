@@ -9,12 +9,9 @@ namespace BirdAPI.Domain.AggregatesModel.BreederAggregate
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public readonly List<Bird> _birds;
-        public IReadOnlyCollection<Bird> Birds => _birds;
 
         public Breeder() : base()
         {
-            _birds = new List<Bird>();
         }
 
         public Breeder(string firstName, string lastName, string email, string phoneNumber) : this()
@@ -23,11 +20,6 @@ namespace BirdAPI.Domain.AggregatesModel.BreederAggregate
             LastName = lastName;
             Email = email;
             PhoneNumber = phoneNumber;
-        }
-
-        public void AddBirds(List<Bird> birds)
-        {
-            _birds.AddRange(birds);
         }
     }
 }
