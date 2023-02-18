@@ -3,6 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { BirdCreateComponent } from './bird/bird-create/bird-create.component';
 import { BirdDetailComponent } from './bird/bird-detail/bird-detail.component';
 import { BirdComponent } from './bird/bird.component';
+import { BreederCreateComponent } from './breeder/breeder-create/breeder-create.component';
+import { BreederDetailComponent } from './breeder/breeder-detail/breeder-detail.component';
+import { BreederComponent } from './breeder/breeder.component';
 import { CoupleCreateComponent } from './couple/couple-create/couple-create.component';
 import { CoupleDetailComponent } from './couple/couple-detail/couple-detail.component';
 import { CoupleComponent } from './couple/couple.component';
@@ -41,10 +44,10 @@ const routes: Routes = [
 
   // BREEDER
   {
-    path: "breeders", component: OwnerComponent,
+    path: "breeders", component: BreederComponent,
     children: [
-      { path: "create", component: OwnerCreateComponent },
-      { path: "detail/:breederId", component: OwnerDetailComponent },
+      { path: "create", component: BreederCreateComponent },
+      { path: "detail/:breederId", component: BreederDetailComponent },
     ]
   },
 
