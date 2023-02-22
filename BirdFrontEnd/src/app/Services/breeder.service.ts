@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { IBreedersResponse, IGetBreedersRequest } from "../types/breeder.types";
+import { IBreedersResponse, ICreateBreederRequest, IGetBreedersRequest } from "../types/breeder.types";
 import { BaseService } from "./base.service";
 
 @Injectable({
@@ -11,8 +11,11 @@ import { BaseService } from "./base.service";
     constructor(private baseService: BaseService) { }
 
     public getAllBreeders(request: IGetBreedersRequest): Observable<IBreedersResponse> {
-      console.log("Service: ", request);
         return this.baseService.get(`/breeders`, request) as Observable<IBreedersResponse>;
+    }
+
+    public createBreeder(request: ICreateBreederRequest): Observable<null> {
+      return this.baseService.post(`/breeders`, request) as Observable<null>;
     }
 
   }

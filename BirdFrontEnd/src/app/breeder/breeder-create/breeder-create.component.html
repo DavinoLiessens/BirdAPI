@@ -1,5 +1,5 @@
 <div class="c-breeder-create">
-    <form formGroup="breederForm">
+    <form [formGroup]="breederForm">
         <h2>Title Here</h2>
 
         <div class="form-group">
@@ -23,8 +23,8 @@
         </div>
 
         <div class="form-footer">
-            <button type="button" (click)="goBack()"></button>
-            <button type="submit" (click)="onSubmit()" [disabled]="!breederForm.valid"></button>
+            <button type="button" (click)="goBack()">Terug</button>
+            <button type="submit" (click)="onSubmit()" [disabled]="!breederForm.valid">Opslaan</button>
         </div>
     </form>
 </div>

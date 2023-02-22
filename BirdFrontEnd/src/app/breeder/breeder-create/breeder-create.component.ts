@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { BreederFacade } from "src/app/store/entities/breeder/breeder.facade";
 @Component({
@@ -10,7 +10,7 @@ import { BreederFacade } from "src/app/store/entities/breeder/breeder.facade";
 export class BreederCreateComponent implements OnInit {
 
     // local variables
-    public breederForm;
+    public breederForm: FormGroup;
 
     constructor(
         private fb: FormBuilder,
@@ -37,6 +37,7 @@ export class BreederCreateComponent implements OnInit {
             email: this.breederForm.get('email').value
         };
 
+        console.log(request);
         // call facade
 
     }
