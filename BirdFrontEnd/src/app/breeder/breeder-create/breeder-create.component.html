@@ -1,1 +1,30 @@
-<p>Breeder create works!</p>
+<div class="c-breeder-create">
+    <form formGroup="breederForm">
+        <h2>Title Here</h2>
+
+        <div class="form-group">
+            <label for="firstName">Voornaam</label>
+            <input type="text" class="form-control" formControlName="firstName" id="firstName" placeholder="Davino">
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Naam</label>
+            <input type="text" class="form-control" formControlName="lastName" id="lastName" placeholder="Liessens">
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber">Telefoon</label>
+            <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="+324........">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" formControlName="email" id="email" placeholder="davino.liessens@telenet.be">
+        </div>
+
+        <div class="form-footer">
+            <button type="button" (click)="goBack()"></button>
+            <button type="submit" (click)="onSubmit()" [disabled]="!breederForm.valid"></button>
+        </div>
+    </form>
+</div>

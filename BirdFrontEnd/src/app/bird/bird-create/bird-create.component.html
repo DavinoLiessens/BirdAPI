@@ -35,7 +35,7 @@
         <button pButton type="button" label="Opslaan" icon="pi pi-check" (click)="CreateBird()" class="inputfield" style="margin-top: -30px"></button>    
 </p-panel>-->
 <body style="background-image: url('../../../assets/background.PNG'); background-repeat: no-repeat; background-size: cover; height: 656px;">
-<p-panel header="Nieuwe Vogel Aanmaken: " style="width: 650px; height: 500px; margin-left: 2%; margin-top: 2%;">
+<!-- <p-panel header="Nieuwe Vogel Aanmaken: " style="width: 650px; height: 500px; margin-left: 2%; margin-top: 2%;">
     <div style="float: left;">
         <div><p class="p-text">Ringnummer: </p><input pInputText type="text" class="inputfield" placeholder="Ringnummer..." [(ngModel)]="Ringnummer" /></div><br><br><br>
         <div><p class="p-text" style="margin-left: 29px;">Geslacht: </p>
@@ -49,9 +49,6 @@
             </select>
         </div><br><br><br>
         <div><p class="p-text" style="margin-left: 50px;">Kleur: </p>
-            <!--<select [(ngModel)]="Kleur" required class="inputfield" style="width: 195px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                <option *ngFor="let item of colorOptions">{{item}}</option>
-            </select> -->
             <p-dropdown required [options]="groupedColors" [(ngModel)]="Kleur" placeholder="Selecteer een kleur" [group]="true" class="colorDropdown">
                 <ng-template let-group pTemplate="group">
                     <div class="p-d-flex p-ai-center">
@@ -77,4 +74,4 @@
     <button pButton type="button" label="Terug" icon="pi pi-undo" style="margin-top: 320px; margin-left: -320px;" [routerLink]="['/birds']"></button> 
     <button pButton type="button" label="Opslaan" icon="pi pi-check" class="button-save" (click)="CreateBird()"></button>    
 </p-panel>
-</body>
+</body> -->

@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TableModule } from 'primeng/table';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { PanelModule } from 'primeng/panel';
@@ -77,7 +77,7 @@ import { BaseService } from './Services/base.service';
     SplitButtonModule,
     TableModule,
     VirtualScrollerModule,
-    FormsModule,
+    ReactiveFormsModule,
     InputTextModule,
     DropdownModule, 
     PanelModule,
