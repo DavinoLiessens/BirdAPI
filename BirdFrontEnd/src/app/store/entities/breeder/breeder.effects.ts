@@ -16,7 +16,7 @@ export class BreederEffects {
     // fetch companies
     getBreeders$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getBreeders.type),
-        concatMap((request: IGetBreedersRequest) => this.breedersService.getAllBreeders(request).pipe(
+        concatMap(({ request }: { request: IGetBreedersRequest }) => this.breedersService.getAllBreeders(request).pipe(
             map((breeders: IBreedersResponse) => actions.getBreedersSuccess({ breeders: breeders })),
             catchError((error: any) => of(actions.getBreedersError({ error }))),
         ))

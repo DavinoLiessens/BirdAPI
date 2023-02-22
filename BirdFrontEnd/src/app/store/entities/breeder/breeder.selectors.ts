@@ -17,7 +17,12 @@ export const selectLoadingDetail = createSelector(
     (state: IBreederState) => state.loadingDetail,
 );
 
-export const selectBirds = createSelector(
+export const selectPagination = createSelector(
+    selectBreederState,
+    (state: IBreederState) => state.pagination,
+);
+
+export const selectBreeders = createSelector(
     selectBreederState,
     (state: IBreederState) => state.breeders
 );

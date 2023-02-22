@@ -8,7 +8,6 @@ export interface IBreeder {
     lastName: string;
     phoneNumber: string;
     email: string;
-    birds: IBird[];
 }
 
 export interface ICreateBreederRequest {

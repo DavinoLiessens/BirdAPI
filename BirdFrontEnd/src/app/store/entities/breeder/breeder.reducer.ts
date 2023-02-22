@@ -16,7 +16,8 @@ const reducer = createReducer(
     on(actions.getBreedersSuccess, (state, { breeders }) => {
         return {
             ...state,
-            breeders: breeders,
+            breeders: breeders.results,
+            pagination: breeders.pagination,
             loadingAll: false,
             errors: null
         };

@@ -11,6 +11,7 @@ import { BaseService } from "./base.service";
     constructor(private baseService: BaseService) { }
 
     public getAllBreeders(request: IGetBreedersRequest): Observable<IBreedersResponse> {
+      console.log("Service: ", request);
         return this.baseService.get(`/breeders`, request) as Observable<IBreedersResponse>;
     }
 

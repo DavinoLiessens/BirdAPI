@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IBreedersResponse, IGetBreedersRequest } from 'src/app/types/breeder.types';
+import { IBreeder, IBreedersResponse, IGetBreedersRequest } from 'src/app/types/breeder.types';
+import { IPagination } from 'src/app/types/pagination.types';
 import { IAppState } from '../../store.interface';
 import * as actions from './breeder.actions';
 import * as selectors from './breeder.selectors';
@@ -13,9 +14,17 @@ export class BreederFacade {
     ) { }
 
     // Selectors
+    public getBreeders(): Observable<IBreeder[]> {
+        return this.store.select(selectors.selectBreeders);
+    }
+
+    public getPagination(): Observable<IPagination> {
+        return this.store.select(selectors.selectPagination);
+    }
 
     // Actions
-    public getAllBreeders(request: IGetBreedersRequest): void {
+    public getAllBreedersRequest(request: IGetBreedersRequest): void {
+        console.log("Facade: ", request);
         this.store.dispatch(actions.getBreeders({ request }));
     }
 
