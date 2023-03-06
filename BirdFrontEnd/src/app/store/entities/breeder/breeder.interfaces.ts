@@ -4,6 +4,7 @@ import { IPagination } from 'src/app/types/pagination.types';
 
 export interface IBreederState {
     breeders: IBreeder[];
+    breederDetail: IBreeder;
     pagination: IPagination;
     loadingAll: boolean;
     loadingDetail: boolean;

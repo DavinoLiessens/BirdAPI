@@ -6,7 +6,7 @@ import { IBreederState } from './breeder.interfaces';
 const reducer = createReducer(
     initialState,
 
-    // GET Birds
+    // GET Breeders
     on(actions.getBreeders, (state) => {
         return {
             ...state,
@@ -28,7 +28,53 @@ const reducer = createReducer(
             loadingAll: false,
             errors: error
         };
-    }),);
+    }),
+
+    // GET Breeder
+    on(actions.getBreeder, (state) => {
+        return {
+            ...state,
+            loadingDetail: true,
+        };
+    }),
+    on(actions.getBreederSuccess, (state, { breederDetail }) => {
+        return {
+            ...state,
+            breederDetail: breederDetail,
+            loadingDetail: false,
+            errors: null
+        };
+    }),
+    on(actions.getBreederError, (state, { error }) => {
+        return {
+            ...state,
+            loadingDetail: false,
+            errors: error
+        };
+    }),
+
+    // UPDATE Breeder
+    on(actions.updateBreeder, (state) => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
+    on(actions.updateBreederSuccess, (state) => {
+        return {
+            ...state,
+            loading: false,
+            errors: null
+        };
+    }),
+    on(actions.updateBreederError, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            errors: error
+        };
+    }),
+);
 
 export function breederReducer(state: IBreederState | undefined, action: Action) {
     return reducer(state, action);

@@ -1,0 +1,35 @@
+@import "src/scss/helpers";
+
+.page {
+    width: 100%;
+    height: calc(100vh - 71px);
+    overflow: auto;
+    background-color: var(--slate-gray-5-color);
+    background-image: url('../../../assets/background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.page-wrapper {
+    width: 70vw;
+    margin: 0 auto;
+    background-color: rgba(#ffffff, 0.6);
+    
+}
+
+.page-header {
+    border-bottom: 1px solid var(--slate-gray-20-color);
+    background-color: var(--tuna-gray-20-color);
+
+    h1{
+        padding: 16px 8px;
+    }
+}
+
+.page-body {
+    padding: 16px 8px;
+
+    h2 {
+        padding-bottom: 16px;
+    }
+}

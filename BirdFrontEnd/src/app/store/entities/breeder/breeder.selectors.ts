@@ -26,3 +26,8 @@ export const selectBreeders = createSelector(
     selectBreederState,
     (state: IBreederState) => state.breeders
 );
+
+export const selectBreeder = createSelector(
+    selectBreederState,
+    (state: IBreederState) => state.breederDetail
+);

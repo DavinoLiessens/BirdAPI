@@ -18,6 +18,7 @@ export interface ICreateBreederRequest {
 }
 
 export interface IUpdateBreederRequest {
+    id: number;
     firstName: string;
     lastName: string;
     phoneNumber: string;
