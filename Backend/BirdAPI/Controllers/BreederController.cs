@@ -1,4 +1,6 @@
-﻿using BirdAPI.Application.Features.Breeder.Queries;
+﻿using BirdAPI.Application.Features.Breeder.Commands;
+using BirdAPI.Application.Features.Breeder.Commands.InputModel;
+using BirdAPI.Application.Features.Breeder.Queries;
 using BirdAPI.Application.Features.Breeder.ResponseModels;
 using BirdAPI.BaseModels;
 using MediatR;
@@ -22,6 +24,12 @@ namespace BirdAPI.Controllers
         public async Task<IActionResult> GetBreeders(int? page, int? pageSize)
         {
             return new JsonContentResult<PagedResponse<BreederResponseModel>>(await _mediator.Send(new GetBreedersQuery(page, pageSize)));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBreeder([FromBody] CreateBreederInputModel model)
+        {
+            return new JsonContentResult<object>(await _mediator.Send(new CreateBreederCommand(model)));
         }
     }
 }

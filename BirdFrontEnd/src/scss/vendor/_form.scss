@@ -40,5 +40,21 @@
 }
 
 .form-group {
+	display: flex;
+	flex-direction: column;
 	max-width: 100%;
+	margin-bottom: 16px;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.form-footer {
+	display: flex;
+	justify-content: flex-end;
+
+	button + button {
+		margin-left: 8px;
+	}
 }

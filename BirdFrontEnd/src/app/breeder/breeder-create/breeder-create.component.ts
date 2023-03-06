@@ -37,8 +37,7 @@ export class BreederCreateComponent implements OnInit {
             email: this.breederForm.get('email').value
         };
 
-        console.log(request);
-        // call facade
+        this.breederFacade.createBreeder(request);
 
     }
 
