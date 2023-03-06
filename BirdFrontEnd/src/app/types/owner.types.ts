@@ -6,7 +6,6 @@ export interface IOwner {
     lastName: string;
     phoneNumber: string;
     email: string;
-    birds: IBird[];
 }
 
 export interface ICreateOwnerRequest {

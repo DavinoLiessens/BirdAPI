@@ -11,45 +11,59 @@ export class AppComponent {
   birdItems: MenuItem[];
   ownerItems: MenuItem[];
   coupleItems: MenuItem[];
+  breederItems: MenuItem[];
 
-  ngOnInit(){
+  ngOnInit() {
     this.birdItems = [
       {
-          label: 'Overzicht Vogels',
-          icon: 'pi pi-home',
-          routerLink: '/birds'
+        label: 'Overzicht Vogels',
+        icon: 'pi pi-home',
+        routerLink: '/birds'
       },
       {
-          label: 'Vogel Aanmaken',
-          icon: 'pi pi-plus',
-          routerLink: '/birds/create'
+        label: 'Vogel Aanmaken',
+        icon: 'pi pi-plus',
+        routerLink: '/birds/create'
       }
-  ];
+    ];
 
-  this.ownerItems = [
-    {
-        label: 'Overzicht Kwekers',
+    this.ownerItems = [
+      {
+        label: 'Overzicht Eigenaars',
         icon: 'pi pi-home',
         routerLink: '/owners'
-    },
-    {
-        label: 'Kweker Aanmaken',
+      },
+      {
+        label: 'Eigenaar Aanmaken',
         icon: 'pi pi-plus',
         routerLink: '/owners/create'
-    }
-];
+      }
+    ];
 
-this.coupleItems = [
-  {
-      label: 'Overzicht Koppels',
-      icon: 'pi pi-home',
-      routerLink: '/couples'
-  },
-  {
-      label: 'Koppel Aanmaken',
-      icon: 'pi pi-plus',
-      routerLink: '/couples/create'
-  }
-];
+    this.breederItems = [
+      {
+        label: 'Overzicht Kwekers',
+        icon: 'pi pi-home',
+        routerLink: '/breeders'
+      },
+      {
+        label: 'Kweker Aanmaken',
+        icon: 'pi pi-plus',
+        routerLink: '/breeders/create'
+      }
+    ];
+
+    this.coupleItems = [
+      {
+        label: 'Overzicht Koppels',
+        icon: 'pi pi-home',
+        routerLink: '/couples'
+      },
+      {
+        label: 'Koppel Aanmaken',
+        icon: 'pi pi-plus',
+        routerLink: '/couples/create'
+      }
+    ];
   }
 }

@@ -1,0 +1,77 @@
+<div class="c-breeder-overview">
+    <p-table #dt1 [value]="breeders" dataKey="id"
+        [rows]="25" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['id']">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex">
+                <span class="p-input-icon-left" style="margin-left: 20px;">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText placeholder="Zoek Kweker" />
+                </span>
+            </div>
+            
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Voornaam 
+                    </div>
+                </th>
+                <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Naam 
+                    </div>
+                </th>
+                <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Telefoon
+                    </div>
+                </th>
+                <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Email
+                    </div>
+                </th>               
+                <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Edit
+                    </div>
+                </th>
+                <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        <p>X</p>
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-breeder>
+            <tr>
+                <td>
+                    <p>{{ breeder.firstName }}</p>
+                </td>
+                <td>
+                    <p>{{ breeder.lastName }}</p>
+                </td>
+                <td>
+                    <p>{{ breeder.phoneNumber }}</p>
+                </td>
+                <td>
+                    <p>{{ breeder.email }}</p>
+                </td>
+                <td>
+                    <button pButton pRipple type="button" label="Bewerk" class="p-button-raised" style="margin-left: 10px;" routerLink="/breeders/detail/{{ breeder.id }}"></button>
+                </td>
+                <td>
+                    <button pButton pRipple type="button" label="Verwijder" class="p-button-danger" style="margin-left: 5px;" (click)="DeleteBreeder(breeder.id)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">Geen kwekers gevonden.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
