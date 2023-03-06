@@ -21,5 +21,15 @@ namespace BirdAPI.Domain.AggregatesModel.BreederAggregate
             Email = email;
             PhoneNumber = phoneNumber;
         }
+
+        public Breeder UpdateBreeder(string firstName, string lastName, string phoneNumber, string email)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            PhoneNumber = phoneNumber;
+            Email = email;
+
+            return this;
+        }
     }
 }

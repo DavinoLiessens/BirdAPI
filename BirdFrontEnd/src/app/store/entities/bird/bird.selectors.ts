@@ -2,22 +2,22 @@ import { createSelector } from '@ngrx/store';
 import { IFeatureState, selectFeature } from '../store.config';
 import { IBirdState } from './bird.interfaces';
 
-export const selectFullProductState = createSelector(
+export const selectBirdState = createSelector(
     selectFeature,
     (state: IFeatureState) => state.bird
 );
 
 export const selectLoadingAll = createSelector(
-    selectFullProductState,
+    selectBirdState,
     (state: IBirdState) => state.loadingAll,
 );
 
 export const selectLoadingDetail = createSelector(
-    selectFullProductState,
+    selectBirdState,
     (state: IBirdState) => state.loadingDetail,
 );
 
 export const selectBirds = createSelector(
-    selectFullProductState,
+    selectBirdState,
     (state: IBirdState) => state.birds
 );

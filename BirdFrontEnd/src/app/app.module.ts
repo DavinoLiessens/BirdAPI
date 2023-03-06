@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TableModule } from 'primeng/table';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { PanelModule } from 'primeng/panel';
@@ -32,10 +32,14 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { CoupleComponent } from './couple/couple.component';
 import { CoupleCreateComponent } from './couple/couple-create/couple-create.component';
 import { CoupleDetailComponent } from './couple/couple-detail/couple-detail.component';
+import { BreederCreateComponent } from './breeder/breeder-create/breeder-create.component';
+import { BreederDetailComponent } from './breeder/breeder-detail/breeder-detail.component';
+import { BreederComponent } from './breeder/breeder.component';
 
 // *** STORE CONFIG ***
 import { AppStoreModule } from './store/store.module';
 import { CoreStoreModule } from './store/entities/store.module';
+import { BaseService } from './Services/base.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,10 @@ import { CoreStoreModule } from './store/entities/store.module';
     PageNotFoundComponent,
     CoupleComponent,
     CoupleCreateComponent,
-    CoupleDetailComponent
+    CoupleDetailComponent,
+    BreederComponent,
+    BreederCreateComponent,
+    BreederDetailComponent
   ],
   imports: [
     AppStoreModule,
@@ -70,7 +77,7 @@ import { CoreStoreModule } from './store/entities/store.module';
     SplitButtonModule,
     TableModule,
     VirtualScrollerModule,
-    FormsModule,
+    ReactiveFormsModule,
     InputTextModule,
     DropdownModule, 
     PanelModule,
@@ -78,7 +85,7 @@ import { CoreStoreModule } from './store/entities/store.module';
     OrganizationChartModule,
     CheckboxModule
   ],
-  providers: [],
+  providers: [BaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
