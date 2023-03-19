@@ -29,15 +29,15 @@ export class OwnerCreateComponent implements OnInit {
       email: this.email
     };
 
-    this.ownerService.CreateOwner(this.newOwner).subscribe(result => {
-      alert("Eigenaar succesvol aangemaakt!");
-      console.log(this.newOwner);
-      this.router.navigate(['/owners']);
-    },
-    error => {
-      alert("Er liep iets mis!");
-      console.log(error);
-    });    
+    // this.ownerService.CreateOwner(this.newOwner).subscribe(result => {
+    //   alert("Eigenaar succesvol aangemaakt!");
+    //   console.log(this.newOwner);
+    //   this.router.navigate(['/owners']);
+    // },
+    // error => {
+    //   alert("Er liep iets mis!");
+    //   console.log(error);
+    // });    
   }
 
   get Voornaam(){

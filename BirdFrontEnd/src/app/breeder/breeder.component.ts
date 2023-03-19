@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { BreederFacade } from "../store/entities/breeder/breeder.facade";
-import { IBreeder, IBreedersResponse, IGetBreedersRequest } from "../types/breeder.types";
+import { IBreeder, IGetBreedersRequest } from "../types/breeder.types";
 import { IPagination } from "../types/pagination.types";
 
 @Component({
@@ -19,7 +19,7 @@ export class BreederComponent implements OnInit {
 
     // local variables
     public breeders: IBreeder[];
-    public pagina
+
     constructor(
         private breederFacade: BreederFacade
     ) {}

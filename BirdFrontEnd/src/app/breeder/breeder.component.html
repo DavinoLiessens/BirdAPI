@@ -1,8 +1,7 @@
 <div class="c-breeder-overview">
     <p-table #dt1 [value]="breeders" dataKey="id"
         [rows]="25" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
-        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['id']">
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">
                 <span class="p-input-icon-left" style="margin-left: 20px;">

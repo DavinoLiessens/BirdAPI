@@ -1,4 +1,6 @@
 import { IBird } from "./bird.types";
+import { PagedResponse } from "./paged-response.types";
+import { IPaginationRequest, ISearchRequest } from "./pagination.types";
 
 export interface IOwner {
     id: number;
@@ -21,3 +23,6 @@ export interface IUpdateOwnerRequest {
     phoneNumber: string;
     email: string;
 }
+
+export interface IGetOwnersRequest extends IPaginationRequest, ISearchRequest {}
+export type IOwnersResponse = PagedResponse<IOwner>;

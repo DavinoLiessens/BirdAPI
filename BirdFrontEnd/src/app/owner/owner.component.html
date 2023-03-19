@@ -1,29 +1,13 @@
-<div class="card">
+<div class="c-owner-overview">
     <p-table #dt1 [value]="owners" dataKey="id"
         [rows]="25" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">
-                <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="ClearFilters()"></button>                
                 <span class="p-input-icon-left" style="margin-left: 20px;">
                     <i class="pi pi-search"></i>
-                    <!-- <input type="text" pInputText placeholder="Zoek Kweker" [(ngModel)]="SearchName" /> -->
-                </span>   
-                    <!-- <button pButton pRipple type="button" class="searchbar" style="margin-left: 5px;" label="Zoek" class="p-button-raised" (onclick)="SearchOwner()"></button> -->
-                    
-                    <div class="select-owners">
-                        <label>Aantal Eigenaars: </label>
-                        <!-- <select [(ngModel)]="NoOwners" required class="inputfield" style="width: 80px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                            <option *ngFor="let item of items" value={{item}}>{{item}}</option>
-                        </select> -->
-                    </div>
-            
-                    <div class="select-sort">
-                        <label>Sorteer op: </label>
-                        <!-- <select [(ngModel)]="SortItemOwners" required class="inputfield" style="width: 120px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                            <option *ngFor="let item of sortItems" value={{item}}>{{item}}</option>
-                        </select> -->
-                    </div> 
+                    <input type="text" pInputText placeholder="Zoek Eigenaar" />
+                </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -36,7 +20,7 @@
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Achternaam 
+                        Naam 
                         <!-- <p-columnFilter type="text" field="lastname" display="menu"></p-columnFilter>-->
                     </div>
                 </th>  
@@ -48,13 +32,18 @@
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        E-mail 
+                        Email 
                         <!-- <p-columnFilter type="text" field="lastname" display="menu"></p-columnFilter>-->
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Item Verwijderen 
+                        Edit
+                    </div>
+                </th> 
+                <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        X
                     </div>
                 </th>                
             </tr>
@@ -62,19 +51,22 @@
         <ng-template pTemplate="body" let-owner>
             <tr>
                 <td>
-                    <p>{{owner.voornaam}}</p>
+                    <p>{{ owner.firstName }}</p>
                 </td>
                 <td>
-                    <p>{{owner.achternaam}}</p>
+                    <p>{{ owner.lastName }}</p>
                 </td>
                 <td>
-                    <p>{{owner.telefoon}}</p>
+                    <p>{{ owner.phoneNumber }}</p>
                 </td>
                 <td>
-                    <p>{{owner.email}}</p>
+                    <p>{{ owner.email }}</p>
                 </td>
                 <td>
-                    <button pButton pRipple type="button" label="Verwijder" class="p-button-danger" style="margin-left: 65px;" (click)="DeleteOwner(owner.id)"></button>
+                    <button pButton pRipple type="button" label="Bewerk" class="p-button-raised" style="margin-left: 10px;" routerLink="/owners/detail/{{ owner.id }}"></button>
+                </td>
+                <td>
+                    <button pButton pRipple type="button" label="Verwijder" class="p-button-danger" style="margin-left: 5px;" (click)="DeleteOwner(owner.id)"></button>
                 </td>
             </tr>
         </ng-template>
