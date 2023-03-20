@@ -62,8 +62,9 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             return this;
         }
 
-        public Bird UpdateBird(int cageNumber, string description, bool dead)
+        public Bird UpdateBird(string ringNumber, int cageNumber, string description, bool dead)
         {
+            RingNumber = ringNumber;
             CageNumber = cageNumber;
             Description = description;
             IsDead = dead;

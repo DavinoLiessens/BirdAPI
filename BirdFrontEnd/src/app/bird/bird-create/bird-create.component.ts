@@ -7,7 +7,7 @@ import { OwnerService } from 'src/app/Services/owner.service';
 @Component({
   selector: 'app-bird-create',
   templateUrl: './bird-create.component.html',
-  styleUrls: ['./bird-create.component.css']
+  styleUrls: ['./bird-create.component.scss']
 })
 export class BirdCreateComponent implements OnInit {
 

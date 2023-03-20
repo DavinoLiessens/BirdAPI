@@ -3,6 +3,7 @@ using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BirdAPI.Application.Features.Bird.Commands
@@ -39,7 +40,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
                                                         );
 
             // get breeder from db
-            var breeder = "";
+            var breeder = await _context.Breeders.FirstOrDefaultAsync(b => b.Id == request.Model.BreederId);
 
             if (breeder == null)
             {
@@ -48,7 +49,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             }
 
             // get owner from db
-            var owner = "";
+            var owner = await _context.Owners.FirstOrDefaultAsync(o => o.Id == request.Model.OwnerId);
 
             if (owner == null)
             {
@@ -56,8 +57,8 @@ namespace BirdAPI.Application.Features.Bird.Commands
                     .AddError($"No owner found with id '{request.Model.OwnerId}'");
             }
 
-            //bird.BelongsToBreeder(breeder);
-            //bird.BelongsToOwner(owner);
+            bird.BelongsToBreeder(breeder);
+            bird.BelongsToOwner(owner);
 
             // create just the bird
             var result = _mapper.Map<BirdResponseModel>(bird);
