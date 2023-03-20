@@ -26,5 +26,15 @@ namespace BirdAPI.Domain.AggregatesModel.OwnerAggregate
             Email = email;
             PhoneNumber = phoneNumber;
         }
+
+        public Owner UpdateOwner(string firstName, string lastName, string phoneNumber, string email)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            PhoneNumber = phoneNumber;
+            Email = email;
+
+            return this;
+        }
     }
 }

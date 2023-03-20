@@ -1,97 +1,48 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService, Owner } from '../Services/api.service';
-import { OwnerService } from '../Services/owner.service';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { OwnerFacade } from '../store/entities/owner/owner.facade';
+import { IGetOwnersRequest, IOwner } from '../types/owner.types';
+import { IPagination } from '../types/pagination.types';
 
 @Component({
-  selector: 'app-owner',
+  selector: 'c-owner-overview',
   templateUrl: './owner.component.html',
   styleUrls: ['./owner.component.scss']
 })
 export class OwnerComponent implements OnInit {
 
-  owners: Owner[];
-  items: number[];
-  sortItems: string[];
+  // Observables
+  private destroyed$: Subject<boolean> = new Subject<boolean>();
+  public owners$: Observable<IOwner[]> = this.ownerFacade.getOwners();
+  public pagination$: Observable<IPagination> = this.ownerFacade.getPagination();
 
-  constructor(private apiService: ApiService, private ownerService: OwnerService) { 
-    this.items = [5,10,15,20,25,50,100];
-    this.sortItems = ["Alles", "Voornaam", "Achternaam"];
-  }
+  // local variables
+  public owners: IOwner[];
+
+  constructor(private ownerFacade: OwnerFacade) { }
 
   ngOnInit(): void {
-    this.GetAllOwners();
+    // get all owners
+    this.owners$.pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe((owners: IOwner[]) => {
+      console.log(owners);
+      if (owners === null || owners === undefined) {
+        const request: IGetOwnersRequest = {
+          page: 1,
+          pageSize: 10,
+        }
+        this.ownerFacade.getAllOwnersRequest(request);
+      }
+
+      if (owners !== null || owners !== undefined) {
+        this.owners = owners;
+      }
+    });
   }
 
-  GetAllOwners(){
-    try{
-      this.ownerService.GetAllOwners().subscribe((res) => this.owners = res);
-    }
-    catch{
-      alert("Er was een probleem.");
-    }
+  public deleteOwner(id: number) {
+    console.log("Deleting owner with id: ", id);
   }
-
-  DeleteOwner(id: number){
-    if(confirm("Ben je zeker dat je dit item wilt verwijderen?")){
-      this.ownerService.DeleteOwner(id).subscribe(result => {
-        this.GetAllOwners();
-      });
-    }
-    else{
-      alert("Het item is niet verwijderd!");
-    }
-  }
-
-  get SearchName() {
-    return this.apiService.searchnameOwner;
-  }
-
-  set SearchName(value: string){
-    this.apiService.searchnameOwner = value;
-    this.apiService.GetAllOwners().subscribe(result => {
-      this.owners = result;
-    },
-    error => console.log(error));
-  }
-
-  get NoOwners(){
-    return this.apiService.noOwners;
-  }
-
-  set NoOwners(value: number){
-    this.apiService.noOwners = value;
-    this.apiService.GetAllOwners().subscribe((res) => this.owners = res);
-  }
-
-  get SortItemOwners(){
-    return this.apiService.sortItemOwners;
-  }
-
-  set SortItemOwners(value: string){
-    if(value == "Alles"){
-      this.apiService.sortItemOwners = '';
-    }
-    else{
-      this.apiService.sortItemOwners = value.toLocaleLowerCase();
-    }
-
-    this.apiService.GetAllOwners().subscribe(result => {
-      this.owners = result;
-    },
-    error => {
-      console.log(error);
-    });    
-  }
-
-  ClearFilters(){
-    this.apiService.searchnameOwner = '';
-    this.apiService.sortItemOwners = 'Alles';
-    this.apiService.noOwners = 10;
-    
-    this.apiService.GetAllOwners().subscribe(result => {
-      this.owners = result;
-    }, error =>
-    console.log("Er liep iets mis!", error));
-  }
-
 }

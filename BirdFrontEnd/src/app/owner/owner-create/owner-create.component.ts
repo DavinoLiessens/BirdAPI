@@ -1,74 +1,47 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ApiService, Owner } from 'src/app/Services/api.service';
-import { OwnerService } from 'src/app/Services/owner.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
 
 @Component({
   selector: 'app-owner-create',
   templateUrl: './owner-create.component.html',
-  styleUrls: ['./owner-create.component.css']
+  styleUrls: ['./owner-create.component.scss']
 })
 export class OwnerCreateComponent implements OnInit {
 
-  private newOwner: Owner;
-  private voornaam: string;
-  private achternaam: string;
-  private telefoon: string;
-  private email: string;
+  // local variables
+  public ownerForm: FormGroup;
 
-  constructor(private apiService: ApiService, private ownerService: OwnerService, private router: Router) { }
+  constructor(private fb: FormBuilder,
+    private ownerFacade: OwnerFacade,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
+    // fill in the form
+    this.ownerForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      email: ['', Validators.required],
+    });
   }
 
-  CreateOwner() : void{
-    this.newOwner = {
-      firstName: this.voornaam,
-      lastName: this.achternaam,
-      phoneNumber: this.telefoon,
-      email: this.email
+  public onSubmit() {
+    const request: any = {
+      firstName: this.ownerForm.get('firstName').value,
+      lastName: this.ownerForm.get('lastName').value,
+      phoneNumber: this.ownerForm.get('phoneNumber').value,
+      email: this.ownerForm.get('email').value
     };
 
-    this.ownerService.CreateOwner(this.newOwner).subscribe(result => {
-      alert("Eigenaar succesvol aangemaakt!");
-      console.log(this.newOwner);
-      this.router.navigate(['/owners']);
-    },
-    error => {
-      alert("Er liep iets mis!");
-      console.log(error);
-    });    
+    this.ownerFacade.createOwner(request);
+
   }
 
-  get Voornaam(){
-    return this.voornaam;
-  }
-
-  set Voornaam(value: string){
-    this.voornaam = value;
-  }
-
-  get Achternaam(){
-    return this.achternaam;
-  }
-
-  set Achternaam(value: string){
-    this.achternaam = value;
-  }
-    
-  get Telefoon(){
-    return this.telefoon;
-  }
-
-  set Telefoon(value: string){
-    this.telefoon = value;
-  }
-
-  get Email(){
-    return this.email;
-  }
-
-  set Email(value: string){
-    this.email = value;
+  public goBack() {
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

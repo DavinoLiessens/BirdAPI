@@ -148,41 +148,41 @@ export class BirdCreateComponent implements OnInit {
   }
 
   CreateBird() : void{
-    this.ownerService.GetAllOwners().subscribe(result => {
+    // this.ownerService.GetAllOwners().subscribe(result => {
 
-      if(result.length == 0){
-        alert("Deze Kweker bestaat niet!");
-        return;
-      }
+    //   if(result.length == 0){
+    //     alert("Deze Kweker bestaat niet!");
+    //     return;
+    //   }
 
-      var owner: Owner = result[0];
+    //   var owner: Owner = result[0];
 
-      console.log(owner);
-      this.newBird = {
-         ringnummer: this.ringnummer,
-         geslacht: this.geslacht,
-         soort: this.soort,
-         jaartal: this.jaartal,
-         kotnummer: this.kotnummer,
-         eigenaarID: this.eigenaarID,
-         kwekerID: this.kweker,
-         kleur: this.kleur,
-         omschrijving: this.omschrijving,
-         isDood: this.isDood,
-         isJong: this.isJong
-      };
+    //   console.log(owner);
+    //   this.newBird = {
+    //      ringnummer: this.ringnummer,
+    //      geslacht: this.geslacht,
+    //      soort: this.soort,
+    //      jaartal: this.jaartal,
+    //      kotnummer: this.kotnummer,
+    //      eigenaarID: this.eigenaarID,
+    //      kwekerID: this.kweker,
+    //      kleur: this.kleur,
+    //      omschrijving: this.omschrijving,
+    //      isDood: this.isDood,
+    //      isJong: this.isJong
+    //   };
 
-      this.apiService.CreateBird(this.newBird).subscribe(result => {
-        alert("Vogel succesvol aangemaakt!");
-        console.log(this.newBird);
-        this.router.navigate(['/birds']);
-      },
-      error => {
-        alert("Er liep iets mis!");
-        console.log(error);
-        console.log(this.newBird);
-      });
-    });
+    //   this.apiService.CreateBird(this.newBird).subscribe(result => {
+    //     alert("Vogel succesvol aangemaakt!");
+    //     console.log(this.newBird);
+    //     this.router.navigate(['/birds']);
+    //   },
+    //   error => {
+    //     alert("Er liep iets mis!");
+    //     console.log(error);
+    //     console.log(this.newBird);
+    //   });
+    // });
   }
 
   get Ringnummer(){
