@@ -18,6 +18,7 @@ export interface ICreateOwnerRequest {
 }
 
 export interface IUpdateOwnerRequest {
+    id: number;
     firstName: string;
     lastName: string;
     phoneNumber: string;

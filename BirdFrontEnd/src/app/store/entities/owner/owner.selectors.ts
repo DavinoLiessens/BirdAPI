@@ -26,3 +26,8 @@ export const selectOwners = createSelector(
     selectOwnerState,
     (state: IOwnerState) => state.owners
 );
+
+export const selectOwner = createSelector(
+    selectOwnerState,
+    (state: IOwnerState) => state.ownerDetail
+);

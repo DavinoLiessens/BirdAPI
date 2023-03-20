@@ -6,7 +6,7 @@ import { initialState } from "./owner.initial-state";
 const reducer = createReducer(
     initialState,
 
-    // GET Breeders
+    // GET Owners
     on(actions.getOwners, (state) => {
         return {
             ...state,
@@ -28,7 +28,52 @@ const reducer = createReducer(
             loadingAll: false,
             errors: error
         };
-    })
+    }),
+
+    // GET Owner
+    on(actions.getOwner, (state) => {
+        return {
+            ...state,
+            loadingDetail: true,
+        };
+    }),
+    on(actions.getOwnerSuccess, (state, { ownerDetail }) => {
+        return {
+            ...state,
+            ownerDetail: ownerDetail,
+            loadingDetail: false,
+            errors: null
+        };
+    }),
+    on(actions.getOwnerError, (state, { error }) => {
+        return {
+            ...state,
+            loadingDetail: false,
+            errors: error
+        };
+    }),
+
+    // UPDATE Owner
+    on(actions.updateOwner, (state) => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
+    on(actions.updateOwnerSuccess, (state) => {
+        return {
+            ...state,
+            loading: false,
+            errors: null
+        };
+    }),
+    on(actions.updateOwnerError, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            errors: error
+        };
+    }),
 );
 
 export function ownerReducer(state: IOwnerState | undefined, action: Action) {
