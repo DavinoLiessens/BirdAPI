@@ -27,7 +27,6 @@ export class BirdComponent implements OnInit {
     this.birds$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe((birds: IBird[]) => {
-      console.log(birds);
       if (birds === null || birds === undefined) {
         const request: IGetBirdsRequest = {
           page: 1,
