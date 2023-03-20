@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Application\Features\Owner\Commands\**" />
-    <Content Remove="Application\Features\Owner\Commands\**" />
-    <EmbeddedResource Remove="Application\Features\Owner\Commands\**" />
-    <None Remove="Application\Features\Owner\Commands\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
