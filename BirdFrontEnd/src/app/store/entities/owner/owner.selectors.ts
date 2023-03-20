@@ -4,7 +4,7 @@ import { IOwnerState } from "./owner.interfaces";
 
 export const selectOwnerState = createSelector(
     selectFeature,
-    (state: IFeatureState) => state.breeder
+    (state: IFeatureState) => state.owner
 );
 
 export const selectLoadingAll = createSelector(

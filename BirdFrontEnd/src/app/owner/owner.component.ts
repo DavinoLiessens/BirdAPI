@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { OwnerService } from '../Services/owner.service';
-import { IOwner } from '../types/owner.types';
+import { takeUntil } from 'rxjs/operators';
+import { OwnerFacade } from '../store/entities/owner/owner.facade';
+import { IGetOwnersRequest, IOwner } from '../types/owner.types';
 import { IPagination } from '../types/pagination.types';
 
 @Component({
@@ -13,19 +14,35 @@ export class OwnerComponent implements OnInit {
 
   // Observables
   private destroyed$: Subject<boolean> = new Subject<boolean>();
-  public owners$: Observable<IOwner[]>;
-  public pagination$: Observable<IPagination>;
+  public owners$: Observable<IOwner[]> = this.ownerFacade.getOwners();
+  public pagination$: Observable<IPagination> = this.ownerFacade.getPagination();
 
   // local variables
   public owners: IOwner[];
 
-  constructor(private ownerService: OwnerService) { }
+  constructor(private ownerFacade: OwnerFacade) { }
 
   ngOnInit(): void {
-    
+    // get all owners
+    this.owners$.pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe((owners: IOwner[]) => {
+      console.log(owners);
+      if (owners === null || owners === undefined) {
+        const request: IGetOwnersRequest = {
+          page: 1,
+          pageSize: 10,
+        }
+        this.ownerFacade.getAllOwnersRequest(request);
+      }
+
+      if (owners !== null || owners !== undefined) {
+        this.owners = owners;
+      }
+    });
   }
 
-  public deleteOwner(id: number){
+  public deleteOwner(id: number) {
     console.log("Deleting owner with id: ", id);
   }
 }

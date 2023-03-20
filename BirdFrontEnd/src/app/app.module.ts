@@ -27,7 +27,6 @@ import { BirdUpdateComponent } from './bird/bird-update/bird-update.component';
 import { OwnerComponent } from './owner/owner.component';
 import { OwnerDetailComponent } from './owner/owner-detail/owner-detail.component';
 import { OwnerCreateComponent } from './owner/owner-create/owner-create.component';
-import { OwnerUpdateComponent } from './owner/owner-update/owner-update.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CoupleComponent } from './couple/couple.component';
 import { CoupleCreateComponent } from './couple/couple-create/couple-create.component';
@@ -51,7 +50,6 @@ import { BaseService } from './Services/base.service';
     OwnerComponent,
     OwnerDetailComponent,
     OwnerCreateComponent,
-    OwnerUpdateComponent,
     PageNotFoundComponent,
     CoupleComponent,
     CoupleCreateComponent,
