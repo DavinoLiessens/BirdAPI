@@ -14,53 +14,59 @@
         
                 <div class="form-group">
                     <label for="gender">Geslacht</label>
-                    <input pInputText type="text" class="form-control" formControlName="gender" id="gender" placeholder="">
+                    <p-dropdown [options]="genderOptions" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-dropdown>                
                 </div>
         
                 <div class="form-group">
                     <label for="birdType">Type</label>
-                    <input pInputText type="text" class="form-control" formControlName="birdType" id="birdType" placeholder="" >
+                    <p-dropdown [options]="typeOfBirdOptions" placeholder="Selecteer een type..." optionLabel="type" optionValue="value" formControlName="birdType"></p-dropdown>
                 </div>
 
-                <!-- TODO OTHERS -->
                 <div class="form-group">
                     <label for="birthDate">Jaartal</label>
-                    <input pInputText type="text" class="form-control" formControlName="birthDate" id="birthDate" placeholder="+324........">
+                    <p-calendar formControlName="birthDate" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Kleur</label>
-                    <input pInputText type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="+324........">
+                    <label for="color">Kleur</label>
+                    <p-dropdown [options]="groupedColors" formControlName="color" optionLabel="label" optionValue="value" [showClear]="true" [filter]="true" filterBy="label" placeholder="Selecteer een kleur..." [group]="true">
+                        <ng-template let-group pTemplate="group">
+                            <div class="p-d-flex p-ai-center">
+                                <img src="../../../assets/{{group.label}}.jpg" class="p-mr-2" style="width: 32px"/>
+                                <span>{{group.label}}</span>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>                
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Kotnummer</label>
-                    <input pInputText type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="+324........">
+                    <label for="cageNumber">Kotnummer</label>
+                    <p-inputNumber type="number" class="form-control" formControlName="cageNumber" id="cageNumber" [showButtons]="true" placeholder="1"></p-inputNumber>
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Kweker</label>
-                    <input pInputText type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="+324........">
+                    <label for="breederId">Kweker</label>
+                    <p-dropdown *ngIf="breeders$ | async" [options]="breeders" optionLabel="name" optionValue="value" formControlName="breederId" placeholder="Selecteer een kweker..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Eigenaar</label>
-                    <input pInputText type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="+324........">
+                    <label for="ownerId">Eigenaar</label>
+                    <p-dropdown *ngIf="owners$ | async" [options]="owners" optionLabel="name" optionValue="value" formControlName="ownerId" placeholder="Selecteer een eigenaar..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Omschrijving</label>
-                    <input pInputText type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="+324........">
+                    <label for="description">Omschrijving</label>
+                    <textarea pInputTextarea type="text" class="form-control" formControlName="description" id="description" autoResize="autoResize" [rows]="3" [cols]="30"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Dood</label>
-                    <input pInputText type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="+324........">
+                    <label for="isDead">Dood</label>
+                    <p-checkbox formControlName="isDead"></p-checkbox>
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Jong</label>
-                    <input pInputText type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="+324........">
+                    <label for="isChild">Jong</label>
+                    <p-checkbox formControlName="isChild"></p-checkbox>
                 </div>
         
                 <div class="form-footer">

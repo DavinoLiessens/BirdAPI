@@ -32,7 +32,7 @@ export class OwnerComponent implements OnInit {
         const request: IGetOwnersRequest = {
           page: 1,
           pageSize: 10,
-        }
+        };
         this.ownerFacade.getAllOwnersRequest(request);
       }
 

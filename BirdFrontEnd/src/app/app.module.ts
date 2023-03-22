@@ -11,12 +11,14 @@ import { TableModule } from 'primeng/table';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { PanelModule } from 'primeng/panel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OrganizationChartModule } from 'primeng/organizationchart';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastrModule } from 'ngx-toastr';
+import { CalendarModule } from 'primeng/calendar';
 
 // *** COMPONENTS ***
 import { AppComponent } from './app.component';
@@ -75,11 +77,13 @@ import { BaseService } from './Services/base.service';
     VirtualScrollerModule,
     ReactiveFormsModule,
     InputTextModule,
+    InputNumberModule,
     DropdownModule, 
     PanelModule,
     InputTextareaModule,
     OrganizationChartModule,
-    CheckboxModule
+    CheckboxModule,
+    CalendarModule
   ],
   providers: [BaseService],
   bootstrap: [AppComponent]
