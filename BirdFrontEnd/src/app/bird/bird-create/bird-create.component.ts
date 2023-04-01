@@ -54,12 +54,6 @@ export class BirdCreateComponent implements OnInit {
     // get breeders and owners
     this.getAllBreeders();
     this.getAllOwners();
-
-    this.birdForm.valueChanges.pipe(
-      takeUntil(this.destroyed$),
-    ).subscribe((value) => {
-      console.log(value);
-    })
   }
 
   public onSubmit() {
@@ -76,8 +70,8 @@ export class BirdCreateComponent implements OnInit {
       isDead: this.birdForm.get('isDead').value,
       isChild: this.birdForm.get('isChild').value,
     };
-    console.log(request);
-    //this.birdFacade.createBird(request);
+
+    this.birdFacade.createBird(request);
   }
 
   public goBack() {
@@ -94,11 +88,11 @@ export class BirdCreateComponent implements OnInit {
       cageNumber: ['', Validators.required],
       breederId: ['', Validators.required],
       ownerId: ['', Validators.required],
-      description: ['', Validators.required],
-      isDead: ['', Validators.required],
-      isChild: ['', Validators.required],
-      isFather: ['', Validators.required],
-      isMother: ['', Validators.required]
+      description: [''],
+      isDead: [false, Validators.required],
+      isChild: [false, Validators.required],
+      isFather: [false, Validators.required],
+      isMother: [false, Validators.required]
     });
   }
 

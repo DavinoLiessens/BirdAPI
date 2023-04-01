@@ -33,7 +33,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
 
         }
 
-        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, int cageNumber, string description, bool dead = false, bool isChild = false)
+        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, int cageNumber, string description, bool isDead = false, bool isChild = false)
         {
             RingNumber = ringNumber;
             Gender = gender;
@@ -42,7 +42,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             Color = color;
             CageNumber = cageNumber;
             Description = description;
-            IsDead = dead;
+            IsDead = isDead;
             IsChild = isChild;
         }
 

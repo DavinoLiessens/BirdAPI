@@ -15,6 +15,7 @@ namespace BirdAPI.Domain.Enums
         GOUDVINK,
         KANARIE,
         ROODMUS,
-        SIJZEN
+        SIJZEN,
+        MEXICAANSE_ROODMUS
     }
 }

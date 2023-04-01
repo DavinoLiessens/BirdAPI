@@ -7,66 +7,76 @@
             <form [formGroup]="birdForm">
                 <h2>Vogel aanmaken</h2>
         
-                <div class="form-group">
-                    <label for="ringNumber">Ringnummer</label>
-                    <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber" placeholder="XX123456789XX">
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="ringNumber">Ringnummer</label>
+                        <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber" placeholder="XX123456789XX">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="gender">Geslacht</label>
+                        <p-dropdown [options]="genderOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-dropdown>                
+                    </div>
                 </div>
         
-                <div class="form-group">
-                    <label for="gender">Geslacht</label>
-                    <p-dropdown [options]="genderOptions" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-dropdown>                
-                </div>
-        
-                <div class="form-group">
-                    <label for="birdType">Type</label>
-                    <p-dropdown [options]="typeOfBirdOptions" placeholder="Selecteer een type..." optionLabel="type" optionValue="value" formControlName="birdType"></p-dropdown>
-                </div>
-
-                <div class="form-group">
-                    <label for="birthDate">Jaartal</label>
-                    <p-calendar formControlName="birthDate" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="birdType">Type</label>
+                        <p-dropdown [options]="typeOfBirdOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een type..." optionLabel="type" optionValue="value" formControlName="birdType"></p-dropdown>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="birthDate">Jaartal</label>
+                        <p-calendar formControlName="birthDate" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="color">Kleur</label>
-                    <p-dropdown [options]="groupedColors" formControlName="color" optionLabel="label" optionValue="value" [showClear]="true" [filter]="true" filterBy="label" placeholder="Selecteer een kleur..." [group]="true">
-                        <ng-template let-group pTemplate="group">
-                            <div class="p-d-flex p-ai-center">
-                                <img src="../../../assets/{{group.label}}.jpg" class="p-mr-2" style="width: 32px"/>
-                                <span>{{group.label}}</span>
-                            </div>
-                        </ng-template>
-                    </p-dropdown>                
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="color">Kleur</label>
+                        <p-dropdown [options]="groupedColors" autoWidth="false" [style]="{'width':'100%'}" formControlName="color" optionLabel="label" optionValue="value" [showClear]="true" [filter]="true" filterBy="label" placeholder="Selecteer een kleur..." [group]="true">
+                            <ng-template let-group pTemplate="group">
+                                <div class="p-d-flex p-ai-center">
+                                    <img src="../../../assets/{{group.label}}.jpg" class="p-mr-2" style="width: 32px"/>
+                                    <span>{{group.label}}</span>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>                
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="cageNumber">Kotnummer</label>
+                        <p-inputNumber type="number" [style]="{'width':'100%'}" class="form-control" formControlName="cageNumber" id="cageNumber" [showButtons]="true" placeholder="1"></p-inputNumber>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="cageNumber">Kotnummer</label>
-                    <p-inputNumber type="number" class="form-control" formControlName="cageNumber" id="cageNumber" [showButtons]="true" placeholder="1"></p-inputNumber>
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="breederId">Kweker</label>
+                        <p-dropdown *ngIf="breeders$ | async" autoWidth="false" [style]="{'width':'100%'}" [options]="breeders" optionLabel="name" optionValue="value" formControlName="breederId" placeholder="Selecteer een kweker..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="ownerId">Eigenaar</label>
+                        <p-dropdown *ngIf="owners$ | async" autoWidth="false" [style]="{'width':'100%'}" [options]="owners" optionLabel="name" optionValue="value" formControlName="ownerId" placeholder="Selecteer een eigenaar..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="breederId">Kweker</label>
-                    <p-dropdown *ngIf="breeders$ | async" [options]="breeders" optionLabel="name" optionValue="value" formControlName="breederId" placeholder="Selecteer een kweker..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
-                </div>
-
-                <div class="form-group">
-                    <label for="ownerId">Eigenaar</label>
-                    <p-dropdown *ngIf="owners$ | async" [options]="owners" optionLabel="name" optionValue="value" formControlName="ownerId" placeholder="Selecteer een eigenaar..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Omschrijving</label>
-                    <textarea pInputTextarea type="text" class="form-control" formControlName="description" id="description" autoResize="autoResize" [rows]="3" [cols]="30"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="isDead">Dood</label>
-                    <p-checkbox formControlName="isDead"></p-checkbox>
-                </div>
-
-                <div class="form-group">
-                    <label for="isChild">Jong</label>
-                    <p-checkbox formControlName="isChild"></p-checkbox>
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="description">Omschrijving</label>
+                        <textarea pInputTextarea type="text" class="form-control" formControlName="description" id="description" autoResize="autoResize" [rows]="3" [cols]="50"></textarea>
+                    </div>
+                    <div class="form-group p-jc-center">
+                        <div class="p-d-flex p-mt-2">
+                            <label class="p-mr-2" [style]="{'width':'50px'}" for="isDead">Dood</label>
+                            <p-checkbox formControlName="isDead" binary="true"></p-checkbox>
+                        </div>
+                        <div class="p-d-flex p-mt-2">
+                            <label class="p-mr-2" [style]="{'width':'50px'}" for="isChild">Jong</label>
+                            <p-checkbox formControlName="isChild" binary="true"></p-checkbox>    
+                        </div>
+                    </div>
                 </div>
         
                 <div class="form-footer">
