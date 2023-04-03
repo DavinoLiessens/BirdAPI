@@ -1,77 +1,89 @@
-<!--<p-panel header="Nieuwe Vogel Aanmaken: " style="float:left; width: 350px; margin-left: 2%; margin-top: 2%;">
-        <div><p class="p-text">Ringnummer: </p><input pInputText type="text" class="inputfield" placeholder="Ringnummer..." [(ngModel)]="Ringnummer" /></div><br><br><br>
-        <div><p class="p-text" style="margin-left: 29px;">Geslacht: </p>
-            <select [(ngModel)]="Geslacht" required class="inputfield" style="width: 195px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                <option *ngFor="let item of GeslachtOptions">{{item}}</option>
-            </select>
-        </div><br><br><br>
-        <div><p class="p-text" style="margin-left: 50px;">Soort: </p>
-            <select [(ngModel)]="Soort" required class="inputfield" style="width: 195px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                <option *ngFor="let item of typeOfBirdOptions">{{item}}</option>
-            </select>
-        </div><br><br><br>
-        <div><p class="p-text" style="margin-left: 50px;">Kleur: </p>
-            <!--<select [(ngModel)]="Kleur" required class="inputfield" style="width: 195px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                <option *ngFor="let item of colorOptions">{{item}}</option>
-            </select> -->
-            <!--<p-dropdown required [options]="groupedColors" [(ngModel)]="Kleur" placeholder="Selecteer een kleur" [group]="true" class="colorDropdown">
-                <ng-template let-group pTemplate="group">
-                    <div class="p-d-flex p-ai-center">
-                        <img src="../../../assets/{{group.label}}.jpg" style="width: 30px; height: 25px; margin-right: 15px;"/>
-                        <span style="font-size: 20px;">{{group.label}}</span>
+<div class="page">
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Bird management</h1>
+        </div>
+        <div class="page-body">
+            <form [formGroup]="birdForm">
+                <h2>Vogel aanmaken</h2>
+        
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="ringNumber">Ringnummer</label>
+                        <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber" placeholder="XX123456789XX">
                     </div>
-                </ng-template>
-            </p-dropdown>
-        </div><br>
-        <div><p class="p-text" style="margin-left: 43px;">Jaartal: </p><input pInputText type="number" class="inputfield" placeholder="Jaartal..." [(ngModel)]="Jaartal" /></div><br><br><br>
-        <div><p class="p-text" style="margin-left: 6px;">Kotnummer: </p><input pInputText type="number" class="inputfield" placeholder="Kotnummer..." [(ngModel)]="Kotnummer" /></div><br><br><br>
-        <div><p class="p-text" style="margin-left: 37px;">Kweker: </p>
-        <select [(ngModel)]="EigenaarID" required class="inputfield" size="1" style="width: 195px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                <option  *ngFor="let item of ownerOptions" [ngValue]="item.id">{{item.voornaam}} {{item.achternaam}}</option>
-            </select><br><br><br>
-        <div><p class="p-text" style="margin-left: 28px;">Eigenaar: </p><input pInputText type="text" class="inputfield" placeholder="Eigenaar..." [(ngModel)]="Kweker" /></div><br><br><br><br>
-        <div><p class="p-text" style="margin-left: -5px; margin-top: -1px;">Omschrijving: </p><textarea pInputTextarea [(ngModel)]="Omschrijving" class="textarea-content" [rows]="1" [cols]="30" autoResize="autoResize" placeholder="Omschrijving..."></textarea></div><br><br><br>
-    </div>
-        <button pButton type="button" label="Opslaan" icon="pi pi-check" (click)="CreateBird()" class="inputfield" style="margin-top: -30px"></button>    
-</p-panel>-->
-<body style="background-image: url('../../../assets/background.png'); background-repeat: no-repeat; background-size: cover; height: 656px;">
-<!-- <p-panel header="Nieuwe Vogel Aanmaken: " style="width: 650px; height: 500px; margin-left: 2%; margin-top: 2%;">
-    <div style="float: left;">
-        <div><p class="p-text">Ringnummer: </p><input pInputText type="text" class="inputfield" placeholder="Ringnummer..." [(ngModel)]="Ringnummer" /></div><br><br><br>
-        <div><p class="p-text" style="margin-left: 29px;">Geslacht: </p>
-        <select [(ngModel)]="Geslacht" required class="inputfield" style="width: 195px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-            <option *ngFor="let item of GeslachtOptions">{{item}}</option>
-        </select>
-        </div><br><br><br>
-        <div><p class="p-text" style="margin-left: 50px;">Soort: </p>
-            <select [(ngModel)]="Soort" required class="inputfield" style="width: 195px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                <option *ngFor="let item of typeOfBirdOptions">{{item}}</option>
-            </select>
-        </div><br><br><br>
-        <div><p class="p-text" style="margin-left: 50px;">Kleur: </p>
-            <p-dropdown required [options]="groupedColors" [(ngModel)]="Kleur" placeholder="Selecteer een kleur" [group]="true" class="colorDropdown">
-                <ng-template let-group pTemplate="group">
-                    <div class="p-d-flex p-ai-center">
-                        <img src="../../../assets/{{group.label}}.jpg" style="width: 30px; height: 25px; margin-right: 15px;"/>
-                        <span style="font-size: 20px;">{{group.label}}</span>
+            
+                    <div class="form-group">
+                        <label for="gender">Geslacht</label>
+                        <p-dropdown [options]="genderOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-dropdown>                
                     </div>
-                </ng-template>
-            </p-dropdown>
-        </div><br>
-        <div><p class="p-text" style="margin-left: 43px;">Jaartal: </p><input pInputText type="number" class="inputfield" placeholder="Jaartal..." [(ngModel)]="Jaartal" /></div><br><br><br>
+                </div>
+        
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="birdType">Type</label>
+                        <p-dropdown [options]="typeOfBirdOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een type..." optionLabel="type" optionValue="value" formControlName="birdType"></p-dropdown>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="birthDate">Jaartal</label>
+                        <p-calendar formControlName="birthDate" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+                    </div>
+                </div>
+
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="color">Kleur</label>
+                        <p-dropdown [options]="groupedColors" autoWidth="false" [style]="{'width':'100%'}" formControlName="color" optionLabel="label" optionValue="value" [showClear]="true" [filter]="true" filterBy="label" placeholder="Selecteer een kleur..." [group]="true">
+                            <ng-template let-group pTemplate="group">
+                                <div class="p-d-flex p-ai-center">
+                                    <img src="../../../assets/{{group.label}}.jpg" class="p-mr-2" style="width: 32px"/>
+                                    <span>{{group.label}}</span>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>                
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="cageNumber">Kotnummer</label>
+                        <p-inputNumber type="number" [style]="{'width':'100%'}" class="form-control" formControlName="cageNumber" id="cageNumber" [showButtons]="true" placeholder="1"></p-inputNumber>
+                    </div>
+                </div>
+
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="breederId">Kweker</label>
+                        <p-dropdown *ngIf="breeders$ | async" autoWidth="false" [style]="{'width':'100%'}" [options]="breeders" optionLabel="name" optionValue="value" formControlName="breederId" placeholder="Selecteer een kweker..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="ownerId">Eigenaar</label>
+                        <p-dropdown *ngIf="owners$ | async" autoWidth="false" [style]="{'width':'100%'}" [options]="owners" optionLabel="name" optionValue="value" formControlName="ownerId" placeholder="Selecteer een eigenaar..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="description">Omschrijving</label>
+                        <textarea pInputTextarea type="text" class="form-control" formControlName="description" id="description" autoResize="autoResize" [rows]="3" [cols]="50"></textarea>
+                    </div>
+                    <div class="form-group p-jc-center">
+                        <div class="p-d-flex p-mt-2">
+                            <label class="p-mr-2" [style]="{'width':'50px'}" for="isDead">Dood</label>
+                            <p-checkbox formControlName="isDead" binary="true"></p-checkbox>
+                        </div>
+                        <div class="p-d-flex p-mt-2">
+                            <label class="p-mr-2" [style]="{'width':'50px'}" for="isChild">Jong</label>
+                            <p-checkbox formControlName="isChild" binary="true"></p-checkbox>    
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="form-footer">
+                    <button pButton type="button" class="p-button-outlined" (click)="goBack()" label="Terug"></button>
+                    <button pButton type="submit" (click)="onSubmit()" [disabled]="!birdForm.valid" label="Opslaan"></button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div style="float: right;">
-        <div><p class="p-text" style="margin-left: 6px;">Kotnummer: </p><input pInputText type="number" class="inputfield" placeholder="Kotnummer..." [(ngModel)]="Kotnummer" /></div><br><br><br>
-        <div><p class="p-text" style="margin-left: 37px;">Kweker: </p>
-        <select [(ngModel)]="EigenaarID" required class="inputfield" size="1" style="width: 195px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                <option  *ngFor="let item of ownerOptions" [ngValue]="item.id">{{item.voornaam}} {{item.achternaam}}</option>
-        </select></div><br><br><br>
-        <div><p class="p-text" style="margin-left: 28px;">Eigenaar: </p><input pInputText type="text" class="inputfield" placeholder="Eigenaar..." [(ngModel)]="Kweker" /></div><br><br><br><br>
-        <div><p class="p-text" style="margin-left: -5px; margin-top: -1px;">Omschrijving: </p><textarea pInputTextarea [(ngModel)]="Omschrijving" class="textarea-content" [rows]="1" [cols]="30" autoResize="autoResize" placeholder="Omschrijving..."></textarea></div>        
-        <div><p class="p-text" style="margin-left: 50px;">Jong: </p><br><p-checkbox [(ngModel)]="IsJong" [binary]="true"></p-checkbox></div><br>
-        <div><p class="p-text" style="margin-left: 50px;">Dood: </p><br><p-checkbox [(ngModel)]="IsDood" [binary]="true"></p-checkbox></div>
-    </div>   
-    <button pButton type="button" label="Terug" icon="pi pi-undo" style="margin-top: 320px; margin-left: -320px;" [routerLink]="['/birds']"></button> 
-    <button pButton type="button" label="Opslaan" icon="pi pi-check" class="button-save" (click)="CreateBird()"></button>    
-</p-panel>
-</body> -->
+</div>

@@ -3,6 +3,7 @@ using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BirdAPI.Application.Features.Bird.Commands
@@ -25,8 +26,15 @@ namespace BirdAPI.Application.Features.Bird.Commands
 
         public async Task<BaseResponse<BirdResponseModel>> Handle(AddBirdCommand request, CancellationToken cancellationToken)
         {
+            // Validation
+            if (await _context.Birds.AnyAsync(b => b.RingNumber == request.Model.RingNumber))
+            {
+                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError($"Bird with ringnumber '{request.Model.RingNumber}' already exists");
+            }
+
             // create new bird
-            var bird = new Domain.AggregatesModel.BirdAggregate.Bird(
+            var newBird = new Domain.AggregatesModel.BirdAggregate.Bird(
                                                         request.Model.RingNumber,
                                                         request.Model.Gender,
                                                         request.Model.BirdType,
@@ -34,12 +42,12 @@ namespace BirdAPI.Application.Features.Bird.Commands
                                                         request.Model.Color,
                                                         request.Model.CageNumber,
                                                         request.Model.Description,
-                                                        request.Model.Dead,
+                                                        request.Model.IsDead,
                                                         request.Model.IsChild
                                                         );
 
             // get breeder from db
-            var breeder = "";
+            var breeder = await _context.Breeders.FirstOrDefaultAsync(b => b.Id == request.Model.BreederId);
 
             if (breeder == null)
             {
@@ -48,7 +56,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             }
 
             // get owner from db
-            var owner = "";
+            var owner = await _context.Owners.FirstOrDefaultAsync(o => o.Id == request.Model.OwnerId);
 
             if (owner == null)
             {
@@ -56,11 +64,15 @@ namespace BirdAPI.Application.Features.Bird.Commands
                     .AddError($"No owner found with id '{request.Model.OwnerId}'");
             }
 
-            //bird.BelongsToBreeder(breeder);
-            //bird.BelongsToOwner(owner);
+            newBird.BelongsToBreeder(breeder);
+            newBird.BelongsToOwner(owner);
+
+            // add to db
+            await _context.Birds.AddAsync(newBird);
+            await _context.SaveChangesAsync();
 
             // create just the bird
-            var result = _mapper.Map<BirdResponseModel>(bird);
+            var result = _mapper.Map<BirdResponseModel>(newBird);
 
             return new BaseResponse<BirdResponseModel>(result);
         }

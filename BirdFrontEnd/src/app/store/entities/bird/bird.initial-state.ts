@@ -1,7 +1,9 @@
 import { IBirdState } from './bird.interfaces';
 
 export const initialState: IBirdState = {
-    birds: {} as any,
+    birds: null,
+    birdDetail: null,
+    pagination: null,
     isFormValid: true,
     loadingAll: false,
     loadingDetail: false,

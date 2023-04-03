@@ -16,7 +16,8 @@ const reducer = createReducer(
     on(actions.getBirdsSuccess, (state, { birds }) => {
         return {
             ...state,
-            birds: birds,
+            birds: birds.results,
+            pagination: birds.pagination,
             loadingAll: false,
             errors: null
         };
@@ -27,7 +28,53 @@ const reducer = createReducer(
             loadingAll: false,
             errors: error
         };
-    }),);
+    }),
+
+    // GET Bird
+    on(actions.getBird, (state) => {
+        return {
+            ...state,
+            loadingDetail: true,
+        };
+    }),
+    on(actions.getBirdSuccess, (state, { birdDetail }) => {
+        return {
+            ...state,
+            birdDetail: birdDetail,
+            loadingDetail: false,
+            errors: null
+        };
+    }),
+    on(actions.getBirdError, (state, { error }) => {
+        return {
+            ...state,
+            loadingDetail: false,
+            errors: error
+        };
+    }),
+
+    // UPDATE Bird
+    on(actions.updateBird, (state) => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
+    on(actions.updateBirdSuccess, (state) => {
+        return {
+            ...state,
+            loading: false,
+            errors: null
+        };
+    }),
+    on(actions.updateBirdError, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            errors: error
+        };
+    }),
+);
 
 export function birdReducer(state: IBirdState | undefined, action: Action) {
     return reducer(state, action);

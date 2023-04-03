@@ -1,111 +1,47 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService, Bird } from '../Services/api.service';
-import { BirdService } from '../Services/bird.service';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { BirdFacade } from '../store/entities/bird/bird.facade';
+import { IBird, IGetBirdsRequest } from '../types/bird.types';
+import { IPagination } from '../types/pagination.types';
 
 @Component({
-  selector: 'app-bird',
+  selector: 'c-bird-overview',
   templateUrl: './bird.component.html',
-  styleUrls: ['./bird.component.css']
+  styleUrls: ['./bird.component.scss']
 })
 export class BirdComponent implements OnInit {
 
-    birds: Bird[];
-    items: number[];
-    sortItems: string[];
+  // Observables
+  private destroyed$: Subject<boolean> = new Subject<boolean>();
+  public birds$: Observable<IBird[]> = this.birdFacade.getBirds();
+  public pagination$: Observable<IPagination> = this.birdFacade.getPagination();
 
-    constructor(private birdService: BirdService, private apiService: ApiService) { 
-      this.items = [5,10,15,20,25,50,100];
-      this.sortItems = ["Alles", "Kweker", "Ringnummer", "Kotnummer", "Soort"];
-    }
+  // local variables
+  public birds: IBird[];
 
-    ngOnInit() {
-      this.GetAllBirds();    
-    }
+  constructor(private birdFacade: BirdFacade) { }
 
-
-    GetAllBirds(){
-      try{
-        this.birdService.GetAllBirds().subscribe((res) => {
-          this.birds = res;
-        });
-        
+  ngOnInit() {
+    // get all birds
+    this.birds$.pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe((birds: IBird[]) => {
+      if (birds === null || birds === undefined) {
+        const request: IGetBirdsRequest = {
+          page: 1,
+          pageSize: 10,
+        }
+        this.birdFacade.getAllBirdsRequest(request);
       }
-      catch{
-        alert("Er was een probleem bij het ophalen van alle vogels!");
-      }
-    }
 
-    DeleteBird(id: number){
-      if(confirm("Ben je zeker dat je dit item wilt verwijderen?")){
-        this.birdService.DeleteBird(id).subscribe(result => {
-          this.GetAllBirds();
-        });
+      if (birds !== null || birds === undefined) {
+        this.birds = birds;
       }
-      else{
-        alert("Het item is niet verwijderd!");
-      }
-    }
+    });
+  }
 
-    get SearchName() {
-      return this.apiService.searchnameBird;
-    }
-  
-    set SearchName(value: string){
-      this.apiService.searchnameBird = value;
-      this.apiService.GetAllBirds().subscribe(result => {
-        this.birds = result;
-      },
-      error => console.log(error));
-    }
-
-    get NoBirds() {
-      return this.apiService.noBirds;
-    }
-  
-    set NoBirds(value: number){
-      this.apiService.noBirds = value;
-      this.apiService.GetAllBirds().subscribe(result => {
-        this.birds = result;
-      },
-      error => {
-        console.log(error);
-      })
-    }
-
-    get SortItemBirds() {
-      return this.apiService.sortItemBirds;
-    }
-  
-    set SortItemBirds(value: string){
-      if(value == "Alles"){
-        this.apiService.sortItemBirds = '';
-      }
-      else if(value == "Kweker"){
-        this.apiService.sortItemBirds = 'eigenaar';
-      }
-      else{
-        this.apiService.sortItemBirds = value.toLocaleLowerCase();
-      }
-      
-      console.log(this.apiService.sortItemBirds.toLocaleLowerCase());
-      this.apiService.GetAllBirds().subscribe(result => {
-        this.birds = result;
-      },
-      error => {
-        console.log(error);
-      });
-    }
-
-    ClearFilters(){
-      this.apiService.searchnameBird = '';
-      this.apiService.sortItemBirds = 'Alles';
-      this.apiService.kotNumber = null;
-      this.apiService.ringNumber = null;
-      this.apiService.noBirds = 10;
-      
-      this.apiService.GetAllBirds().subscribe(result => {
-        this.birds = result;
-      }, error =>
-      console.log("Er liep iets mis!", error));
-    }
+  public DeleteBird(id: number): void {
+    console.log("deleting bird with id", id);
+  }
 }

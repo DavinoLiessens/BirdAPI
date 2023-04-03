@@ -26,10 +26,23 @@ namespace BirdAPI.Controllers
             return new JsonContentResult<PagedResponse<BirdResponseModel>>(await _mediator.Send(new GetBirdsQuery(page, pageSize)));
         }
 
+        [HttpGet("{birdId}")]
+        public async Task<IActionResult> GetBird(int birdId)
+        {
+            return new JsonContentResult<BirdResponseModel>(await _mediator.Send(new GetBirdQuery(birdId)));
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddBird([FromBody] BirdInputModel model)
         {
             var command = new AddBirdCommand(model);
+            return new JsonContentResult<BirdResponseModel>(await _mediator.Send(command));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBird(int id, [FromBody] UpdateBirdInputModel model)
+        {
+            var command = new UpdateBirdCommand(id, model);
             return new JsonContentResult<BirdResponseModel>(await _mediator.Send(command));
         }
 

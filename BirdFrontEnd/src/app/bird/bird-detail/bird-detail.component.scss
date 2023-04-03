@@ -33,3 +33,15 @@
         padding-bottom: 16px;
     }
 }
+
+.form-group {
+    width: calc(50% - 8px);
+}
+
+.form-group-wrapper {
+    display: flex;
+
+    .form-group:last-child {
+        margin-left: 16px;
+    }
+}

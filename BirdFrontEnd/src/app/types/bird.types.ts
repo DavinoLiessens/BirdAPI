@@ -1,12 +1,14 @@
 import { IBreeder } from "./breeder.types";
 import { IOwner } from "./owner.types";
+import { PagedResponse } from "./paged-response.types";
+import { IPaginationRequest, ISearchRequest } from "./pagination.types";
 
 export interface IBird {
     id: number;
     ringNumber: string;
     gender: string;
     birdType: string;
-    birthDate: number;
+    birthDate: Date;
     color: string;
     cageNumber: number;
     breeder: IBreeder;
@@ -35,10 +37,14 @@ export interface ICreateBirdRequest {
 }
 
 export interface IUpdateBirdRequest {
+    id: number;
     ringNumber: string;
     cageNumber: number;
-    ownerId: number;
+    ownerId: string;
     description: string;
     isDead: boolean;
     isChild: boolean;
 }
+
+export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest {}
+export type IBirdsResponse = PagedResponse<IBird>;
