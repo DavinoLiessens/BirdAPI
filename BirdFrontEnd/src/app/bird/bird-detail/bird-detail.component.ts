@@ -2,12 +2,13 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
 import { birdReducer } from 'src/app/store/entities/bird/bird.reducer';
 import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
-import { IBird, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
 import { IOwnerDropdownOption } from 'src/app/types/dropdown.types';
 import { IGetOwnersRequest, IOwner } from 'src/app/types/owner.types';
 
@@ -35,7 +36,8 @@ export class BirdDetailComponent implements OnInit {
     private birdFacade: BirdFacade,
     private ownerFacade: OwnerFacade,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -57,6 +59,10 @@ export class BirdDetailComponent implements OnInit {
 
     // get breeders and owners
     this.getAllOwners();
+
+        // handle success and errors
+        this.handleSuccesses();
+        this.handleErrors();
   }
 
   public onSubmit() {
@@ -120,5 +126,31 @@ export class BirdDetailComponent implements OnInit {
       }
     });
   }
+  private handleSuccesses(): void {
+    this.birdFacade.onUpdateBirdSuccess().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.success('Vogel gegevens aangepast!', 'Gelukt', {
+        timeOut: 6000,
+      });
 
+      const request: IGetBirdsRequest = {
+        page: 1,
+        pageSize: 10,
+      }
+      this.birdFacade.getAllBirdsRequest(request);
+
+      this.goBack();
+    });
+  }
+
+  private handleErrors(): void {
+    this.birdFacade.onUpdateBirdError().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.error('Oeps, er liep iets mis tijdens het aanpassen van deze vogel!', 'Error', {
+        timeOut: 6000,
+      });
+    });
+  }
 }
