@@ -20,22 +20,20 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ToastrModule } from 'ngx-toastr';
 import { CalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 // *** COMPONENTS ***
 import { AppComponent } from './app.component';
-import { BirdComponent } from './bird/bird.component';
-import { BirdDetailComponent } from './bird/bird-detail/bird-detail.component';
-import { BirdCreateComponent } from './bird/bird-create/bird-create.component';
-import { OwnerComponent } from './owner/owner.component';
-import { OwnerDetailComponent } from './owner/owner-detail/owner-detail.component';
-import { OwnerCreateComponent } from './owner/owner-create/owner-create.component';
+import { BirdComponent, BirdDetailComponent, BirdCreateComponent } from './bird/index';
+import { OwnerComponent, OwnerDetailComponent, OwnerCreateComponent } from './owner/index';
+import { BreederComponent, BreederDetailComponent, BreederCreateComponent} from './breeder/index';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoaderComponent } from './ui/components/index';
+
+// TODO replace with index file
 import { CoupleComponent } from './couple/couple.component';
 import { CoupleCreateComponent } from './couple/couple-create/couple-create.component';
 import { CoupleDetailComponent } from './couple/couple-detail/couple-detail.component';
-import { BreederCreateComponent } from './breeder/breeder-create/breeder-create.component';
-import { BreederDetailComponent } from './breeder/breeder-detail/breeder-detail.component';
-import { BreederComponent } from './breeder/breeder.component';
 
 // *** STORE CONFIG ***
 import { AppStoreModule } from './store/store.module';
@@ -57,7 +55,8 @@ import { BaseService } from './Services/base.service';
     CoupleDetailComponent,
     BreederComponent,
     BreederCreateComponent,
-    BreederDetailComponent
+    BreederDetailComponent,
+    LoaderComponent
   ],
   imports: [
     AppStoreModule,
@@ -85,7 +84,8 @@ import { BaseService } from './Services/base.service';
     OrganizationChartModule,
     CheckboxModule,
     CalendarModule,
-    InputMaskModule
+    InputMaskModule,
+    ProgressSpinnerModule
   ],
   providers: [BaseService],
   bootstrap: [AppComponent]
