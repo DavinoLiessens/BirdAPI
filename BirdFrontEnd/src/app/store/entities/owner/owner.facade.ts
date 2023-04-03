@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { ofType } from "@ngrx/effects";
+import { ActionsSubject, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { ICreateOwnerRequest, IGetOwnersRequest, IOwner, IUpdateOwnerRequest } from "src/app/types/owner.types";
 import { IPagination } from "src/app/types/pagination.types";
@@ -11,6 +12,7 @@ import * as selectors from './owner.selectors';
 export class OwnerFacade {
     constructor(
         private store: Store<IAppState>,
+        private action$: ActionsSubject
     ) { }
     
     // Selectors
@@ -52,5 +54,19 @@ export class OwnerFacade {
     }
 
     // ActionSubjects
+    public onCreateOwnerSuccess(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.createOwnerSuccess.type));
+    }
 
+    public onCreateOwnerError(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.createOwnerError.type));
+    }
+
+    public onUpdateOwnerSuccess(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.updateOwnerSuccess.type));
+    }
+
+    public onUpdateOwnerError(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.updateOwnerError.type));
+    }
 }

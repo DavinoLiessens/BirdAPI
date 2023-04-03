@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
+import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { IBreeder, IBreedersResponse, ICreateBreederRequest, IGetBreedersRequest, IUpdateBreederRequest } from 'src/app/types/breeder.types';
 import { IPagination } from 'src/app/types/pagination.types';
@@ -11,6 +12,7 @@ import * as selectors from './breeder.selectors';
 export class BreederFacade {
     constructor(
         private store: Store<IAppState>,
+        private action$: ActionsSubject
     ) { }
 
     // Selectors
@@ -52,5 +54,19 @@ export class BreederFacade {
     }
 
     // ActionSubjects
-    
+    public onCreateBreederSuccess(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.createBreederSuccess.type));
+    }
+
+    public onCreateBreederError(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.createBreederError.type));
+    }
+
+    public onUpdateBreederSuccess(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.updateBreederSuccess.type));
+    }
+
+    public onUpdateBreederError(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.updateBreederError.type));
+    }
 }

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { SelectItemGroup } from 'primeng/api/selectitemgroup';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
 import { BreederFacade } from 'src/app/store/entities/breeder/breeder.facade';
 import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
-import { ICreateBirdRequest } from 'src/app/types/bird.types';
+import { ICreateBirdRequest, IGetBirdsRequest } from 'src/app/types/bird.types';
 import { IBreeder, IGetBreedersRequest } from 'src/app/types/breeder.types';
 import { IBirdTypeOption, IBreederDropdownOption, IGenderOption, IOwnerDropdownOption } from 'src/app/types/dropdown.types';
 import { IGetOwnersRequest, IOwner } from 'src/app/types/owner.types';
@@ -39,7 +40,8 @@ export class BirdCreateComponent implements OnInit {
     private breederFacade: BreederFacade,
     private ownerFacade: OwnerFacade,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastrService: ToastrService
   ) { }
 
   public ngOnInit(): void {
@@ -54,6 +56,10 @@ export class BirdCreateComponent implements OnInit {
     // get breeders and owners
     this.getAllBreeders();
     this.getAllOwners();
+
+    // handle success and errors
+    this.handleSuccesses();
+    this.handleErrors();
   }
 
   public onSubmit() {
@@ -244,6 +250,34 @@ export class BirdCreateComponent implements OnInit {
           this.owners.push({ name: fullname, value: owner.id });
         });
       }
+    });
+  }
+
+  private handleSuccesses(): void {
+    this.birdFacade.onCreateBirdSuccess().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.success('Vogel aangemaakt!', 'Gelukt', {
+        timeOut: 6000,
+      });
+
+      const request: IGetBirdsRequest = {
+        page: 1,
+        pageSize: 10,
+      }
+      this.birdFacade.getAllBirdsRequest(request);
+
+      this.goBack();
+    });
+  }
+
+  private handleErrors(): void {
+    this.birdFacade.onCreateBirdError().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.error('Oeps, er liep iets mis tijdens het aanmaken van deze vogel!', 'Error', {
+        timeOut: 6000,
+      });
     });
   }
 }
