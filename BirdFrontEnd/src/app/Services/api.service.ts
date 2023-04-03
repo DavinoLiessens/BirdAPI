@@ -49,7 +49,6 @@ export class ApiService {
   }
 
   DeleteBird(id: number) {
-    console.log(id);
     return this._http.delete<Bird>(`${this.baseUrl}/birds/${id}`);
   }
 
@@ -78,7 +77,6 @@ export class ApiService {
   }
 
   DeleteOwner(id: number) {
-    console.log(id);
     return this._http.delete<Owner>(`${this.baseUrl}/owners/${id}`);
   }  
 

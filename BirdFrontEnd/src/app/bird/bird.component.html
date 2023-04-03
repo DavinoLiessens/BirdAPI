@@ -1,37 +1,21 @@
 <div class="c-bird-overview">
     <p-table #dt1 [value]="birds" dataKey="id"
         [rows]="25" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
-        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['id','owner','sex','ringnumber', 'typeOfBird', 'age', 'cagenumber']">
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">
-                <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="ClearFilters()"></button>  
                 <span class="p-input-icon-left" style="margin-left: 20px;">
                     <i class="pi pi-search"></i>
-                    <!-- <input type="text" pInputText placeholder="Zoek Kweker" [(ngModel)]="SearchName" /> -->
+                    <input type="text" pInputText placeholder="Zoek Kweker" />
                 </span>   
                 <span class="p-input-icon-left" style="margin-left: 20px;">
                     <i class="pi pi-search"></i>
-                    <!-- <input type="text" pInputText placeholder="Zoek Ringnummer" [(ngModel)]="RingNumber" /> -->
+                    <input type="text" pInputText placeholder="Zoek Ringnummer" />
                 </span> 
                 <span class="p-input-icon-left" style="margin-left: 20px;">
                     <i class="pi pi-search"></i>
-                    <!-- <input type="text" pInputText placeholder="Zoek Kotnummer" [(ngModel)]="KotNumber" /> -->
-                </span>      
-                
-                <div class="select-birds">
-                    <label>Aantal Vogels: </label>
-                    <!-- <select [(ngModel)]="NoBirds" required class="inputfield" style="width: 80px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                        <option *ngFor="let item of items" value={{item}}>{{item}}</option>
-                    </select> -->
-                </div>
-        
-                <div class="select-sort">
-                    <label>Sorteer op: </label>
-                    <!-- <select [(ngModel)]="SortItemBirds" required class="inputfield" style="width: 120px; height: 35px; color: lightslategrey; border-color: lightgray; font-size: 15px;">
-                        <option *ngFor="let item of sortItems" value={{item}}>{{item}}</option>
-                    </select> -->
-                </div>
+                    <input type="text" pInputText placeholder="Zoek Kotnummer" />
+                </span>
             </div>
             
         </ng-template>
@@ -39,60 +23,52 @@
             <tr>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
+                        Ringnummer
+                    </div>
+                </th>                
+                <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
                         Kweker 
-                        <!--<p-columnFilter type="text" field="owner" matchMode="in" display="menu"></p-columnFilter>-->
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Eigenaar 
-                        <!--<p-columnFilter type="text" field="owner" matchMode="in" display="menu"></p-columnFilter>-->
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Geslacht
-                        <!-- <p-columnFilter type="text" field="sex" display="menu"></p-columnFilter>-->
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Ringnummer
-                        <!-- <p-columnFilter type="numeric" field="ringnumber" display="menu"></p-columnFilter>-->
-                    </div>
-                </th>                
-                <th>
-                    <div class="p-d-flex p-jc-between p-ai-center">
                         Soort
-                        <!-- <p-columnFilter type="text" field="typeOfBird" display="menu"></p-columnFilter> -->
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Kleur 
-                        <!--<p-columnFilter type="text" field="owner" matchMode="in" display="menu"></p-columnFilter>-->
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Jaartal
-                        <!-- <p-columnFilter type="numeric" field="age" display="menu"></p-columnFilter>-->
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Kotnummer
-                        <!-- <p-columnFilter type="numeric" field="cagenumber" display="menu"></p-columnFilter>-->
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Item Bewerken
+                        Edit
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Item Verwijderen
+                        X
                     </div>
                 </th>
             </tr>
@@ -100,31 +76,31 @@
         <ng-template pTemplate="body" let-bird>
             <tr>
                 <td>
-                    <p>{{bird.eigenaar.voornaam}} {{bird.eigenaar.achternaam}}</p>
+                    <p>{{ bird.ringNumber }}</p>
                 </td>
                 <td>
-                    <p>{{bird.kweker}}</p>
+                    <p>{{ bird.breeder.firstName }} {{ bird.breeder.lastName }}</p>
                 </td>
                 <td>
-                    <p>{{bird.geslacht}}</p>
+                    <p>{{ bird.owner.firstName }} {{ bird.owner.lastName }}</p>
                 </td>
                 <td>
-                    <p>{{bird.ringnummer}}</p>
+                    <p>{{ bird.gender }}</p>
                 </td>
                 <td>
-                    <p>{{bird.soort}}</p>
+                    <p>{{ bird.birdType }}</p>
                 </td>
                 <td>
-                    <p>{{bird.kleur}}</p>
+                    <p>{{ bird.color }}</p>
                 </td>
                 <td>
-                    <p>{{bird.jaartal}}</p>
+                    <p>{{ bird.birthDate | date: 'YYYY'}}</p>
                 </td>
                 <td>
-                    <p>{{bird.kotnummer}}</p>
+                    <p>{{ bird.cageNumber }}</p>
                 </td>
                 <td>
-                    <button pButton pRipple type="button" label="Bewerk" class="p-button-raised" style="margin-left: 10px;" routerLink="/birds/update/{{bird.id}}"></button>
+                    <button pButton pRipple type="button" label="Bewerk" class="p-button-raised" style="margin-left: 10px;" routerLink="/birds/detail/{{bird.id}}"></button>
                 </td>
                 <td>
                     <button pButton pRipple type="button" label="Verwijder" class="p-button-danger" style="margin-left: 5px;" (click)="DeleteBird(bird.id)"></button>

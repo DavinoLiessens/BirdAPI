@@ -1,1 +1,82 @@
-<p>bird-detail works!</p>
+<div class="page">
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Bird management</h1>
+        </div>
+        <div class="page-body">
+            <form *ngIf="birdForm" [formGroup]="birdForm">
+                <h2>Vogel aanmaken</h2>
+        
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="ringNumber">Ringnummer</label>
+                        <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber" placeholder="XX123456789XX">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="gender">Geslacht</label>
+                        <input pInputText type="text" class="form-control" formControlName="gender" id="gender">
+                    </div>
+                </div>
+        
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="birdType">Type</label>
+                        <input pInputText type="text" class="form-control" formControlName="birdType" id="birdType">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="birthDate">Jaartal</label>
+                        <input pInputText type="date" class="form-control" formControlName="birthDate" id="birthDate">
+                    </div>
+                </div>
+
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="color">Kleur</label>
+                        <input pInputText type="text" class="form-control" formControlName="color" id="color">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="cageNumber">Kotnummer</label>
+                        <p-inputNumber type="number" [style]="{'width':'100%'}" class="form-control" formControlName="cageNumber" id="cageNumber" [showButtons]="true" placeholder="1"></p-inputNumber>
+                    </div>
+                </div>
+
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="breeder">Kweker</label>
+                        <input pInputText type="text" class="form-control" formControlName="breeder" id="breeder">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="owner">Eigenaar</label>
+                        <p-dropdown *ngIf="owners$ | async" autoWidth="false" [style]="{'width':'100%'}" [options]="owners" optionLabel="name" optionValue="value" formControlName="owner" [placeholder]="ownerFullName" [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="form-group-wrapper">
+                    <div class="form-group">
+                        <label for="description">Omschrijving</label>
+                        <textarea pInputTextarea type="text" class="form-control" formControlName="description" id="description" autoResize="autoResize" [rows]="3" [cols]="50"></textarea>
+                    </div>
+                    <div class="form-group p-jc-center">
+                        <div class="p-d-flex p-mt-2">
+                            <label class="p-mr-2" [style]="{'width':'50px'}" for="isDead">Dood</label>
+                            <p-checkbox formControlName="isDead" binary="true"></p-checkbox>
+                        </div>
+                        <div class="p-d-flex p-mt-2">
+                            <label class="p-mr-2" [style]="{'width':'50px'}" for="isChild">Jong</label>
+                            <p-checkbox formControlName="isChild" binary="true"></p-checkbox>    
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="form-footer">
+                    <button pButton type="button" class="p-button-outlined" (click)="goBack()" label="Terug"></button>
+                    <button pButton type="submit" (click)="onSubmit()" [disabled]="!birdForm.valid" label="Opslaan"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

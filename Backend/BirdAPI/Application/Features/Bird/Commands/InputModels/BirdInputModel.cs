@@ -15,6 +15,6 @@ namespace BirdAPI.Application.Features.Bird.Commands.InputModels
         public string Description { get; set; }
         public BirdType BirdType { get; set; }
         public bool IsChild { get; set; }
-        public bool Dead { get; set; }
+        public bool IsDead { get; set; }
     }
 }

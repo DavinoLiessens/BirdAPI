@@ -33,7 +33,7 @@ export class BreederComponent implements OnInit {
                 const request: IGetBreedersRequest = {
                     page: 1,
                     pageSize: 10,
-                }
+                };
                 this.breederFacade.getAllBreedersRequest(request);
             }
 

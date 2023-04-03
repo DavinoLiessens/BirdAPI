@@ -29,7 +29,6 @@ export class BreederDetailComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        console.log(this.route.snapshot.params?.id);
         this.breederId = this.route.snapshot.params?.id;
 
         this.breeder$.pipe(
@@ -59,7 +58,6 @@ export class BreederDetailComponent implements OnInit {
             email: this.breederForm.get('email').value,
         };
 
-        console.log(request);
         this.breederFacade.updateBreederRequest(request);
     }
 

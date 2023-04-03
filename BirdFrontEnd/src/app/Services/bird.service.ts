@@ -3,38 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService, Bird, ChangeBird, CreateBird } from './api.service';
 import { Observable } from 'rxjs';
 import { BaseService } from './base.service';
+import { IBird, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from '../types/bird.types';
 @Injectable({
   providedIn: 'root'
 })
 export class BirdService {
 
-  public Birds: Bird[];
+  constructor(private baseService: BaseService) { }
 
-  constructor(private apiService: ApiService, private baseService: BaseService) { }
-
-  // GET
-  public getBirds(request: any): Observable<any> {
-      return this.baseService.get('/birds', request);
+  public getBirds(request: IGetBirdsRequest): Observable<IBirdsResponse> {
+      return this.baseService.get('/birds', request) as Observable<IBirdsResponse>;
   }
 
-  // OLD DATA
-  GetAllBirds(){
-      return this.apiService.GetAllBirds();
+  public getBird(birdId: number): Observable<IBird> {
+    return this.baseService.get(`/birds/${birdId}`) as Observable<IBird>;
   }
 
-  GetBird(id: number){
-    return this.apiService.GetBird(id);
+  public createBird(request: ICreateBirdRequest): Observable<null> {
+    return this.baseService.post(`/birds`, request) as Observable<null>;
   }
 
-  CreateBird(newBird: CreateBird){
-    return this.apiService.CreateBird(newBird);
-  }
-
-  UpdateBird(id: number, updateBird: ChangeBird){
-    return this.apiService.UpdateBird(id, updateBird);
-  }
-
-  DeleteBird(id: number){
-    return this.apiService.DeleteBird(id);
+  public updateBird(request: IUpdateBirdRequest): Observable<IBird> {
+    return this.baseService.put(`/birds/${request.id}`, request) as Observable<IBird>;
   }
 }
