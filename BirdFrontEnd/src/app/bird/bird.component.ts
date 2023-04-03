@@ -16,6 +16,7 @@ export class BirdComponent implements OnInit {
   private destroyed$: Subject<boolean> = new Subject<boolean>();
   public birds$: Observable<IBird[]> = this.birdFacade.getBirds();
   public pagination$: Observable<IPagination> = this.birdFacade.getPagination();
+  public loading$: Observable<boolean> = this.birdFacade.getLoading();
 
   // local variables
   public birds: IBird[];

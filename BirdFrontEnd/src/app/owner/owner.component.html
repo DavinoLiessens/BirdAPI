@@ -1,5 +1,5 @@
 <div class="c-owner-overview">
-    <p-table #dt1 [value]="owners" dataKey="id"
+    <p-table #dt1 [value]="owners" dataKey="id" *ngIf="!(loading$ | async)"
         [rows]="25" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
         <ng-template pTemplate="caption">
@@ -76,4 +76,7 @@
             </tr>
         </ng-template>
     </p-table>
+    <div class="p-mt-4">
+        <c-loader *ngIf="loading$ | async"></c-loader>
+    </div>
 </div>
