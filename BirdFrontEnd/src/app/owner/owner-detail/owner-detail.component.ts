@@ -16,6 +16,7 @@ export class OwnerDetailComponent implements OnInit {
   // Observables
   public owner$: Observable<IOwner> = this.ownerFacade.getOwner();
   private destroyed$: Subject<boolean> = new Subject<boolean>();
+  public loading$: Observable<boolean> = this.ownerFacade.getLoadingDetail();
 
   // local variables
   public ownerId: string;

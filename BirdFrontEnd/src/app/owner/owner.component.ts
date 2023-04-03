@@ -16,6 +16,7 @@ export class OwnerComponent implements OnInit {
   private destroyed$: Subject<boolean> = new Subject<boolean>();
   public owners$: Observable<IOwner[]> = this.ownerFacade.getOwners();
   public pagination$: Observable<IPagination> = this.ownerFacade.getPagination();
+  public loading$: Observable<boolean> = this.ownerFacade.getLoading();
 
   // local variables
   public owners: IOwner[];

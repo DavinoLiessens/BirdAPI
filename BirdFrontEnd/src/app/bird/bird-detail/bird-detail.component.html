@@ -4,7 +4,7 @@
             <h1>Bird management</h1>
         </div>
         <div class="page-body">
-            <form *ngIf="birdForm" [formGroup]="birdForm">
+            <form *ngIf="birdForm && !(loading$ | async)" [formGroup]="birdForm">
                 <h2>Vogel aanmaken</h2>
         
                 <div class="form-group-wrapper">
@@ -77,6 +77,9 @@
                     <button pButton type="submit" (click)="onSubmit()" [disabled]="!birdForm.valid" label="Opslaan"></button>
                 </div>
             </form>
+            <div class="p-mt-4">
+                <c-loader *ngIf="loading$ | async"></c-loader>
+            </div>
         </div>
     </div>
 </div>

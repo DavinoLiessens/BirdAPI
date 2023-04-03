@@ -16,6 +16,7 @@ export class BreederComponent implements OnInit {
     private destroyed$: Subject<boolean> = new Subject<boolean>();
     public breeders$: Observable<IBreeder[]> = this.breederFacade.getBreeders();
     public pagination$: Observable<IPagination> = this.breederFacade.getPagination();
+    public loading$: Observable<boolean> = this.breederFacade.getLoading();
 
     // local variables
     public breeders: IBreeder[];
