@@ -19,6 +19,7 @@ import { OrganizationChartModule } from 'primeng/organizationchart';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastrModule } from 'ngx-toastr';
 import { CalendarModule } from 'primeng/calendar';
+import { InputMaskModule } from 'primeng/inputmask';
 
 // *** COMPONENTS ***
 import { AppComponent } from './app.component';
@@ -83,7 +84,8 @@ import { BaseService } from './Services/base.service';
     InputTextareaModule,
     OrganizationChartModule,
     CheckboxModule,
-    CalendarModule
+    CalendarModule,
+    InputMaskModule
   ],
   providers: [BaseService],
   bootstrap: [AppComponent]

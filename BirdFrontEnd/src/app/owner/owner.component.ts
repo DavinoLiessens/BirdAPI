@@ -27,7 +27,6 @@ export class OwnerComponent implements OnInit {
     this.owners$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe((owners: IOwner[]) => {
-      console.log(owners);
       if (owners === null || owners === undefined) {
         const request: IGetOwnersRequest = {
           page: 1,

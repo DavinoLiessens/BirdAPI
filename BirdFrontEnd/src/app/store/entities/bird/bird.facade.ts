@@ -31,8 +31,8 @@ public getAllBirdsRequest(request: IGetBirdsRequest): void {
     this.store.dispatch(actions.getBirds({ request }));
 }
 
-public getBirdRequest(breederId: number): void {
-    this.store.dispatch(actions.getBird({ breederId }));
+public getBirdRequest(birdId: number): void {
+    this.store.dispatch(actions.getBird({ birdId }));
 }
 
 public createBird(request: ICreateBirdRequest): void {

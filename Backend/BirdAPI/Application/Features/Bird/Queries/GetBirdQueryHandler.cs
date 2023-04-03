@@ -24,7 +24,10 @@ namespace BirdAPI.Application.Features.Bird.Queries
         public async Task<BaseResponse<BirdResponseModel>> Handle(GetBirdQuery request, CancellationToken cancellationToken)
         {
             // get breeder from request
-            var existingBird = await _context.Birds.FirstOrDefaultAsync(b => b.Id == request.BirdId);
+            var existingBird = await _context.Birds
+                                                .Include(b => b.Owner)
+                                                .Include(b => b.Breeder)
+                                                .FirstOrDefaultAsync(b => b.Id == request.BirdId);
 
             if (existingBird == null)
             {

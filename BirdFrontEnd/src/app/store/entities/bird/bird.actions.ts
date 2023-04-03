@@ -8,7 +8,7 @@ export const getBirdsSuccess = createAction('[Bird] GET All Birds Success', prop
 export const getBirdsError = createAction('[Bird] GET All Birds Error', props<{ error: any }>());
 
 // GET bird
-export const getBird = createAction('[Bird] GET Bird', props<{ breederId: number }>());
+export const getBird = createAction('[Bird] GET Bird', props<{ birdId: number }>());
 export const getBirdSuccess = createAction('[Bird] GET Bird Success', props<{ birdDetail: IBird }>());
 export const getBirdError = createAction('[Bird] GET Bird Error', props<{ error: any }>());
 

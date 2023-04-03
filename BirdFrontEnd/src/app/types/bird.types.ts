@@ -40,8 +40,10 @@ export interface IUpdateBirdRequest {
     id: number;
     ringNumber: string;
     cageNumber: number;
+    ownerId: string;
     description: string;
     isDead: boolean;
+    isChild: boolean;
 }
 
 export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest {}

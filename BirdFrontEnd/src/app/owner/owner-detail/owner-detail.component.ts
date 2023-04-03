@@ -30,7 +30,6 @@ export class OwnerDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.route.snapshot.params?.id);
     this.ownerId = this.route.snapshot.params?.id;
 
     this.owner$.pipe(
@@ -60,7 +59,6 @@ export class OwnerDetailComponent implements OnInit {
       email: this.ownerForm.get('email').value,
     };
 
-    console.log(request);
     this.ownerFacade.updateOwnerRequest(request);
   }
 
