@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
-import { IOwner, IUpdateOwnerRequest } from 'src/app/types/owner.types';
+import { IGetOwnersRequest, IOwner, IUpdateOwnerRequest } from 'src/app/types/owner.types';
 
 @Component({
   selector: 'app-owner-detail',
@@ -26,8 +27,8 @@ export class OwnerDetailComponent implements OnInit {
     private fb: FormBuilder,
     private ownerFacade: OwnerFacade,
     private router: Router,
-    private route: ActivatedRoute
-
+    private route: ActivatedRoute,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +50,10 @@ export class OwnerDetailComponent implements OnInit {
         });
       }
     });
+    // handle success and errors
+    this.handleSuccesses();
+    this.handleErrors();
+
   }
 
   public onSubmit() {
@@ -65,6 +70,34 @@ export class OwnerDetailComponent implements OnInit {
 
   public goBack() {
     this.router.navigate(['../../'], { relativeTo: this.route });
+  }
+
+  private handleSuccesses(): void {
+    this.ownerFacade.onUpdateOwnerSuccess().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.success('Eigenaar gegevens aangepast!', 'Gelukt', {
+        timeOut: 6000,
+      });
+
+      const request: IGetOwnersRequest = {
+        page: 1,
+        pageSize: 10,
+      }
+      this.ownerFacade.getAllOwnersRequest(request);
+
+      this.goBack();
+    });
+  }
+
+  private handleErrors(): void {
+    this.ownerFacade.onUpdateOwnerError().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.error('Oeps, er liep iets mis tijdens het aanpassen van deze eigenaar!', 'Error', {
+        timeOut: 6000,
+      });
+    });
   }
 
 }
