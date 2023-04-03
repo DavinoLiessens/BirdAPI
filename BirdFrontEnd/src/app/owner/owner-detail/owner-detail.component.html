@@ -4,7 +4,7 @@
             <h1>Owner management</h1>
         </div>
         <div class="page-body">
-            <form [formGroup]="ownerForm" *ngIf="ownerForm">
+            <form [formGroup]="ownerForm" *ngIf="ownerForm && !(loading$ | async)">
                 <h2>Eigenaar bewerken</h2>
         
                 <div class="form-group">
@@ -32,6 +32,9 @@
                     <button pButton type="submit" (click)="onSubmit()" [disabled]="!ownerForm.valid" label="Opslaan"></button>
                 </div>
             </form>
+            <div class="p-mt-4">
+                <c-loader *ngIf="loading$ | async"></c-loader>
+            </div>
         </div>
     </div>
 </div>

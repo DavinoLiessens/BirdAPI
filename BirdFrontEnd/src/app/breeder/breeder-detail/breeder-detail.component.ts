@@ -16,6 +16,7 @@ export class BreederDetailComponent implements OnInit {
     // Observables
     public breeder$: Observable<IBreeder> = this.breederFacade.getBreeder();
     private destroyed$: Subject<boolean> = new Subject<boolean>();
+    public loading$: Observable<boolean> = this.breederFacade.getLoadingDetail();
 
     // local variables
     public breederId: string;

@@ -26,6 +26,14 @@ public getPagination(): Observable<IPagination> {
     return this.store.select(selectors.selectPagination);
 }
 
+public getLoading(): Observable<boolean> {
+    return this.store.select(selectors.selectLoadingAll);
+}
+
+public getLoadingDetail(): Observable<boolean> {
+    return this.store.select(selectors.selectLoadingDetail);
+}
+
 // Actions
 public getAllBirdsRequest(request: IGetBirdsRequest): void {
     this.store.dispatch(actions.getBirds({ request }));

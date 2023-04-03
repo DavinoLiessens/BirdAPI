@@ -26,6 +26,14 @@ export class OwnerFacade {
         return this.store.select(selectors.selectPagination);
     }
     
+    public getLoading(): Observable<boolean> {
+        return this.store.select(selectors.selectLoadingAll);
+    }
+    
+    public getLoadingDetail(): Observable<boolean> {
+        return this.store.select(selectors.selectLoadingDetail);
+    }
+    
     // Actions
     public getAllOwnersRequest(request: IGetOwnersRequest): void {
         this.store.dispatch(actions.getOwners({ request }));
