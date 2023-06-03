@@ -35,7 +35,7 @@ namespace BirdAPI.Application.Features.Owner.Commands
                     .AddError($"Owner with id '{request.Id}' does not exist");
             }
 
-            if (await _context.Breeders.AnyAsync(b => b.Email == request.Model.Email && b.Id != request.Id))
+            if (await _context.Owners.AnyAsync(b => b.Email == request.Model.Email && b.Id != request.Id))
             {
                 return new BaseResponse<object>(false, HttpStatusCode.BadRequest)
                     .AddError($"Owner with email '{request.Model.Email}' already exist");

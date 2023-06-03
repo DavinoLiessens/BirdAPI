@@ -36,6 +36,10 @@ export class BreederFacade {
         return this.store.select(selectors.selectLoadingDetail);
     }
 
+    public clearDetail(): void {
+        this.store.dispatch(actions.clearBreederDetail());
+    }
+
     // Actions
     public getAllBreedersRequest(request: IGetBreedersRequest): void {
         this.store.dispatch(actions.getBreeders({ request }));

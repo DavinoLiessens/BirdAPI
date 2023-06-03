@@ -20,3 +20,6 @@ export const createBreederError = createAction('[Breeder] CREATE Breeder Error',
 export const updateBreeder = createAction('[Breeder] UPDATE Breeder', props<{ request: IUpdateBreederRequest }>());
 export const updateBreederSuccess = createAction('[Breeder] UPDATE Breeder Success');
 export const updateBreederError = createAction('[Breeder] UPDATE Breeder Error', props<{ error: any }>());
+
+// Clear
+export const clearBreederDetail = createAction('[Breeder] Clear Breeder detail');

@@ -1,4 +1,4 @@
-import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
 import * as actions from './breeder.actions';
 import { initialState } from './breeder.initial-state';
 import { IBreederState } from './breeder.interfaces';
@@ -73,6 +73,14 @@ const reducer = createReducer(
             loading: false,
             errors: error
         };
+    }),
+
+    // Clear detail
+    on(actions.clearBreederDetail, (state) => {
+        return {
+            ...state,
+            breederDetail: null
+        }
     }),
 );
 
