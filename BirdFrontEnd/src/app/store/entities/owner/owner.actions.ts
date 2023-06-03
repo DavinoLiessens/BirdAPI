@@ -20,3 +20,6 @@ export const createOwnerError = createAction('[Owner] CREATE Owner Error', props
 export const updateOwner = createAction('[Owner] UPDATE Owner', props<{ request: IUpdateOwnerRequest }>());
 export const updateOwnerSuccess = createAction('[Owner] UPDATE Owner Success');
 export const updateOwnerError = createAction('[Owner] UPDATE Owner Error', props<{ error: any }>());
+
+// Clear
+export const clearOwnerDetail = createAction('[Owner] Clear Owner detail');

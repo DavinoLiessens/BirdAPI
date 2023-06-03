@@ -74,6 +74,14 @@ const reducer = createReducer(
             errors: error
         };
     }),
+
+    // Clear detail
+    on(actions.clearOwnerDetail, (state) => {
+        return {
+            ...state,
+            ownerDetail: null
+        }
+    }),
 );
 
 export function ownerReducer(state: IOwnerState | undefined, action: Action) {

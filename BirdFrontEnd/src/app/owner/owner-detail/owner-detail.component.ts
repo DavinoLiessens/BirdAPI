@@ -33,14 +33,12 @@ export class OwnerDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.ownerId = this.route.snapshot.params?.id;
+    this.ownerFacade.getOwnerRequest(parseInt(this.ownerId));
 
     this.owner$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe((owner: IOwner) => {
-      if (owner === null || owner === undefined) {
-        this.ownerFacade.getOwnerRequest(parseInt(this.ownerId));
-      }
-      else {
+      if (owner !== null && owner !== undefined) {
         // fill in the form
         this.ownerForm = this.fb.group({
           firstName: [owner.firstName, Validators.required],
@@ -86,6 +84,7 @@ export class OwnerDetailComponent implements OnInit {
       }
       this.ownerFacade.getAllOwnersRequest(request);
 
+      this.ownerFacade.clearDetail();
       this.goBack();
     });
   }

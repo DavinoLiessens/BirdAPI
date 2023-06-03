@@ -74,6 +74,14 @@ const reducer = createReducer(
             errors: error
         };
     }),
+
+    // Clear detail
+    on(actions.clearBirdDetail, (state) => {
+        return {
+            ...state,
+            birdDetail: null
+        }
+    }),
 );
 
 export function birdReducer(state: IBirdState | undefined, action: Action) {

@@ -21,3 +21,7 @@ export const createBirdError = createAction('[Bird] CREATE Bird Error', props<{ 
 export const updateBird = createAction('[Bird] UPDATE Bird', props<{ request: IUpdateBirdRequest }>());
 export const updateBirdSuccess = createAction('[Bird] UPDATE Bird Success');
 export const updateBirdError = createAction('[Bird] UPDATE Bird Error', props<{ error: any }>());
+
+
+// Clear
+export const clearBirdDetail = createAction('[Bird] Clear Bird detail');
