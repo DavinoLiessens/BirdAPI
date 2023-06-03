@@ -36,6 +36,10 @@ export class BirdFacade {
         return this.store.select(selectors.selectLoadingDetail);
     }
 
+    public clearDetail(): void {
+        this.store.dispatch(actions.clearBirdDetail());
+    }
+
     // Actions
     public getAllBirdsRequest(request: IGetBirdsRequest): void {
         this.store.dispatch(actions.getBirds({ request }));

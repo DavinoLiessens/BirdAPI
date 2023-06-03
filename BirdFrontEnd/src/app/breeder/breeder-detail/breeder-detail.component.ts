@@ -33,15 +33,12 @@ export class BreederDetailComponent implements OnInit {
 
     ngOnInit(): void {
         this.breederId = this.route.snapshot.params?.id;
+        this.breederFacade.getBreederRequest(parseInt(this.breederId));
 
         this.breeder$.pipe(
             takeUntil(this.destroyed$),
         ).subscribe((breeder: IBreeder) => {
-            if (breeder === null || breeder === undefined) {
-                this.breederFacade.getBreederRequest(parseInt(this.breederId));
-            }
-            else {
-                // fill in the form
+            if (breeder !== null && breeder !== undefined) {
                 this.breederForm = this.fb.group({
                     firstName: [breeder.firstName, Validators.required],
                     lastName: [breeder.lastName, Validators.required],
@@ -85,7 +82,8 @@ export class BreederDetailComponent implements OnInit {
                 pageSize: 10,
             }
             this.breederFacade.getAllBreedersRequest(request);
-
+            this.breederFacade.clearDetail();
+            
             this.goBack();
         });
     }

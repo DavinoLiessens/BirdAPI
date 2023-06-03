@@ -42,18 +42,13 @@ export class BirdDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.birdId = this.route.snapshot.params?.id;
+    this.birdFacade.getBirdRequest(parseInt(this.birdId));
 
     this.bird$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe((bird: IBird) => {
-      if (bird === null || bird === undefined) {
-        if (this.birdId !== null && this.birdId !== undefined) {
-          this.birdFacade.getBirdRequest(parseInt(this.birdId));
-        }
-      }
-      else {
-        // set form
-        this.createDefaultForm(bird);
+      if (bird !== null && bird !== undefined) {
+        this.createDefaultForm(bird);        
       }
     });
 
@@ -77,6 +72,7 @@ export class BirdDetailComponent implements OnInit {
     };
 
     this.birdFacade.updateBirdRequest(request);
+    this.birdFacade.clearDetail();
   }
 
   public goBack() {
@@ -126,6 +122,7 @@ export class BirdDetailComponent implements OnInit {
       }
     });
   }
+
   private handleSuccesses(): void {
     this.birdFacade.onUpdateBirdSuccess().pipe(
       takeUntil(this.destroyed$),
@@ -140,6 +137,7 @@ export class BirdDetailComponent implements OnInit {
       }
       this.birdFacade.getAllBirdsRequest(request);
 
+      this.birdFacade.clearDetail();
       this.goBack();
     });
   }

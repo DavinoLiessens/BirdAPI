@@ -35,6 +35,10 @@ export class OwnerFacade {
     public getLoadingDetail(): Observable<boolean> {
         return this.store.select(selectors.selectLoadingDetail);
     }
+
+    public clearDetail(): void {
+        this.store.dispatch(actions.clearOwnerDetail());
+    }
     
     // Actions
     public getAllOwnersRequest(request: IGetOwnersRequest): void {
