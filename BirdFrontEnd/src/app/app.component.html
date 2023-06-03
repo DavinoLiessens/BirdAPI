@@ -1,9 +1,9 @@
 <p-toolbar>
     <div class="p-toolbar-group-left">
-        <p-splitButton label="Vogels" [model]="birdItems" class="button-toolbar" ></p-splitButton>
-        <p-splitButton label="Eigenaars" [model]="ownerItems" class="button-toolbar"></p-splitButton>
-        <p-splitButton label="Kwekers" [model]="breederItems" class="button-toolbar"></p-splitButton>
-        <p-splitButton label="Koppels" [model]="coupleItems" class="button-toolbar"></p-splitButton>
+        <p-splitButton label="Vogels" (onClick)="navigateToPage('/birds')" [model]="birdItems" class="button-toolbar" ></p-splitButton>
+        <p-splitButton label="Eigenaars" (onClick)="navigateToPage('/owners')" [model]="ownerItems" class="button-toolbar"></p-splitButton>
+        <p-splitButton label="Kwekers" (onClick)="navigateToPage('/breeders')" [model]="breederItems" class="button-toolbar"></p-splitButton>
+        <p-splitButton label="Koppels" (onClick)="navigateToPage('/couples')" [model]="coupleItems" class="button-toolbar"></p-splitButton>
     </div>
     
     <div class="p-toolbar-group-right">
