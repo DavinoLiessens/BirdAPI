@@ -48,8 +48,6 @@ namespace BirdAPI.Application.Features.Couple.Commands
                                                                               request.Model.CageNumber,
                                                                               request.Model.Description);
 
-            // TODO: Add logic for birdEggs
-
             await _context.Couples.AddAsync(newCouple);
             await _context.SaveChangesAsync();
 

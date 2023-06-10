@@ -38,11 +38,9 @@ namespace BirdAPI.Domain.AggregatesModel.CoupleAggregate
             _birdEggs.AddRange(birdEggs);
         }
 
-        public Couple UpdateCouple(string description, List<BirdEgg> birdEggs)
+        public Couple UpdateCouple(string description)
         {
-            Description = description;
-
-            // TODO think of logic of removing all eggs and add the ones coming from frontend back in
+            Description = description;            
 
             return this;
         }
