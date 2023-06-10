@@ -29,8 +29,6 @@
   <ItemGroup>
     <Folder Include="Application\Features\Bird\ResponseModels\" />
     <Folder Include="Application\Features\Couple\Commands\InputModels\" />
-    <Folder Include="Application\Features\Couple\AutoMapper\" />
-    <Folder Include="Application\Features\Couple\Queries\" />
     <Folder Include="Infrastructure\Migrations\" />
     <Folder Include="Infrastructure\Services\" />
   </ItemGroup>

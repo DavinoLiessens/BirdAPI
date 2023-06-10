@@ -3,6 +3,9 @@
     public class CouplesResponseModel
     {
         public string Name { get; set; }
-        public int MyProperty { get; set; }
+        public int CageNumber { get; set; }
+        public DateTime StartedAt { get; set; }
+        public string MotherRingNumber { get; set; }
+        public string FatherRingNumber { get; set; }
     }
 }
