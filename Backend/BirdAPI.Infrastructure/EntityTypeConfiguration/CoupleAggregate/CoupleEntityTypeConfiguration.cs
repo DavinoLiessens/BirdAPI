@@ -12,9 +12,7 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.CoupleAggregate
 
             builder.Ignore(o => o.DomainEvents);
 
-            builder.HasMany(o => o.BirdEggs)
-                   .WithOne(c => c.Couple)
-                   .HasForeignKey(c => c.CoupleId);
+            builder.HasMany(o => o.BirdEggs);
         }
     }
 }

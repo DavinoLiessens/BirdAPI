@@ -1,4 +1,6 @@
-﻿using BirdAPI.Application.Features.Couple.Queries;
+﻿using BirdAPI.Application.Features.Couple.Commands;
+using BirdAPI.Application.Features.Couple.Commands.InputModels;
+using BirdAPI.Application.Features.Couple.Queries;
 using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.BaseModels;
 using MediatR;
@@ -27,6 +29,12 @@ namespace BirdAPI.Controllers
         public async Task<IActionResult> GetCouple(int coupleId)
         {
             return new JsonContentResult<CoupleResponseModel>(await _mediator.Send(new GetCoupleQuery(coupleId)));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCouple([FromBody] CreateCoupleInputModel model)
+        {
+            return new JsonContentResult<object>(await _mediator.Send(new CreateCoupleCommand(model)));
         }
     }
 }
