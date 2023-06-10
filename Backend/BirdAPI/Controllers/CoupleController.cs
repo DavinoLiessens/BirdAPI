@@ -26,8 +26,7 @@ namespace BirdAPI.Controllers
         [HttpGet("{coupleId}")]
         public async Task<IActionResult> GetCouple(int coupleId)
         {
-            //return new JsonContentResult<CoupleResponseModel>(await _mediator.Send(new GetCoupleQuery(coupleId)));
-            return Ok();
+            return new JsonContentResult<CoupleResponseModel>(await _mediator.Send(new GetCoupleQuery(coupleId)));
         }
     }
 }

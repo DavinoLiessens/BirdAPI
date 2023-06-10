@@ -10,6 +10,10 @@ namespace BirdAPI.Application.Features.Couple.AutoMapper
             CreateMap<Domain.AggregatesModel.CoupleAggregate.Couple, CouplesResponseModel>()
                 .ForMember(dest => dest.MotherRingNumber, src => src.MapFrom(src => src.Mother.RingNumber))
                 .ForMember(dest => dest.FatherRingNumber, src => src.MapFrom(src => src.Father.RingNumber));
+
+            CreateMap<Domain.AggregatesModel.CoupleAggregate.Couple, CoupleResponseModel>()
+                .ForMember(dest => dest.MotherRingNumber, src => src.MapFrom(src => src.Mother.RingNumber))
+                .ForMember(dest => dest.FatherRingNumber, src => src.MapFrom(src => src.Father.RingNumber));
         }
     }
 }
