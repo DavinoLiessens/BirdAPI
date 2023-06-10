@@ -4,8 +4,10 @@ import { IBirdEgg } from "./birdEgg.types";
 export interface ICouple {
     id: number;
     name: string;
+    startedAt: Date;
     father: IBird;
     mother: IBird;
+    cageNumber: number;
     description: string;
     eggs: IBirdEgg[];
 }

@@ -31,7 +31,6 @@
     <Folder Include="Application\Features\Couple\Commands\InputModels\" />
     <Folder Include="Application\Features\Couple\AutoMapper\" />
     <Folder Include="Application\Features\Couple\Queries\" />
-    <Folder Include="Application\Features\Couple\ResponseModels\" />
     <Folder Include="Infrastructure\Migrations\" />
     <Folder Include="Infrastructure\Services\" />
   </ItemGroup>
