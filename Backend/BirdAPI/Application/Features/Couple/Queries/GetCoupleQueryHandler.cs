@@ -27,6 +27,7 @@ namespace BirdAPI.Application.Features.Couple.Queries
             var existingCouple = await _context.Couples
                                             .Include(c => c.Father)
                                             .Include(c => c.Mother)
+                                            .Include(c => c.BirdEggs)
                                             .AsNoTracking()
                                             .FirstOrDefaultAsync(c => c.Id == request.CoupleId);
 

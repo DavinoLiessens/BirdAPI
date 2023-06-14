@@ -5,6 +5,7 @@ export interface IFeatureState {
     bird: any;
     breeder: any;
     owner: any;
+    couple: any;
 }
 
 export const selectFeature = createFeatureSelector<IFeatureState>(FEATURE_KEY);
