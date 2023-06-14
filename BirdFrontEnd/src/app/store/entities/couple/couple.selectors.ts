@@ -4,7 +4,7 @@ import { ICoupleState } from './couple.interfaces';
 
 export const selectCoupleState = createSelector(
     selectFeature,
-    (state: IFeatureState) => state.breeder
+    (state: IFeatureState) => state.couple
 );
 
 export const selectLoadingAll = createSelector(
@@ -24,10 +24,10 @@ export const selectPagination = createSelector(
 
 export const selectCouples = createSelector(
     selectCoupleState,
-    (state: ICoupleState) => state.breeders
+    (state: ICoupleState) => state.couples
 );
 
 export const selectCouple = createSelector(
     selectCoupleState,
-    (state: ICoupleState) => state.breederDetail
+    (state: ICoupleState) => state.coupleDetail
 );
