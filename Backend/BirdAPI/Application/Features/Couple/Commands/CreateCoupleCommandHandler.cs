@@ -1,4 +1,5 @@
-﻿using BirdAPI.BaseModels;
+﻿using BirdAPI.Application.Features.Couple.Queries;
+using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,12 @@ namespace BirdAPI.Application.Features.Couple.Commands
     public class CreateCoupleCommandHandler : IRequestHandler<CreateCoupleCommand, BaseResponse<object>>
     {
         private readonly BirdAPIContext _context;
+        private readonly IMediator _mediator;
 
-        public CreateCoupleCommandHandler(BirdAPIContext context)
+        public CreateCoupleCommandHandler(BirdAPIContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         public async Task<BaseResponse<object>> Handle(CreateCoupleCommand request, CancellationToken cancellationToken)
@@ -51,7 +54,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
             await _context.Couples.AddAsync(newCouple);
             await _context.SaveChangesAsync();
 
-            return new BaseResponse<object>(true, HttpStatusCode.OK);
+            return new BaseResponse<object>(_mediator.Send(new GetCoupleQuery(newCouple.Id)));
 
         }
     }

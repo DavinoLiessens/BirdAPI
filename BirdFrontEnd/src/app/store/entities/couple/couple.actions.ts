@@ -13,7 +13,7 @@ export const getCoupleError = createAction('[Couple] GET Couple Error', props<{ 
 
 // CREATE couple
 export const createCouple = createAction('[Couple] CREATE Couple', props<{ request: ICreateCoupleRequest }>());
-export const createCoupleSuccess = createAction('[Couple] CREATE Couple Success');
+export const createCoupleSuccess = createAction('[Couple] CREATE Couple Success', props<{ response: ICouple }>());
 export const createCoupleError = createAction('[Couple] CREATE Couple Error', props<{ error: any }>());
 
 // UPDATE couple

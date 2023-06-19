@@ -58,7 +58,7 @@ export class CoupleFacade {
     }
 
     // ActionSubjects
-    public onCreateCoupleSuccess(): Observable<ActionsSubject> {
+    public onCreateCoupleSuccess(): Observable<ICouple> {
         return this.action$.pipe(ofType(actions.createCoupleSuccess.type));
     }
 

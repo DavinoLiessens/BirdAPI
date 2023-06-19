@@ -35,7 +35,7 @@ export class CoupleEffects {
     createCouples$ = createEffect(() => this.actions$.pipe(
         ofType(actions.createCouple.type),
         concatMap(({ request }: { request: ICreateCoupleRequest }) => this.couplesService.createCouple(request).pipe(
-            map(() => actions.createCoupleSuccess()),
+            map((response: ICouple) => actions.createCoupleSuccess({ response })),
             catchError((error: any) => of(actions.createCoupleError({ error }))),
         ))
     ));
