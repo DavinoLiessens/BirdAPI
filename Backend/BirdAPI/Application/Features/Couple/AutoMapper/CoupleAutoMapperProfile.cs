@@ -17,7 +17,7 @@ namespace BirdAPI.Application.Features.Couple.AutoMapper
                 .ForMember(dest => dest.MotherRingNumber, src => src.MapFrom(src => src.Mother.RingNumber))
                 .ForMember(dest => dest.FatherRingNumber, src => src.MapFrom(src => src.Father.RingNumber));
 
-            CreateMap<BirdEggInputModel, BirdEgg>();
+            CreateMap<BirdEggInputModel, BirdEgg>().ReverseMap();
         }
     }
 }

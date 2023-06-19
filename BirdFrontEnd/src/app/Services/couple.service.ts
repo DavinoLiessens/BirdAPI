@@ -23,7 +23,7 @@ import { BaseService } from "./base.service";
     }
 
     public updateCouple(request: IUpdateCoupleRequest): Observable<null> {
-      return this.baseService.put(`/couples/${request.id}`, request) as Observable<null>;
+      return this.baseService.put(`/couples`, request) as Observable<null>;
     }
 
   }

@@ -1,181 +1,109 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TreeNode } from 'primeng/api';
-import { ApiService, Bird, Couple } from 'src/app/Services/api.service';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { CoupleFacade } from 'src/app/store/entities/couple/couple.facade';
+import { IBirdEgg } from 'src/app/types/birdEgg.types';
+import { ICouple, IGetCouplesRequest, IUpdateCoupleRequest } from 'src/app/types/couple.types';
 
 @Component({
-  selector: 'app-couple-detail',
+  selector: 'c-couple-detail',
   templateUrl: './couple-detail.component.html',
-  styleUrls: ['./couple-detail.component.css']
+  styleUrls: ['./couple-detail.component.scss']
 })
 export class CoupleDetailComponent implements OnInit {
 
-  @Input() coupleDetail: Couple;
+  // Observables
+  public couple$: Observable<ICouple> = this.coupleFacade.getCouple();
+  private destroyed$: Subject<boolean> = new Subject<boolean>();
+  public loading$: Observable<boolean> = this.coupleFacade.getLoadingDetail();
 
-  updateCouple: Couple;
+  // local variables
+  public coupleId: string;
+  public coupleForm: FormGroup;
 
-  couples: TreeNode[];
-  disabled: boolean = true;
-  birds: Bird[];
-  
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private fb: FormBuilder,
+    private coupleFacade: CoupleFacade,
+    private toastrService: ToastrService
+  ) { }
 
   ngOnInit(): void {
-    this.apiService.GetAllBirds().subscribe(res => this.birds = res);
-    this.GetCouple();
-    this.couples = [{
-      label: '', type:'name',
-      expanded: true,
-      children: [
-          {
-              label: '', type: 'parentleft',
-              expanded: true,
-              children: [
-                  {
-                      label: '', type: 'childleft1',
-                  },
-                  {
-                      label: '', type: 'childleft2',
-                  },
-                  {
-                      label: '', type: 'childleft3',
-                  }
-              ]
-          },
-          {
-              label: '', type: 'parentright',
-              expanded: true,
-              children: [
-                  {
-                      label: '', type: 'childright1',
-                  },
-                  {
-                      label: '', type: 'childright2',
-                  },
-                  {
-                      label: '', type: 'childright3',
-                  }
-              ]
-          }
-      ]
-    }];
+    this.coupleId = this.route.snapshot.params?.id;
+    this.coupleFacade.getCoupleRequest(parseInt(this.coupleId));
+
+    this.couple$.pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe((couple: ICouple) => {
+      if (couple !== null && couple !== undefined) {
+        this.coupleForm = this.fb.group({
+          name: [{ value: couple.name, disabled: true }],
+          startedAt: [{ value: null, disabled: true }],
+          father: [{ value: couple.fatherRingNumber, disabled: true }],
+          mother: [{ value: couple.motherRingNumber, disabled: true }],
+          cageNumber: [{ value: couple.cageNumber, disabled: true }],
+          description: [couple.description]
+        });
+
+        this.coupleForm.get('startedAt').setValue(new Date(couple.startedAt).toISOString().split('T')[0]);
+      }
+    });
+    // handle success and errors
+    this.handleSuccesses();
+    this.handleErrors();
+
   }
 
-  UpdateTree(){
-    try{
-      this.updateCouple = {
-        name: this.coupleDetail.name,
-        father: this.coupleDetail.father,
-        mother: this.coupleDetail.mother,
-        child1: this.coupleDetail.child1,
-        child2: this.coupleDetail.child2,
-        child3: this.coupleDetail.child3,
-        child4: this.coupleDetail.child4,
-        child5: this.coupleDetail.child5,
-        child6: this.coupleDetail.child6,
-        description: this.coupleDetail.description
-      };
+  public onSubmit() {
+    const birdegg: IBirdEgg = {
+      id: 1,
+      layedOn: new Date(),
+      coupleId: parseInt(this.coupleId),
+    };
 
-      this.apiService.UpdateCouple(this.coupleDetail.id, this.updateCouple).subscribe(res => {
-        this.router.navigate(['/couples']);
-        alert("Update Succesfull!");
+    const request: IUpdateCoupleRequest = {
+      coupleId: parseInt(this.coupleId),
+      description: this.coupleForm.get('description').value,
+      birdEggs: [birdegg]
+    };
+
+    console.log(request);
+    this.coupleFacade.updateCoupleRequest(request);
+  }
+  public goBack() {
+    this.router.navigate(['../../'], { relativeTo: this.route });
+  }
+
+  private handleSuccesses(): void {
+    this.coupleFacade.onUpdateCoupleSuccess().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.success('Koppel gegevens aangepast!', 'Gelukt', {
+        timeOut: 6000,
       });
-    }
-    catch{
-      alert("Het wijzigen van de stamboom is mislukt!");
-    }
+
+      const request: IGetCouplesRequest = {
+        page: 1,
+        pageSize: 10,
+      }
+      this.coupleFacade.getAllCouplesRequest(request);
+      this.coupleFacade.clearDetail();
+
+      this.goBack();
+    });
   }
 
-  GetCouple(){
-    try{
-      const id = +this.route.snapshot.paramMap.get('id');
-      this.apiService.GetCouple(id).subscribe( res => {
-        this.coupleDetail = res;
-        console.log(this.coupleDetail);
+  private handleErrors(): void {
+    this.coupleFacade.onUpdateCoupleError().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.error('Oeps, er liep iets mis tijdens het aanpassen van dit koppel!', 'Error', {
+        timeOut: 6000,
       });
-    }
-    catch{
-      alert("Er is een probleem met het ophalen van dit koppel.\n Probeer het opnieuw");
-    }
+    });
   }
 
-  get CoupleName(){
-    return this.coupleDetail.name;
-  }
-
-  set CoupleName(value: string){
-    this.coupleDetail.name = value;
-  }
-
-  get ParentLeft(){
-    return this.coupleDetail.father;
-  }
-
-  set ParentLeft(value: string){
-    this.coupleDetail.father = value;
-  }
-
-  get ParentRight(){
-    return this.coupleDetail.mother;
-  }
-
-  set ParentRight(value: string){
-    this.coupleDetail.mother = value;
-  }
-
-  get ChildLeft1(){
-    return this.coupleDetail.child1;
-  }
-
-  set ChildLeft1(value: string){
-    this.coupleDetail.child1 = value;
-  }
-
-  get ChildLeft2(){
-    return this.coupleDetail.child2;
-  }
-
-  set ChildLeft2(value: string){
-    this.coupleDetail.child2 = value;
-  }
-
-  get ChildLeft3(){
-    return this.coupleDetail.child3;
-  }
-
-  set ChildLeft3(value: string){
-    this.coupleDetail.child3 = value;
-  }
-
-  get ChildLeft4(){
-    return this.coupleDetail.child4;
-  }
-
-  set ChildLeft4(value: string){
-    this.coupleDetail.child4 = value;
-  }
-
-  get ChildLeft5(){
-    return this.coupleDetail.child5;
-  }
-
-  set ChildLeft5(value: string){
-    this.coupleDetail.child5 = value;
-  }
-
-  get ChildLeft6(){
-    return this.coupleDetail.child6;
-  }
-
-  set ChildLeft6(value: string){
-    this.coupleDetail.child6 = value;
-  }
-
-  get Description(){
-    return this.coupleDetail.description;
-  }
-
-  set Description(value: string){
-    this.coupleDetail.description = value;
-  }
 }

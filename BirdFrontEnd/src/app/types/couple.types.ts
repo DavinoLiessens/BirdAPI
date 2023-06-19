@@ -7,11 +7,11 @@ export interface ICouple {
     id: number;
     name: string;
     startedAt: Date;
-    father: IBird;
-    mother: IBird;
+    fatherRingNumber: string;
+    motherRingNumber: string;
     cageNumber: number;
-    description: string;
-    eggs: IBirdEgg[];
+    description?: string;
+    eggs?: IBirdEgg[];
 }
 
 export interface ICreateCoupleRequest {
@@ -20,13 +20,13 @@ export interface ICreateCoupleRequest {
     motherId: number;
     startedAt: Date;
     cageNumber: number;
-    description: string;
+    description?: string;
 }
 
 export interface IUpdateCoupleRequest {
-    id: number;
-    eggs: IBirdEgg[];
-    description: string;
+    coupleId: number;
+    birdEggs?: IBirdEgg[];
+    description?: string;
 }
 
 export interface IGetCouplesRequest extends IPaginationRequest, ISearchRequest {}
