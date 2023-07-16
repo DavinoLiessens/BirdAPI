@@ -30,15 +30,26 @@ namespace BirdAPI.Application.Features.Couple.Commands
                                 .AddError($"No birdEgg found with id {request.Model.Id}");
             }
 
-            if (request.Model.CameOutOn != null && request.Model.RingNumber != null)
+            if (request.Model.CameOutOn != null)
             {
                 existingEgg.UpdateCameOutOn((DateTime)request.Model.CameOutOn);
-                existingEgg.UpdateRingNumber((string)request.Model.RingNumber);
-                // implement logic -> after setting this date a bird can be created
             }
+
+            if (request.Model.RingNumber != null)
+            {
+                existingEgg.UpdateRingNumber((string)request.Model.RingNumber);
+            }
+
             if (request.Model.FlyOutOn != null)
             {
                 existingEgg.UpdateFlyOutOn((DateTime)request.Model.FlyOutOn);
+            }
+
+            if (request.Model.CameOutOn != null && request.Model.RingNumber != null)
+            {
+                // create new Bird in DB
+                // TODO to think about
+                // Because we don't have gender, color, birdtype, ....
             }
 
             var result = _mapper.Map<BirdEgg, BirdEggInputModel>(existingEgg);
