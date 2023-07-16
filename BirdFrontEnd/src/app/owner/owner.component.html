@@ -41,11 +41,11 @@
                         Edit
                     </div>
                 </th> 
-                <th>
+                <!-- <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                         X
                     </div>
-                </th>                
+                </th>                 -->
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-owner>
@@ -65,9 +65,9 @@
                 <td>
                     <button pButton pRipple type="button" label="Bewerk" class="p-button-raised" style="margin-left: 10px;" routerLink="/owners/detail/{{ owner.id }}"></button>
                 </td>
-                <td>
+                <!-- <td>
                     <button pButton pRipple type="button" label="Verwijder" class="p-button-danger" style="margin-left: 5px;" (click)="DeleteOwner(owner.id)"></button>
-                </td>
+                </td> -->
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">

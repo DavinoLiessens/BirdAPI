@@ -22,7 +22,6 @@ export class BirdDetailComponent implements OnInit {
   // local variables
   public birdForm: FormGroup;
   public birdId: string;
-  public ownerFullName: string;
   public owners: IOwnerDropdownOption[] = [];
 
   // Observables
@@ -98,7 +97,6 @@ export class BirdDetailComponent implements OnInit {
 
     // set calendar value
     this.birdForm.get('birthDate').setValue(new Date(bird.birthDate).toISOString().split('T')[0]);
-    this.ownerFullName = `${bird.owner.firstName} ${bird.owner.lastName}`;
   }
 
   private getAllOwners(): void {

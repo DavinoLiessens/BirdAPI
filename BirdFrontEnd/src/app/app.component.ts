@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -12,6 +13,8 @@ export class AppComponent {
   ownerItems: MenuItem[];
   coupleItems: MenuItem[];
   breederItems: MenuItem[];
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.birdItems = [
@@ -65,5 +68,9 @@ export class AppComponent {
         routerLink: '/couples/create'
       }
     ];
+  }
+
+  public navigateToPage(path: string) {
+    this.router.navigate([path]);
   }
 }
