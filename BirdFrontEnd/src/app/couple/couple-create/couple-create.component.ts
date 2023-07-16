@@ -1,199 +1,130 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { TreeNode } from 'primeng/api';
-import { ApiService, Bird, Couple } from 'src/app/Services/api.service';
-import { BirdService } from 'src/app/Services/bird.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
+import { CoupleFacade } from 'src/app/store/entities/couple/couple.facade';
+import { IBird, IGetBirdsRequest } from 'src/app/types/bird.types';
+import { ICouple, ICreateCoupleRequest, ICreatedCoupleResponseModel } from 'src/app/types/couple.types';
+import { IPagination } from 'src/app/types/pagination.types';
 
 @Component({
-  selector: 'app-couple-create',
+  selector: 'c-couple-create',
   templateUrl: './couple-create.component.html',
-  styleUrls: ['./couple-create.component.css']
+  styleUrls: ['./couple-create.component.scss']
 })
 export class CoupleCreateComponent implements OnInit {
 
-  // init private variables
-  private newCouple: Couple;
-  private couplename: string;  
-  private parentLeft: string;
-  private parentRight: string;
-  private childLeft1: string;
-  private childLeft2: string;
-  private childLeft3: string;
-  private childRight1: string;
-  private childRight2: string;
-  private childRight3: string;
-  private description: string;
+  private destroyed$: Subject<boolean> = new Subject<boolean>();
+  public birds$: Observable<IBird[]> = this.birdFacade.getBirds();
+  public birdPagination$: Observable<IPagination> = this.birdFacade.getPagination();
 
-  // create array to show tree and init all birds
-  birds: Bird[];
-  couples: TreeNode[];
+  // local variables
+  public coupleForm: FormGroup;
+  public maleBirds: any[] = [];
+  public femaleBirds: any[] = [];
 
-  // create array to show only the ringnumbers of the birds
-  ringnumbers: string[];
-
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private fb: FormBuilder,
+    private coupleFacade: CoupleFacade,
+    private birdFacade: BirdFacade,
+    private toastrService: ToastrService
+  ) { }
 
   ngOnInit(): void {
-    this.GetAllBirds();
-    this.couples = [{
-      label: '', type:'name',
-      expanded: true,
-      children: [
-          {
-              label: '', type: 'parentleft',
-              expanded: true,
-              children: [
-                  {
-                      label: '', type: 'childleft1',
-                  },
-                  {
-                      label: '', type: 'childleft2',
-                  },
-                  {
-                      label: '', type: 'childleft3',
-                  }
-              ]
-          },
-          {
-              label: '', type: 'parentright',
-              expanded: true,
-              children: [
-                  {
-                      label: '', type: 'childright1',
-                  },
-                  {
-                      label: '', type: 'childright2',
-                  },
-                  {
-                      label: '', type: 'childright3',
-                  }
-              ]
+    this.coupleForm = this.fb.group({
+      name: ['', Validators.required],
+      startedAt: [new Date(), Validators.required],
+      fatherId: ['', Validators.required],
+      motherId: ['', Validators.required],
+      cageNumber: ['', Validators.required],
+      description: ['']
+    });
+
+    const request: IGetBirdsRequest = {
+      page: 1,
+      pageSize: 10
+    };
+
+    this.birdFacade.getAllBirdsRequest(request);
+
+    this.handleBirdsList();
+
+    // handle success and errors
+    this.handleSuccesses();
+    this.handleErrors();
+  }
+
+  public onSubmit() {
+    const request: ICreateCoupleRequest = {
+      name: this.coupleForm.get('name').value,
+      startedAt: this.coupleForm.get('startedAt').value,
+      fatherId: parseInt(this.coupleForm.get('fatherId').value),
+      motherId: parseInt(this.coupleForm.get('motherId').value),
+      cageNumber: this.coupleForm.get('cageNumber').value,
+      description: this.coupleForm.get('description').value,
+    };
+
+    this.coupleFacade.createCouple(request);
+  }
+
+  private handleSuccesses(): void {
+    // go to detail after success hits
+    // create couple success has coupleResponseModel!
+    this.coupleFacade.onCreateCoupleSuccess().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe((model: ICreatedCoupleResponseModel) => {
+      this.toastrService.success('Koppel aangemaakt!', 'Gelukt', {
+        timeOut: 6000,
+      });
+
+      // don't think that this line is needed -> check it in network tab
+      this.coupleFacade.getCoupleRequest(model.id);
+      this.router.navigate([`couples/detail/${model.id}`]);
+    });
+  }
+
+  private handleErrors(): void {
+    this.coupleFacade.onCreateCoupleError().pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
+      this.toastrService.error('Oeps er liep iets mis tijdens het aanmaken van dit koppel!', 'Error', {
+        timeOut: 6000,
+      });
+    });
+  }
+
+  private handleBirdsList(): void {
+    this.birds$.pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe((birds: IBird[]) => {
+      if (birds !== null && birds !== undefined) {
+        const males = birds.filter(b => b.gender === "MALE");
+        const females = birds.filter(b => b.gender === "FEMALE");
+
+        males.forEach((bird: IBird) => {
+          const existingBird = this.maleBirds.find(b => b.id === bird.id);
+
+          if (existingBird === undefined){
+            this.maleBirds.push({ type: bird.ringNumber, value: bird.id });
+          }            
+        });
+
+        females.forEach((bird: IBird) => {
+          const existingBird = this.femaleBirds.find(b => b.id === bird.id);
+
+          if (existingBird === undefined) {
+            this.femaleBirds.push({ type: bird.ringNumber, value: bird.id });
           }
-      ]
-  }];
+        });
+      }
+    });
   }
 
-  GetAllBirds(){
-    try{
-      this.apiService.GetAllBirds().subscribe((res) => {
-        this.birds = res;
-        console.log(this.birds);
-      });
-      
-    }
-    catch{
-      alert("Er was een probleem bij het ophalen van alle vogels!");
-      console.error();      
-    }
+  public goBack() {
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
-
-  CreateTree() : void{
-    // create new Couple object
-    this.newCouple = {
-      name: this.couplename,
-      father: this.parentLeft,
-      mother: this.parentRight,
-      child1: this.childLeft1,
-      child2: this.childLeft2,
-      child3: this.childLeft3,
-      child4: this.childRight1,
-      child5: this.childRight2,
-      child6: this.childRight3,
-      description: this.description
-    };   
-
-    try{
-      this.apiService.CreateCouple(this.newCouple).subscribe((res) => {
-        alert("Stamboom succesvol aangemaakt!");
-        console.log(this.newCouple);
-        this.router.navigate(['/couples']);
-      });
-      
-    }
-    catch{
-      alert("Er was een probleem bij het ophalen van alle stambomen!");
-      console.error();      
-    }
-  }
-
-  get CoupleName(){
-    return this.couplename;
-  }
-
-  set CoupleName(value: string){
-    this.couplename = value;
-  }
-
-  get ParentLeft(){
-    return this.parentLeft;
-  }
-
-  set ParentLeft(value: string){
-    this.parentLeft = value;
-  }
-
-  get ParentRight(){
-    return this.parentRight;
-  }
-
-  set ParentRight(value: string){
-    this.parentRight = value;
-  }
-
-  get ChildLeft1(){
-    return this.childLeft1;
-  }
-
-  set ChildLeft1(value: string){
-    this.childLeft1 = value;
-  }
-
-  get ChildLeft2(){
-    return this.childLeft2;
-  }
-
-  set ChildLeft2(value: string){
-    this.childLeft2 = value;
-  }
-
-  get ChildLeft3(){
-    return this.childLeft3;
-  }
-
-  set ChildLeft3(value: string){
-    this.childLeft3 = value;
-  }
-
-  get ChildRight1(){
-    return this.childRight1;
-  }
-
-  set ChildRight1(value: string){
-    this.childRight1 = value;
-  }
-
-  get ChildRight2(){
-    return this.childRight2;
-  }
-
-  set ChildRight2(value: string){
-    this.childRight2 = value;
-  }
-  
-  get ChildRight3(){
-    return this.childRight3;
-  }
-
-  set ChildRight3(value: string){
-    this.childRight3 = value;
-  }
-
-  get Description(){
-    return this.description;
-  }
-
-  set Description(value: string){
-    this.description = value;
-  }
-
 }

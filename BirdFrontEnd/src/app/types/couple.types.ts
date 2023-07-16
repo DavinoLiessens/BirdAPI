@@ -1,39 +1,42 @@
+import { IBird } from "./bird.types";
+import { IBirdEgg } from "./birdEgg.types";
+import { PagedResponse } from "./paged-response.types";
+import { IPaginationRequest, ISearchRequest } from "./pagination.types";
+
 export interface ICouple {
     id: number;
     name: string;
-    father: string;
-    mother: string;
-    child1: string;
-    child2: string;
-    child3: string;
-    child4: string;
-    child5: string;
-    child6: string;
-    description: string;
+    startedAt: Date;
+    fatherRingNumber: string;
+    motherRingNumber: string;
+    cageNumber: number;
+    description?: string;
+    birdEggs?: IBirdEgg[];
 }
 
 export interface ICreateCoupleRequest {
     name: string;
-    father: string;
-    mother: string;
-    child1: string;
-    child2: string;
-    child3: string;
-    child4: string;
-    child5: string;
-    child6: string;
-    description: string;
+    fatherId: number;
+    motherId: number;
+    startedAt: Date;
+    cageNumber: number;
+    description?: string;
 }
 
 export interface IUpdateCoupleRequest {
-    name: string;
-    father: string;
-    mother: string;
-    child1: string;
-    child2: string;
-    child3: string;
-    child4: string;
-    child5: string;
-    child6: string;
-    description: string;
+    coupleId: number;
+    description?: string;
 }
+
+export interface ICreatedCoupleResponseModel {
+    id: number;
+    name: string;
+    startedAt: Date;
+    fatherRingNumber: string;
+    motherRingNumber: string;
+    cageNumber: number;
+    description?: string;
+}
+
+export interface IGetCouplesRequest extends IPaginationRequest, ISearchRequest {}
+export type ICouplesResponse = PagedResponse<ICouple>;

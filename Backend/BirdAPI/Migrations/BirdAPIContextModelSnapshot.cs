@@ -158,6 +158,85 @@ namespace BirdAPI.Migrations
                     b.ToTable("BreederBird");
                 });
 
+            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.CoupleAggregate.BirdEgg", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("CameOutOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CoupleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FlyOutOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LayedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RingNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoupleId");
+
+                    b.ToTable("BirdEggs");
+                });
+
+            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.CoupleAggregate.Couple", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CageNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FatherId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MotherId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FatherId");
+
+                    b.HasIndex("MotherId");
+
+                    b.ToTable("Couples");
+                });
+
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.OwnerAggregate.Owner", b =>
                 {
                     b.Property<int>("Id")
@@ -231,13 +310,13 @@ namespace BirdAPI.Migrations
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", b =>
                 {
                     b.HasOne("BirdAPI.Domain.AggregatesModel.BreederAggregate.Breeder", "Breeder")
-                        .WithMany("Birds")
+                        .WithMany()
                         .HasForeignKey("BreederId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BirdAPI.Domain.AggregatesModel.OwnerAggregate.Owner", "Owner")
-                        .WithMany("Birds")
+                        .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -266,6 +345,34 @@ namespace BirdAPI.Migrations
                     b.Navigation("Breeder");
                 });
 
+            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.CoupleAggregate.BirdEgg", b =>
+                {
+                    b.HasOne("BirdAPI.Domain.AggregatesModel.CoupleAggregate.Couple", null)
+                        .WithMany("BirdEggs")
+                        .HasForeignKey("CoupleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.CoupleAggregate.Couple", b =>
+                {
+                    b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", "Father")
+                        .WithMany()
+                        .HasForeignKey("FatherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", "Mother")
+                        .WithMany()
+                        .HasForeignKey("MotherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Father");
+
+                    b.Navigation("Mother");
+                });
+
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.OwnerAggregate.OwnerBird", b =>
                 {
                     b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", "Bird")
@@ -285,14 +392,9 @@ namespace BirdAPI.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BreederAggregate.Breeder", b =>
+            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.CoupleAggregate.Couple", b =>
                 {
-                    b.Navigation("Birds");
-                });
-
-            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.OwnerAggregate.Owner", b =>
-                {
-                    b.Navigation("Birds");
+                    b.Navigation("BirdEggs");
                 });
 #pragma warning restore 612, 618
         }
