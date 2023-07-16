@@ -17,7 +17,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
         public BirdType BirdType { get; set; }
         public DateTime BirthDate { get; set; }
         public string Color { get; set; }
-        public int CageNumber { get; set; }
+        public string CageNumber { get; set; }
         public virtual Breeder Breeder { get; set; }
         public int BreederId { get; set; }
         public virtual Owner Owner { get; set; }
@@ -30,7 +30,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
 
         }
 
-        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, int cageNumber, string description, bool isDead = false)
+        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, string cageNumber, string description, bool isDead = false)
         {
             RingNumber = ringNumber;
             Gender = gender;
@@ -58,7 +58,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             return this;
         }
 
-        public Bird UpdateBird(string ringNumber, int cageNumber, string description, bool dead)
+        public Bird UpdateBird(string ringNumber, string cageNumber, string description, bool dead)
         {
             RingNumber = ringNumber;
             CageNumber = cageNumber;

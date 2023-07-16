@@ -10,7 +10,7 @@ export interface IBird {
     birdType: string;
     birthDate: Date;
     color: string;
-    cageNumber: number;
+    cageNumber: string;
     breeder: IBreeder;
     breederId: number;
     owner: IOwner;
@@ -25,7 +25,7 @@ export interface ICreateBirdRequest {
     birdType: string;
     birthDate: number;
     color: string;
-    cageNumber: number;
+    cageNumber: string;
     breederId: number;
     ownerId: number;
     description: string;
@@ -35,7 +35,7 @@ export interface ICreateBirdRequest {
 export interface IUpdateBirdRequest {
     id: number;
     ringNumber: string;
-    cageNumber: number;
+    cageNumber: string;
     ownerId: string;
     description: string;
     isDead: boolean;
