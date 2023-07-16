@@ -73,8 +73,7 @@ export class BirdCreateComponent implements OnInit {
       breederId: this.birdForm.get('breederId').value,
       ownerId: this.birdForm.get('ownerId').value,
       description: this.birdForm.get('description').value,
-      isDead: this.birdForm.get('isDead').value,
-      isChild: this.birdForm.get('isChild').value,
+      isDead: this.birdForm.get('isDead').value
     };
 
     this.birdFacade.createBird(request);
@@ -95,10 +94,7 @@ export class BirdCreateComponent implements OnInit {
       breederId: ['', Validators.required],
       ownerId: ['', Validators.required],
       description: [''],
-      isDead: [false, Validators.required],
-      isChild: [false, Validators.required],
-      isFather: [false, Validators.required],
-      isMother: [false, Validators.required]
+      isDead: [false, Validators.required]
     });
   }
 

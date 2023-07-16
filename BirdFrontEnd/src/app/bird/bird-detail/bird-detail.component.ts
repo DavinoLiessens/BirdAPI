@@ -66,8 +66,7 @@ export class BirdDetailComponent implements OnInit {
       cageNumber: this.birdForm.get('cageNumber').value,
       ownerId: this.birdForm.get('owner').value.value,
       description: this.birdForm.get('description').value,
-      isDead: this.birdForm.get('isDead').value,
-      isChild: this.birdForm.get('isChild').value,
+      isDead: this.birdForm.get('isDead').value
     };
 
     this.birdFacade.updateBirdRequest(request);
@@ -89,10 +88,7 @@ export class BirdDetailComponent implements OnInit {
       breeder: [{ value: `${bird.breeder.firstName} ${bird.breeder.lastName}`, disabled: true }, Validators.required],
       owner: [{ name: `${bird.owner.firstName} ${bird.owner.lastName}`, value: bird.owner.id }, Validators.required],
       description: [bird.description],
-      isDead: [bird.isDead],
-      isChild: [bird.isChild],
-      isFather: [false, Validators.required],
-      isMother: [false, Validators.required]
+      isDead: [bird.isDead]
     });
 
     // set calendar value

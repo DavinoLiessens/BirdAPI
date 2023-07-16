@@ -42,8 +42,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
                                                         request.Model.Color,
                                                         request.Model.CageNumber,
                                                         request.Model.Description,
-                                                        request.Model.IsDead,
-                                                        request.Model.IsChild
+                                                        request.Model.IsDead
                                                         );
 
             // get breeder from db

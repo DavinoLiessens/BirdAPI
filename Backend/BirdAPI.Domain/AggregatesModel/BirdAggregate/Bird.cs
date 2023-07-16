@@ -24,16 +24,13 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
         public int OwnerId { get; set; }
         public string Description { get; set; }
         public bool? IsDead { get; set; }
-        public bool? IsChild { get; set; }
-        public bool? IsFather { get; set; }
-        public bool? IsMother { get; set; }
 
         protected Bird()
         {
 
         }
 
-        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, int cageNumber, string description, bool isDead = false, bool isChild = false)
+        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, int cageNumber, string description, bool isDead = false)
         {
             RingNumber = ringNumber;
             Gender = gender;
@@ -43,7 +40,6 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             CageNumber = cageNumber;
             Description = description;
             IsDead = isDead;
-            IsChild = isChild;
         }
 
         public Bird BelongsToOwner(Owner owner)
@@ -68,27 +64,6 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             CageNumber = cageNumber;
             Description = description;
             IsDead = dead;
-
-            return this;
-        }
-
-        public Bird BirdIsChild()
-        {
-            IsChild = true;
-
-            return this;
-        }
-
-        public Bird BirdIsFather()
-        {
-            IsFather = true;
-
-            return this;
-        }
-
-        public Bird BirdIsMother()
-        {
-            IsMother = true;
 
             return this;
         }

@@ -17,9 +17,6 @@ export interface IBird {
     ownerId: number;
     description: string;
     isDead: boolean;
-    isChild: boolean;
-    isFather: boolean;
-    isMother: boolean;
 }
 
 export interface ICreateBirdRequest {
@@ -33,7 +30,6 @@ export interface ICreateBirdRequest {
     ownerId: number;
     description: string;
     isDead: boolean;
-    isChild: boolean;
 }
 
 export interface IUpdateBirdRequest {
@@ -43,7 +39,6 @@ export interface IUpdateBirdRequest {
     ownerId: string;
     description: string;
     isDead: boolean;
-    isChild: boolean;
 }
 
 export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest {}

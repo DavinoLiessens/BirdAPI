@@ -55,9 +55,11 @@ namespace BirdAPI.Application.Features.Bird.Commands
                 // search for owner
                 var owner = await _context.Owners.FirstOrDefaultAsync(o => o.Id == request.Model.OwnerId);
 
-                existingBird.BelongsToOwner(owner);
+                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError($"No owner found with id '{request.Model.OwnerId}'");
 
-                // Delete old owner relation? Maybe automatic
+
+                existingBird.BelongsToOwner(owner);
             }
 
             var result = _mapper.Map<BirdResponseModel>(existingBird);
