@@ -5,8 +5,10 @@
         </div>
         <div class="page-body">
             <form *ngIf="birdForm && !(loading$ | async)" [formGroup]="birdForm">
-                <h2>Vogel aanmaken</h2>
-        
+                <div class="p-d-flex p-jc-between">
+                    <h2>Vogel aanmaken</h2>
+                    <button *ngIf="bird.coupleId" pButton type="button" class="p-button" (click)="goToCouple(bird.coupleId)" icon="pi pi-arrow-right" iconPos="right" label="Ga naar koppel"></button>    
+                </div>
                 <div class="form-group-wrapper">
                     <div class="form-group">
                         <label for="ringNumber">Ringnummer</label>

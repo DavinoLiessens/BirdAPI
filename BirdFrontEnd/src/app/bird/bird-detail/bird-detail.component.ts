@@ -23,6 +23,7 @@ export class BirdDetailComponent implements OnInit {
   public birdForm: FormGroup;
   public birdId: string;
   public owners: IOwnerDropdownOption[] = [];
+  public bird: IBird;
 
   // Observables
   public bird$: Observable<IBird> = this.birdFacade.getBird();
@@ -47,6 +48,7 @@ export class BirdDetailComponent implements OnInit {
       takeUntil(this.destroyed$),
     ).subscribe((bird: IBird) => {
       if (bird !== null && bird !== undefined) {
+        this.bird = bird;
         this.createDefaultForm(bird);        
       }
     });
@@ -75,6 +77,10 @@ export class BirdDetailComponent implements OnInit {
 
   public goBack() {
     this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  public goToCouple(coupleId: number){
+    this.router.navigate([`couples/detail/${coupleId}`]);
   }
 
   private createDefaultForm(bird: IBird): void {

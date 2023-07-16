@@ -17,5 +17,6 @@ namespace BirdAPI.Application.Features.Bird.ResponseModels
         public BirdType BirdType{ get; set; }
         public GenderType GenderType { get; set; }
         public bool Dead { get; set; }
+        public int? CoupleId { get; set; }
     }
 }
