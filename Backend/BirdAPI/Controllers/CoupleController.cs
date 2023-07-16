@@ -34,7 +34,7 @@ namespace BirdAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCouple([FromBody] CreateCoupleInputModel model)
         {
-            return new JsonContentResult<object>(await _mediator.Send(new CreateCoupleCommand(model)));
+            return new JsonContentResult<CreatedCoupleResponseModel>(await _mediator.Send(new CreateCoupleCommand(model)));
         }
 
         [HttpPut]
@@ -53,6 +53,12 @@ namespace BirdAPI.Controllers
         public async Task<IActionResult> UpdateCoupleBirdEgg([FromBody] BirdEggInputModel model)
         {
             return new JsonContentResult<BirdEggInputModel>(await _mediator.Send(new UpdateCoupleBirdEggCommand(model)));
+        }
+
+        [HttpGet("{coupleId}/birdEggs/{birdEggId}")]
+        public async Task<IActionResult> GetCoupleBirdEgg(int coupleId, int birdEggId)
+        {
+            return new JsonContentResult<BirdEggResponseModel>(await _mediator.Send(new GetCoupleBirdEggQuery(coupleId, birdEggId)));
         }
     }
 }

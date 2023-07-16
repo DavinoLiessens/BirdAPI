@@ -17,6 +17,11 @@ export const selectLoadingDetail = createSelector(
     (state: ICoupleState) => state.loadingDetail,
 );
 
+export const selectLoadingModal = createSelector(
+    selectCoupleState,
+    (state: ICoupleState) => state.loadingModal,
+);
+
 export const selectPagination = createSelector(
     selectCoupleState,
     (state: ICoupleState) => state.pagination,
@@ -30,4 +35,9 @@ export const selectCouples = createSelector(
 export const selectCouple = createSelector(
     selectCoupleState,
     (state: ICoupleState) => state.coupleDetail
+);
+
+export const selectCoupleBirdEgg = createSelector(
+    selectCoupleState,
+    (state: ICoupleState) => state.birdEggDetail
 );

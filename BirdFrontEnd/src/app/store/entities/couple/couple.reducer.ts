@@ -76,11 +76,62 @@ const reducer = createReducer(
         };
     }),
 
+    // create birdegg modal
+    on(actions.createBirdEgg, (state) => {
+        return {
+            ...state,
+            loadingModal: true
+        };
+    }),
+    on(actions.createBirdEggSuccess, (state) => {
+        return {
+            ...state,
+            loadingModal: false
+        };
+    }),
+    on(actions.createBirdEggError, (state) => {
+        return {
+            ...state,
+            loadingModal: false
+        };
+    }),
+
+    // GET Couple BirdEgg
+    on(actions.getBirdEgg, (state) => {
+        return {
+            ...state,
+            loadingModal: true,
+        };
+    }),
+    on(actions.getBirdEggSuccess, (state, { response }) => {
+        return {
+            ...state,
+            loadingModal: false,
+            birdEggDetail: response,
+            errors: null
+        };
+    }),
+    on(actions.getBirdEggError, (state, { error }) => {
+        return {
+            ...state,
+            loadingModal: false,
+            errors: error
+        };
+    }),
+
     // Clear detail
     on(actions.clearCoupleDetail, (state) => {
         return {
             ...state,
             coupleDetail: null
+        }
+    }),
+
+    // Clear detail
+    on(actions.clearBirdEggDetail, (state) => {
+        return {
+            ...state,
+            birdEggDetail: null
         }
     }),
 );

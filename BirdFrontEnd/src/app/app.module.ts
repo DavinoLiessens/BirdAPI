@@ -1,6 +1,7 @@
 // *** MODULES ***
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +36,10 @@ import { CoupleComponent } from './couple/couple.component';
 import { CoupleCreateComponent } from './couple/couple-create/couple-create.component';
 import { CoupleDetailComponent } from './couple/couple-detail/couple-detail.component';
 
+// *** MODALS ***
+import { BirdEggCreateModal } from './couple/birdegg-create-modal/birdegg-create-modal';
+import { BirdEggUpdateModal } from './couple/birdegg-update-modal/birdegg-update-modal';
+
 // *** STORE CONFIG ***
 import { AppStoreModule } from './store/store.module';
 import { CoreStoreModule } from './store/entities/store.module';
@@ -56,6 +61,8 @@ import { BaseService } from './Services/base.service';
     BreederComponent,
     BreederCreateComponent,
     BreederDetailComponent,
+    BirdEggCreateModal,
+    BirdEggUpdateModal,
     LoaderComponent
   ],
   imports: [
@@ -68,6 +75,7 @@ import { BaseService } from './Services/base.service';
     }),
     BrowserModule,
     BrowserAnimationsModule,
+    DynamicDialogModule,
     HttpClientModule,
     AppRoutingModule,
     ToolbarModule,
@@ -87,7 +95,7 @@ import { BaseService } from './Services/base.service';
     InputMaskModule,
     ProgressSpinnerModule
   ],
-  providers: [BaseService],
+  providers: [BaseService, DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

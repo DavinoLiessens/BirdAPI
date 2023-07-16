@@ -1,0 +1,28 @@
+<div class="modal-body">
+    <form [formGroup]="birdEggForm" *ngIf="birdEggForm && !(loading$ | async)">
+        <div class="form-group">
+            <label for="name">Datum gelegd</label>
+            <p-calendar formControlName="layedOn" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+        </div>
+        
+        <div class="form-group">
+            <label for="name">Datum uitgekomen</label>
+            <p-calendar formControlName="cameOutOn" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+        </div>
+        
+        <div class="form-group">
+            <label for="name">Datum uitgevlogen</label>
+            <p-calendar formControlName="flyOutOn" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+        </div>
+        
+        <div class="form-group">
+            <label for="ringNumber">Ringnummer</label>
+            <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber">
+        </div>
+
+        <div class="form-footer">
+            <button pButton type="submit" (click)="handleSubmit()" [disabled]="!birdEggForm.valid" label="Opslaan"></button>
+        </div>                      
+    </form>
+    <c-loader *ngIf="loading$ | async"></c-loader>
+</div>

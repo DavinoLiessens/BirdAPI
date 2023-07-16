@@ -10,6 +10,5 @@ namespace BirdAPI.Application.Features.Couple.Commands.InputModels
         public int FatherId { get; set; }
         public int MotherId { get; set; }
         public string Description { get; set; }
-        public List<BirdEgg> BirdEggs { get; set; }
     }
 }

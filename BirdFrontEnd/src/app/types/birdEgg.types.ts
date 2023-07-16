@@ -3,8 +3,13 @@ export interface IBirdEgg {
     layedOn: Date; // eitje gelegt op
     cameOutOn?: Date; // eitje uitgekomen op
     ringNumber?: string; // ringnummer
-    flyOutOn?: string; // Vogeltje uitgevlogen op
+    flyOutOn?: Date; // Vogeltje uitgevlogen op
     coupleId: number;
+}
+
+export interface IBirdEggRequest {
+    coupleId: number;
+    birdEggId: number;
 }
 
 export interface ICreateBirdEggRequest {

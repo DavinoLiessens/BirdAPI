@@ -46,6 +46,76 @@
                     <button pButton type="submit" (click)="onSubmit()" [disabled]="!coupleForm.valid" label="Opslaan"></button>
                 </div>                      
             </form>
+
+            <!-- Bird eggs -->
+            <div class="birdeggs p-mt-5" *ngIf="couple?.birdEggs">
+                <p-table #dt1 [value]="couple?.birdEggs" dataKey="id"
+                [rows]="10" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
+                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-jc-between">
+                        <span class="p-input-icon-left" style="margin-left: 20px;">
+                            <i class="pi pi-search"></i>
+                            <input type="text" pInputText placeholder="Zoek ei" />
+                        </span>
+                        <button pButton pRipple type="button" label="Ei toevoegen" icon="pi pi-plus" class="detail-button" style="margin-left: 5px;" (click)="openModal(couple.id)"></button>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Datum gelegd
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Datum uitgekomen 
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Ringnummer
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Datum uitgevlogen
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Opties
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-egg>
+                    <tr>
+                        <td>
+                            <p>{{egg.layedOn | date: 'dd/MM/yyyy' }}</p>
+                        </td>
+                        <td>
+                            <p>{{egg.cameOutOn | date: 'dd/MM/yyyy' }}</p>
+                        </td>
+                        <td>
+                            <p>{{egg.ringNumber}}</p>
+                        </td>
+                        <td>
+                            <p>{{egg.flyOutOn | date: 'dd/MM/yyyy' }}</p>
+                        </td>                       
+                        <td>
+                            <button pButton pRipple type="button" label="" icon="pi pi-pencil" class="detail-button" style="margin-left: 5px;" (click)="openUpdateModal(egg.id, couple.id)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Geen ei gevonden.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            </div>
             <div class="p-mt-4">
                 <c-loader *ngIf="loading$ | async"></c-loader>
             </div>

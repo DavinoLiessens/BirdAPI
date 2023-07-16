@@ -1,8 +1,6 @@
-﻿using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
-
-namespace BirdAPI.Application.Features.Couple.ResponseModels
+﻿namespace BirdAPI.Application.Features.Couple.ResponseModels
 {
-    public class CoupleResponseModel
+    public class CreatedCoupleResponseModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -11,6 +9,5 @@ namespace BirdAPI.Application.Features.Couple.ResponseModels
         public string MotherRingNumber { get; set; }
         public string FatherRingNumber { get; set; }
         public string Description { get; set; }
-        public List<BirdEgg> BirdEggs{ get; set; }
     }
 }

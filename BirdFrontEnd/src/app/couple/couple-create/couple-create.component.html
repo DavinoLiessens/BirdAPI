@@ -4,7 +4,7 @@
             <h1>Couple management</h1>
         </div>
         <div class="page-body">
-            <form [formGroup]="coupleForm" *ngIf="coupleForm">
+            <form [formGroup]="coupleForm" *ngIf="coupleForm && birds$ | async">
                 <h2>Koppel aanmaken</h2>
                 <div class="grid">
                     <div class="p-d-flex p-flex-column p-col-3">
@@ -25,13 +25,13 @@
                     </div>            
                     <div class="p-d-flex p-jc-between couple-parents">
                         <div class="p-d-flex p-flex-column p-col-4">
-                            <label for="father">Vader</label>
-                            <input pInputText type="text" class="form-control" formControlName="fatherId" id="father">
+                            <label for="fatherId">Vader</label>
+                            <p-dropdown [options]="maleBirds" [filter]="true" filterBy="type" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een man..." optionLabel="type" optionValue="value" formControlName="fatherId"></p-dropdown>                
                         </div>
                         <div class="p-d-flex p-ai-center p-jc-center p-col-4"><i class="pi pi-minus p-mt-4"></i></div>
                         <div class="p-d-flex p-flex-column p-col-4">
-                            <label for="mother">Moeder</label>
-                            <input pInputText type="text" class="form-control" formControlName="motherId" id="mother">
+                            <label for="motherId">Moeder</label>
+                            <p-dropdown [options]="femaleBirds" [filter]="true" filterBy="type" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een pop..." optionLabel="type" optionValue="value" formControlName="motherId"></p-dropdown>                
                         </div>  
                     </div>
     

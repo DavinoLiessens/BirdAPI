@@ -11,7 +11,7 @@ export interface ICouple {
     motherRingNumber: string;
     cageNumber: number;
     description?: string;
-    eggs?: IBirdEgg[];
+    birdEggs?: IBirdEgg[];
 }
 
 export interface ICreateCoupleRequest {
@@ -25,7 +25,16 @@ export interface ICreateCoupleRequest {
 
 export interface IUpdateCoupleRequest {
     coupleId: number;
-    birdEggs?: IBirdEgg[];
+    description?: string;
+}
+
+export interface ICreatedCoupleResponseModel {
+    id: number;
+    name: string;
+    startedAt: Date;
+    fatherRingNumber: string;
+    motherRingNumber: string;
+    cageNumber: number;
     description?: string;
 }
 

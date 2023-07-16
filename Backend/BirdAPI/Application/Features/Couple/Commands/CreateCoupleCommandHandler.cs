@@ -1,4 +1,6 @@
-﻿using BirdAPI.Application.Features.Couple.Queries;
+﻿using AutoMapper;
+using BirdAPI.Application.Features.Couple.Queries;
+using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
 using MediatR;
@@ -7,23 +9,24 @@ using System.Net;
 
 namespace BirdAPI.Application.Features.Couple.Commands
 {
-    public class CreateCoupleCommandHandler : IRequestHandler<CreateCoupleCommand, BaseResponse<object>>
+    public class CreateCoupleCommandHandler : IRequestHandler<CreateCoupleCommand, BaseResponse<CreatedCoupleResponseModel>>
     {
         private readonly BirdAPIContext _context;
+        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public CreateCoupleCommandHandler(BirdAPIContext context, IMediator mediator)
+        public CreateCoupleCommandHandler(BirdAPIContext context, IMapper mapper)
         {
             _context = context;
-            _mediator = mediator;
+            _mapper = mapper;
         }
 
-        public async Task<BaseResponse<object>> Handle(CreateCoupleCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<CreatedCoupleResponseModel>> Handle(CreateCoupleCommand request, CancellationToken cancellationToken)
         {
             // Validation
             if (String.IsNullOrEmpty(request.Model.Name))
             {
-                return new BaseResponse<object>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<CreatedCoupleResponseModel>(false, HttpStatusCode.BadRequest)
                     .AddError($"Validation Error: Couple name is required!");
             }
 
@@ -31,7 +34,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
 
             if (father == null)
             {
-                return new BaseResponse<object>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<CreatedCoupleResponseModel>(false, HttpStatusCode.BadRequest)
                     .AddError($"No bird found with id {request.Model.FatherId}");
             }
 
@@ -39,7 +42,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
 
             if (mother == null)
             {
-                return new BaseResponse<object>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<CreatedCoupleResponseModel>(false, HttpStatusCode.BadRequest)
                     .AddError($"No bird found with id {request.Model.MotherId}");
             }
 
@@ -51,10 +54,14 @@ namespace BirdAPI.Application.Features.Couple.Commands
                                                                               request.Model.CageNumber,
                                                                               request.Model.Description);
 
+
             await _context.Couples.AddAsync(newCouple);
             await _context.SaveChangesAsync();
 
-            return new BaseResponse<object>(_mediator.Send(new GetCoupleQuery(newCouple.Id)));
+            var result = _mapper.Map<Domain.AggregatesModel.CoupleAggregate.Couple, CreatedCoupleResponseModel>(newCouple);
+            result.Id = newCouple.Id;
+
+            return new BaseResponse<CreatedCoupleResponseModel>(result);
 
         }
     }

@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { IBirdEgg, IBirdEggRequest, ICreateBirdEggRequest, IUpdateBirdEggRequest } from "../types/birdEgg.types";
 import { ICouple, ICouplesResponse, ICreateCoupleRequest, IGetCouplesRequest, IUpdateCoupleRequest } from "../types/couple.types";
 import { BaseService } from "./base.service";
 
@@ -26,5 +27,16 @@ import { BaseService } from "./base.service";
       return this.baseService.put(`/couples`, request) as Observable<null>;
     }
 
+    public createBirdEgg(request: ICreateBirdEggRequest): Observable<null> {
+      return this.baseService.post(`/couples/birdEggs`, request) as Observable<null>;
+    }  
+
+    public updateBirdEgg(request: IUpdateBirdEggRequest): Observable<null> {
+      return this.baseService.put(`/couples/birdEggs`, request) as Observable<null>;
+    } 
+    
+    public getCoupleBirdEgg(request: IBirdEggRequest): Observable<IBirdEgg> {
+      return this.baseService.get(`/couples/${request.coupleId}/birdEggs/${request.birdEggId}`) as Observable<IBirdEgg>;
+    }
   }
   

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { IBirdEgg, IBirdEggRequest, ICreateBirdEggRequest, IUpdateBirdEggRequest } from 'src/app/types/birdEgg.types';
 import { ICouple, ICouplesResponse, ICreateCoupleRequest, IGetCouplesRequest, IUpdateCoupleRequest } from 'src/app/types/couple.types';
 import { IPagination } from 'src/app/types/pagination.types';
 import { IAppState } from '../../store.interface';
@@ -36,8 +37,20 @@ export class CoupleFacade {
         return this.store.select(selectors.selectLoadingDetail);
     }
 
+    public getLoadingModal(): Observable<boolean> {
+        return this.store.select(selectors.selectLoadingModal);
+    }
+
+    public getBirdEgg(): Observable<IBirdEgg> {
+        return this.store.select(selectors.selectCoupleBirdEgg);
+    }
+
     public clearDetail(): void {
         this.store.dispatch(actions.clearCoupleDetail());
+    }
+
+    public clearBirdEggDetail(): void {
+        this.store.dispatch(actions.clearBirdEggDetail());
     }
 
     // Actions
@@ -53,6 +66,18 @@ export class CoupleFacade {
         this.store.dispatch(actions.createCouple({ request }));
     }
 
+    public createBirdEgg(request: ICreateBirdEggRequest): void {
+        this.store.dispatch(actions.createBirdEgg({ request }));
+    }
+
+    public updateBirdEggRequest(request: IUpdateBirdEggRequest): void {
+        this.store.dispatch(actions.updateBirdEgg({ request }));
+    }
+
+    public getBirdEggRequest(request: IBirdEggRequest): void {
+        this.store.dispatch(actions.getBirdEgg({ request }));
+    }
+
     public updateCoupleRequest(request: IUpdateCoupleRequest): void {
         this.store.dispatch(actions.updateCouple({ request }));
     }
@@ -66,11 +91,27 @@ export class CoupleFacade {
         return this.action$.pipe(ofType(actions.createCoupleError.type));
     }
 
+    public onCreateBirdEggSuccess(): Observable<ICouple> {
+        return this.action$.pipe(ofType(actions.createBirdEggSuccess.type));
+    }
+
+    public onCreateBirdEggError(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.createBirdEggError.type));
+    }
+
     public onUpdateCoupleSuccess(): Observable<ActionsSubject> {
         return this.action$.pipe(ofType(actions.updateCoupleSuccess.type));
     }
 
     public onUpdateCoupleError(): Observable<ActionsSubject> {
         return this.action$.pipe(ofType(actions.updateCoupleError.type));
+    }
+
+    public onUpdateBirdEggSuccess(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.updateBirdEggSuccess.type));
+    }
+
+    public onUpdateBirdEggError(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.updateBirdEggError.type));
     }
 }
