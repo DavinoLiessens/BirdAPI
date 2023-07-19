@@ -9,6 +9,6 @@ namespace BirdAPI.Application.Features.Bird.Commands.InputModels
         public string CageNumber { get; set; }
         public int OwnerId { get; set; }
         public string Description { get; set; }
-        public bool Dead { get; set; }
+        public bool isDead { get; set; }
     }
 }

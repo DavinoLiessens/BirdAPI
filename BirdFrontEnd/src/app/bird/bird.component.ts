@@ -46,6 +46,8 @@ export class BirdComponent implements OnInit {
         const search = searchValue.toLowerCase();
         this.birds = this.birds.filter(b => b.breeder.firstName.toLowerCase().includes(search) ||
                                b.breeder.lastName.toLowerCase().includes(search) ||
+                               b.owner.firstName.toLowerCase().includes(search) ||
+                               b.owner.lastName.toLowerCase().includes(search) ||
                                b.ringNumber.toLowerCase().includes(search) || 
                                b.cageNumber.toLowerCase() === search);
       }

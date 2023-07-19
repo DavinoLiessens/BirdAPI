@@ -48,7 +48,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             existingBird.UpdateBird(request.Model.RingNumber,
                                           request.Model.CageNumber,
                                           request.Model.Description,
-                                          request.Model.Dead);
+                                          request.Model.isDead);
 
             if (request.Model.OwnerId != existingBird.OwnerId)
             {
