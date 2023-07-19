@@ -66,7 +66,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-bird>
-            <tr>
+            <tr [ngClass]="{ 'is-dead': bird.isDead }">
                 <td>
                     <p>{{ bird.ringNumber }}</p>
                 </td>
