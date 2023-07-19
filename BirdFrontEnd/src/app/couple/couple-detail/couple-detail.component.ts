@@ -74,7 +74,6 @@ export class CoupleDetailComponent implements OnInit {
       description: this.coupleForm.get('description').value,
     };
 
-    console.log(request);
     this.coupleFacade.updateCoupleRequest(request);
   }
 

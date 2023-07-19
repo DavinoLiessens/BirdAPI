@@ -30,14 +30,12 @@ export class BirdEggUpdateModal implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-        console.log(this.config.data.request);
         // get birdEgg with id
         this.coupleFacade.getBirdEggRequest(this.config.data.request);
 
         this.birdEgg$.pipe(
             takeUntil(this.destroyed$),
         ).subscribe((birdEgg: IBirdEgg) => {
-            console.log(birdEgg);
             if (birdEgg !== null && birdEgg !== undefined) {
                 this.birdEgg = birdEgg;
                 this.createForm(birdEgg);
@@ -56,9 +54,7 @@ export class BirdEggUpdateModal implements OnInit {
             cameOutOn: cameOutOn !== '' ? cameOutOn : null,
             flyOutOn:  flyOutOn !== '' ? flyOutOn : null,
             ringNumber:  ringNumber !== '' ? ringNumber : null
-        };
-        
-        console.log(request);
+        };       
         
         // facade update Birdegg
         this.coupleFacade.updateBirdEggRequest(request);

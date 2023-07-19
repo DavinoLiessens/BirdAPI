@@ -42,7 +42,6 @@ export class OwnerComponent implements OnInit {
       takeUntil(this.destroyed$),
       debounceTime(500)
     ).subscribe((searchValue: string) => {
-      console.log(searchValue);
       if (searchValue !== null && searchValue !== undefined && searchValue !== "") {
         const search = searchValue.toLowerCase();
         this.owners = this.owners.filter(b => b.firstName.toLowerCase().includes(search) ||
