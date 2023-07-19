@@ -21,9 +21,9 @@ namespace BirdAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBirds(int? page, int? pageSize)
+        public async Task<IActionResult> GetBirds(int? page, int? pageSize, string? searchValue)
         {
-            return new JsonContentResult<PagedResponse<BirdResponseModel>>(await _mediator.Send(new GetBirdsQuery(page, pageSize)));
+            return new JsonContentResult<PagedResponse<BirdResponseModel>>(await _mediator.Send(new GetBirdsQuery(page, pageSize, searchValue)));
         }
 
         [HttpGet("{birdId}")]

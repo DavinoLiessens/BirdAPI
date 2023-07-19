@@ -9,7 +9,7 @@ export interface ICouple {
     startedAt: Date;
     fatherRingNumber: string;
     motherRingNumber: string;
-    cageNumber: number;
+    cageNumber: string;
     description?: string;
     birdEggs?: IBirdEgg[];
 }
@@ -19,7 +19,7 @@ export interface ICreateCoupleRequest {
     fatherId: number;
     motherId: number;
     startedAt: Date;
-    cageNumber: number;
+    cageNumber: string;
     description?: string;
 }
 
@@ -34,7 +34,7 @@ export interface ICreatedCoupleResponseModel {
     startedAt: Date;
     fatherRingNumber: string;
     motherRingNumber: string;
-    cageNumber: number;
+    cageNumber: string;
     description?: string;
 }
 
