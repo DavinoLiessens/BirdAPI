@@ -6,15 +6,7 @@
             <div class="p-d-flex">
                 <span class="p-input-icon-left" style="margin-left: 20px;">
                     <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Zoek Kweker" />
-                </span>   
-                <span class="p-input-icon-left" style="margin-left: 20px;">
-                    <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Zoek Ringnummer" />
-                </span> 
-                <span class="p-input-icon-left" style="margin-left: 20px;">
-                    <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Zoek Kotnummer" />
+                    <input type="text" pInputText placeholder="Zoek Kweker, Eigenaar, Ringnummer of Kot" (keyup)="onSearch($event.target.value)" [style]="{'width':'400px'}"/>
                 </span>
             </div>
             
@@ -63,7 +55,7 @@
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Edit
+                        Bewerk
                     </div>
                 </th>
                 <!-- <th>
@@ -74,7 +66,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-bird>
-            <tr>
+            <tr [ngClass]="{ 'is-dead': bird.isDead }">
                 <td>
                     <p>{{ bird.ringNumber }}</p>
                 </td>
@@ -100,7 +92,7 @@
                     <p>{{ bird.cageNumber }}</p>
                 </td>
                 <td>
-                    <button pButton pRipple type="button" label="Bewerk" class="p-button-raised" style="margin-left: 10px;" routerLink="/birds/detail/{{bird.id}}"></button>
+                    <button pButton pRipple type="button" label="Detail" class="p-button-raised" style="margin-left: 10px;" routerLink="/birds/detail/{{bird.id}}"></button>
                 </td>
                 <!-- <td>
                     <button pButton pRipple type="button" label="Verwijder" class="p-button-danger" style="margin-left: 5px;" (click)="DeleteBird(bird.id)"></button>
