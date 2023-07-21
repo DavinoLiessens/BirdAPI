@@ -10,16 +10,13 @@ export interface IBird {
     birdType: string;
     birthDate: Date;
     color: string;
-    cageNumber: number;
+    cageNumber: string;
     breeder: IBreeder;
     breederId: number;
     owner: IOwner;
     ownerId: number;
     description: string;
     isDead: boolean;
-    isChild: boolean;
-    isFather: boolean;
-    isMother: boolean;
 }
 
 export interface ICreateBirdRequest {
@@ -28,22 +25,20 @@ export interface ICreateBirdRequest {
     birdType: string;
     birthDate: number;
     color: string;
-    cageNumber: number;
+    cageNumber: string;
     breederId: number;
     ownerId: number;
     description: string;
     isDead: boolean;
-    isChild: boolean;
 }
 
 export interface IUpdateBirdRequest {
     id: number;
     ringNumber: string;
-    cageNumber: number;
+    cageNumber: string;
     ownerId: string;
     description: string;
     isDead: boolean;
-    isChild: boolean;
 }
 
 export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest {}

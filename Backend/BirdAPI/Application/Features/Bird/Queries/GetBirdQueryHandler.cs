@@ -37,6 +37,17 @@ namespace BirdAPI.Application.Features.Bird.Queries
 
             var result = _mapper.Map<BirdResponseModel>(existingBird);
 
+            // set CoupleId if bird has a couple
+            if (await _context.BirdEggs.AnyAsync(be => be.RingNumber == existingBird.RingNumber))
+            {
+                var coupleIdForBird = await _context.BirdEggs
+                                                        .Where(be => be.RingNumber == existingBird.RingNumber)
+                                                        .Select(be => be.CoupleId)
+                                                        .FirstOrDefaultAsync();
+
+                result.CoupleId = coupleIdForBird;
+            }
+
             return new BaseResponse<BirdResponseModel>(result);
         }
     }

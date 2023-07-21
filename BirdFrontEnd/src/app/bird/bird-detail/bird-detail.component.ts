@@ -23,6 +23,7 @@ export class BirdDetailComponent implements OnInit {
   public birdForm: FormGroup;
   public birdId: string;
   public owners: IOwnerDropdownOption[] = [];
+  public bird: IBird;
 
   // Observables
   public bird$: Observable<IBird> = this.birdFacade.getBird();
@@ -47,6 +48,7 @@ export class BirdDetailComponent implements OnInit {
       takeUntil(this.destroyed$),
     ).subscribe((bird: IBird) => {
       if (bird !== null && bird !== undefined) {
+        this.bird = bird;
         this.createDefaultForm(bird);        
       }
     });
@@ -66,8 +68,7 @@ export class BirdDetailComponent implements OnInit {
       cageNumber: this.birdForm.get('cageNumber').value,
       ownerId: this.birdForm.get('owner').value.value,
       description: this.birdForm.get('description').value,
-      isDead: this.birdForm.get('isDead').value,
-      isChild: this.birdForm.get('isChild').value,
+      isDead: this.birdForm.get('isDead').value
     };
 
     this.birdFacade.updateBirdRequest(request);
@@ -76,6 +77,10 @@ export class BirdDetailComponent implements OnInit {
 
   public goBack() {
     this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  public goToCouple(coupleId: number){
+    this.router.navigate([`couples/detail/${coupleId}`]);
   }
 
   private createDefaultForm(bird: IBird): void {
@@ -89,10 +94,7 @@ export class BirdDetailComponent implements OnInit {
       breeder: [{ value: `${bird.breeder.firstName} ${bird.breeder.lastName}`, disabled: true }, Validators.required],
       owner: [{ name: `${bird.owner.firstName} ${bird.owner.lastName}`, value: bird.owner.id }, Validators.required],
       description: [bird.description],
-      isDead: [bird.isDead],
-      isChild: [bird.isChild],
-      isFather: [false, Validators.required],
-      isMother: [false, Validators.required]
+      isDead: [bird.isDead]
     });
 
     // set calendar value

@@ -46,7 +46,7 @@
     
                     <div class="form-group">
                         <label for="cageNumber">Kotnummer</label>
-                        <p-inputNumber type="number" [style]="{'width':'100%'}" class="form-control" formControlName="cageNumber" id="cageNumber" [showButtons]="true" placeholder="1"></p-inputNumber>
+                        <input pInputText type="text" class="form-control" formControlName="cageNumber" id="cageNumber" placeholder="A1">
                     </div>
                 </div>
 
@@ -71,10 +71,6 @@
                         <div class="p-d-flex p-mt-2">
                             <label class="p-mr-2" [style]="{'width':'50px'}" for="isDead">Dood</label>
                             <p-checkbox formControlName="isDead" binary="true"></p-checkbox>
-                        </div>
-                        <div class="p-d-flex p-mt-2">
-                            <label class="p-mr-2" [style]="{'width':'50px'}" for="isChild">Jong</label>
-                            <p-checkbox formControlName="isChild" binary="true"></p-checkbox>    
                         </div>
                     </div>
                 </div>

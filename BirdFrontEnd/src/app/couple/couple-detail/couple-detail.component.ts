@@ -28,7 +28,7 @@ export class CoupleDetailComponent implements OnInit {
   public coupleId: string;
   public coupleForm: FormGroup;
   public couple: ICouple;
-  
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
@@ -66,7 +66,6 @@ export class CoupleDetailComponent implements OnInit {
     // handle success and errors
     this.handleSuccesses();
     this.handleErrors();
-
   }
 
   public onSubmit() {
@@ -75,7 +74,6 @@ export class CoupleDetailComponent implements OnInit {
       description: this.coupleForm.get('description').value,
     };
 
-    console.log(request);
     this.coupleFacade.updateCoupleRequest(request);
   }
 
@@ -114,14 +112,14 @@ export class CoupleDetailComponent implements OnInit {
 
   public openModal(coupleId: number) {
     // open modal and pass id
-    const ref = this.dialogService.open(BirdEggCreateModal, { 
+    const ref = this.dialogService.open(BirdEggCreateModal, {
       header: 'Ei toevoegen',
       width: '70%',
       height: 'auto',
       data: {
-          coupleId
+        coupleId
       }
-  });
+    });
   }
 
   public openUpdateModal(birdEggId: number, coupleId: number) {
@@ -131,18 +129,18 @@ export class CoupleDetailComponent implements OnInit {
     };
 
     // open update modal
-    var ref: DynamicDialogRef = this.dialogService.open(BirdEggUpdateModal, { 
+    var ref: DynamicDialogRef = this.dialogService.open(BirdEggUpdateModal, {
       header: 'Ei bewerken',
       width: '70%',
       height: 'auto',
       data: {
-          request
+        request
       }
     });
 
     ref.onClose.subscribe(() => {
       this.coupleFacade.clearBirdEggDetail();
     });
-    
+
   }
 }

@@ -14,7 +14,6 @@ const reducer = createReducer(
         };
     }),
     on(actions.getCouplesSuccess, (state, { couples }) => {
-        console.log(couples);
         return {
             ...state,
             couples: couples.results,
