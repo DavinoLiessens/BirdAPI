@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BirdAPIContext>(options =>
 {
-    options.UseSqlServer("Server=app-bird-platform-server.mysql.database.azure.com;Database=app-bird-platform-database;User Id=chscdripmq;Password=T68PY38G02U4D355$", sqloptions =>
+    options.UseSqlServer("AZURE_MYSQL_CONNECTIONSTRING", sqloptions =>
     {
         sqloptions.MigrationsAssembly(typeof(Program).Assembly.GetName().Name);
         sqloptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
