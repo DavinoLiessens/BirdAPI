@@ -20,9 +20,9 @@ namespace BirdAPI.Domain.AggregatesModel.BreederAggregate
 
         }
 
-        public BreederBird(int breederId, Bird bird) : this()
+        public BreederBird(Breeder breeder, Bird bird) : this()
         {
-            BreederId = breederId;
+            Breeder = breeder;
             Bird = bird;
         }
     }

@@ -15,9 +15,9 @@ namespace BirdAPI.Domain.AggregatesModel.OwnerAggregate
 
         }
 
-        public OwnerBird(int ownerId, Bird bird)
+        public OwnerBird(Owner owner, Bird bird)
         {
-            OwnerId = ownerId;
+            Owner = owner;
             Bird = bird;
         }
     }
