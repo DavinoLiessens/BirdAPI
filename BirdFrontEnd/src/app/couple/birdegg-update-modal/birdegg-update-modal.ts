@@ -63,7 +63,7 @@ export class BirdEggUpdateModal implements OnInit {
             takeUntil(this.destroyed$),
         ).subscribe(() => {
             // add toastr message
-            this.toastrService.success('Ei aangemaakt!', 'Gelukt', {
+            this.toastrService.success('Ei aangepast!', 'Gelukt', {
                 timeOut: 6000,
             });
 
