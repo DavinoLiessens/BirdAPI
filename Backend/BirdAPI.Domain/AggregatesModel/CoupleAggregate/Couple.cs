@@ -18,9 +18,13 @@ namespace BirdAPI.Domain.AggregatesModel.CoupleAggregate
         public readonly List<BirdEgg> _birdEggs;
         public virtual IReadOnlyCollection<BirdEgg> BirdEggs => _birdEggs;
 
+        public readonly List<CoupleBird> _birdCouples;
+        public virtual IReadOnlyCollection<CoupleBird> BirdCouples => _birdCouples;
+
         protected Couple() : base()
         {
             _birdEggs = new List<BirdEgg>();
+            _birdCouples = new List<CoupleBird>();
         }
 
         public Couple(string name, Bird father, Bird mother, DateTime startedAt, string cageNumber, string description) : this()
