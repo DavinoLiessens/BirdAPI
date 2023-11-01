@@ -29,7 +29,7 @@ namespace BirdAPI.Controllers
         [HttpGet("{birdId}")]
         public async Task<IActionResult> GetBird(int birdId)
         {
-            return new JsonContentResult<BirdResponseModel>(await _mediator.Send(new GetBirdQuery(birdId)));
+            return new JsonContentResult<BirdDetailResponseModel>(await _mediator.Send(new GetBirdQuery(birdId)));
         }
 
         [HttpPost]

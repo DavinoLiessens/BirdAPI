@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IBird, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
 
 // GET all birds
 // TODO add request for search and pagination
@@ -9,7 +9,7 @@ export const getBirdsError = createAction('[Bird] GET All Birds Error', props<{ 
 
 // GET bird
 export const getBird = createAction('[Bird] GET Bird', props<{ birdId: number }>());
-export const getBirdSuccess = createAction('[Bird] GET Bird Success', props<{ birdDetail: IBird }>());
+export const getBirdSuccess = createAction('[Bird] GET Bird Success', props<{ birdDetail: IBirdDetail }>());
 export const getBirdError = createAction('[Bird] GET Bird Error', props<{ error: any }>());
 
 // CREATE bird

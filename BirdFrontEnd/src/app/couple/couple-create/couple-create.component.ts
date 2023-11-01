@@ -105,8 +105,9 @@ export class CoupleCreateComponent implements OnInit, OnDestroy {
         this.maleBirds = [];
         this.femaleBirds = [];
 
-        const males = birds.filter(b => b.gender === "MALE");
-        const females = birds.filter(b => b.gender === "FEMALE");
+        // get seperate list of birds that are NOT dead!
+        const males = birds.filter(b => b.gender === "MALE" && !b.isDead);
+        const females = birds.filter(b => b.gender === "FEMALE" && !b.isDead);
 
         males.forEach((bird: IBird) => {
           const existingBird = this.maleBirds.find(b => b.id === bird.id);

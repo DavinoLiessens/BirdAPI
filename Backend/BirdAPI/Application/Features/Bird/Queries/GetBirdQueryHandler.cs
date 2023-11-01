@@ -8,7 +8,7 @@ using System.Net;
 
 namespace BirdAPI.Application.Features.Bird.Queries
 {
-    public class GetBirdQueryHandler : IRequestHandler<GetBirdQuery, BaseResponse<BirdResponseModel>>
+    public class GetBirdQueryHandler : IRequestHandler<GetBirdQuery, BaseResponse<BirdDetailResponseModel>>
     {
         private readonly BirdAPIContext _context;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<BirdResponseModel>> Handle(GetBirdQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<BirdDetailResponseModel>> Handle(GetBirdQuery request, CancellationToken cancellationToken)
         {
             // get breeder from request
             var existingBird = await _context.Birds
@@ -31,24 +31,25 @@ namespace BirdAPI.Application.Features.Bird.Queries
 
             if (existingBird == null)
             {
-                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<BirdDetailResponseModel>(false, HttpStatusCode.BadRequest)
                     .AddError($"Bird with id '{request.BirdId}' does not exist");
             }
 
-            var result = _mapper.Map<BirdResponseModel>(existingBird);
+            var result = _mapper.Map<BirdDetailResponseModel>(existingBird);
 
-            // set CoupleId if bird has a couple
-            if (await _context.BirdEggs.AnyAsync(be => be.RingNumber == existingBird.RingNumber))
-            {
-                var coupleIdForBird = await _context.BirdEggs
-                                                        .Where(be => be.RingNumber == existingBird.RingNumber)
-                                                        .Select(be => be.CoupleId)
-                                                        .FirstOrDefaultAsync();
+            // add couples to model
+            var coupleMatchesForBird = await _context.BirdCouples
+                                                        .Include(bc => bc.Couple)
+                                                        .ThenInclude(c => c.Father)
+                                                        .Include(bc => bc.Couple)
+                                                        .ThenInclude(c => c.Mother)
+                                                        .Where(bc => bc.BirdId == request.BirdId)
+                                                        .Select(bc => bc.Couple)
+                                                        .ToListAsync();
 
-                result.CoupleId = coupleIdForBird;
-            }
+            result.BirdCouples = _mapper.Map<List<BirdCoupleResponseModel>>(coupleMatchesForBird);
 
-            return new BaseResponse<BirdResponseModel>(result);
+            return new BaseResponse<BirdDetailResponseModel>(result);
         }
     }
 }

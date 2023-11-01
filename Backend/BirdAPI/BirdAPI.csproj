@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Features\Bird\ResponseModels\" />
     <Folder Include="Infrastructure\Migrations\" />
     <Folder Include="Infrastructure\Services\" />
   </ItemGroup>

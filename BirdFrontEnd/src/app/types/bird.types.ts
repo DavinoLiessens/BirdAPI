@@ -1,4 +1,5 @@
 import { IBreeder } from "./breeder.types";
+import { ICouple } from "./couple.types";
 import { IOwner } from "./owner.types";
 import { PagedResponse } from "./paged-response.types";
 import { IPaginationRequest, ISearchRequest } from "./pagination.types";
@@ -15,8 +16,24 @@ export interface IBird {
     breederId: number;
     owner: IOwner;
     ownerId: number;
+    isDead: boolean;
+}
+
+export interface IBirdDetail {
+    id: number;
+    ringNumber: string;
+    gender: string;
+    birdType: string;
+    birthDate: Date;
+    color: string;
+    cageNumber: string;
+    breeder: IBreeder;
+    breederId: number;
+    owner: IOwner;
+    ownerId: number;
     description: string;
     isDead: boolean;
+    birdCouples?: BirdCouple[];
 }
 
 export interface ICreateBirdRequest {
@@ -39,6 +56,14 @@ export interface IUpdateBirdRequest {
     ownerId: string;
     description: string;
     isDead: boolean;
+}
+
+export interface BirdCouple {
+    id: number;
+    name: string;
+    fatherRingNumber: string;
+    motherRingNumber: string;
+    startedAt: Date;
 }
 
 export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest {}

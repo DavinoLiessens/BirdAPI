@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
 import { birdReducer } from 'src/app/store/entities/bird/bird.reducer';
 import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
-import { IBird, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
 import { IOwnerDropdownOption } from 'src/app/types/dropdown.types';
 import { IGetOwnersRequest, IOwner } from 'src/app/types/owner.types';
 
@@ -23,10 +23,10 @@ export class BirdDetailComponent implements OnInit {
   public birdForm: FormGroup;
   public birdId: string;
   public owners: IOwnerDropdownOption[] = [];
-  public bird: IBird;
+  public bird: IBirdDetail;
 
   // Observables
-  public bird$: Observable<IBird> = this.birdFacade.getBird();
+  public bird$: Observable<IBirdDetail> = this.birdFacade.getBird();
   public owners$: Observable<IOwner[]> = this.ownerFacade.getOwners();
   private destroyed$: Subject<boolean> = new Subject<boolean>();
   public loading$: Observable<boolean> = this.birdFacade.getLoadingDetail();
@@ -46,7 +46,7 @@ export class BirdDetailComponent implements OnInit {
 
     this.bird$.pipe(
       takeUntil(this.destroyed$),
-    ).subscribe((bird: IBird) => {
+    ).subscribe((bird: IBirdDetail) => {
       if (bird !== null && bird !== undefined) {
         this.bird = bird;
         this.createDefaultForm(bird);        
@@ -83,7 +83,7 @@ export class BirdDetailComponent implements OnInit {
     this.router.navigate([`couples/detail/${coupleId}`]);
   }
 
-  private createDefaultForm(bird: IBird): void {
+  private createDefaultForm(bird: IBirdDetail): void {
     this.birdForm = this.fb.group({
       ringNumber: [bird.ringNumber, Validators.required],
       gender: [{ value: bird.gender, disabled: true }, Validators.required],

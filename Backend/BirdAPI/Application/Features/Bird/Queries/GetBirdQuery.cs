@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BirdAPI.Application.Features.Bird.Queries
 {
-    public class GetBirdQuery : IRequest<BaseResponse<BirdResponseModel>>
+    public class GetBirdQuery : IRequest<BaseResponse<BirdDetailResponseModel>>
     {
         public int BirdId { get; set; }
 
