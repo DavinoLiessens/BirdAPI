@@ -66,12 +66,12 @@ namespace BirdAPI.Application.Features.Bird.Commands
             }
 
             newBird.BelongsToOwner(owner);
-            //var ownerBird = new OwnerBird(owner, newBird);
-            //await _context.OwnerBird.AddAsync(ownerBird);
+            var ownerBird = new OwnerBird(owner, newBird);
+            await _context.OwnerBird.AddAsync(ownerBird);
 
             newBird.BelongsToBreeder(breeder);
-            //var breederBird = new BreederBird(breeder, newBird);
-            //await _context.BreederBird.AddAsync(breederBird);
+            var breederBird = new BreederBird(breeder, newBird);
+            await _context.BreederBird.AddAsync(breederBird);
 
             // add to db
             await _context.Birds.AddAsync(newBird);

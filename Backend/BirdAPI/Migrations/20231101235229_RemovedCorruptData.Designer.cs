@@ -4,6 +4,7 @@ using BirdAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirdAPI.Migrations
 {
     [DbContext(typeof(BirdAPIContext))]
-    partial class BirdAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20231101235229_RemovedCorruptData")]
+    partial class RemovedCorruptData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,10 +125,16 @@ namespace BirdAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<int>("BirdId")
+                    b.Property<long>("BirdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("BirdId1")
                         .HasColumnType("int");
 
-                    b.Property<int>("BreederId")
+                    b.Property<long>("BreederId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("BreederId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
@@ -137,9 +145,9 @@ namespace BirdAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BirdId");
+                    b.HasIndex("BirdId1");
 
-                    b.HasIndex("BreederId");
+                    b.HasIndex("BreederId1");
 
                     b.ToTable("BreederBird");
                 });
@@ -296,7 +304,10 @@ namespace BirdAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<int>("BirdId")
+                    b.Property<long>("BirdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("BirdId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
@@ -305,14 +316,17 @@ namespace BirdAPI.Migrations
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("OwnerId1")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BirdId");
+                    b.HasIndex("BirdId1");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId1");
 
                     b.ToTable("OwnerBird");
                 });
@@ -340,13 +354,13 @@ namespace BirdAPI.Migrations
                 {
                     b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", "Bird")
                         .WithMany()
-                        .HasForeignKey("BirdId")
+                        .HasForeignKey("BirdId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BirdAPI.Domain.AggregatesModel.BreederAggregate.Breeder", "Breeder")
                         .WithMany()
-                        .HasForeignKey("BreederId")
+                        .HasForeignKey("BreederId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -406,13 +420,13 @@ namespace BirdAPI.Migrations
                 {
                     b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", "Bird")
                         .WithMany()
-                        .HasForeignKey("BirdId")
+                        .HasForeignKey("BirdId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BirdAPI.Domain.AggregatesModel.OwnerAggregate.Owner", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("OwnerId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

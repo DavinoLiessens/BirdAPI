@@ -10,9 +10,9 @@ namespace BirdAPI.Domain.AggregatesModel.BreederAggregate
 {
     public class BreederBird : EntityLong
     {
-        public long BreederId { get; set; }
+        public int BreederId { get; set; }
         public virtual Breeder Breeder { get; set; }
-        public long BirdId { get; set; }
+        public int BirdId { get; set; }
         public virtual Bird Bird { get; set; }
 
         public BreederBird()
