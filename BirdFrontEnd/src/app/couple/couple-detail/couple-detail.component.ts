@@ -114,8 +114,9 @@ export class CoupleDetailComponent implements OnInit {
     // open modal and pass id
     const ref = this.dialogService.open(BirdEggCreateModal, {
       header: 'Ei toevoegen',
-      width: '70%',
+      width: 'auto',
       height: 'auto',
+      contentStyle: { overflow: 'visible' },
       data: {
         coupleId
       }
@@ -131,8 +132,9 @@ export class CoupleDetailComponent implements OnInit {
     // open update modal
     var ref: DynamicDialogRef = this.dialogService.open(BirdEggUpdateModal, {
       header: 'Ei bewerken',
-      width: '70%',
+      width: 'auto',
       height: 'auto',
+      contentStyle: { overflow: 'visible' },
       data: {
         request
       }

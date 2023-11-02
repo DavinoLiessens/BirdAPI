@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IBird, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
 import { IPagination } from 'src/app/types/pagination.types';
 import { IAppState } from '../../store.interface';
 import * as actions from './bird.actions';
@@ -20,7 +20,7 @@ export class BirdFacade {
         return this.store.select(selectors.selectBirds);
     }
 
-    public getBird(): Observable<IBird> {
+    public getBird(): Observable<IBirdDetail> {
         return this.store.select(selectors.selectBird);
     }
 

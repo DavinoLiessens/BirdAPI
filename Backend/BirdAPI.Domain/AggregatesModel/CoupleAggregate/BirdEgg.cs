@@ -19,21 +19,21 @@ namespace BirdAPI.Domain.AggregatesModel.CoupleAggregate
             RingNumber = ringNumber;
         }
 
-        public BirdEgg UpdateCameOutOn(DateTime cameOutOn)
+        public BirdEgg UpdateCameOutOn(DateTime? cameOutOn)
         {
             CameOutOn = cameOutOn;
 
             return this;
         }
 
-        public BirdEgg UpdateFlyOutOn(DateTime flyOutOn)
+        public BirdEgg UpdateFlyOutOn(DateTime? flyOutOn)
         {
             FlyOutOn = flyOutOn;
 
             return this;
         }
 
-        public BirdEgg UpdateRingNumber(string ringNumber)
+        public BirdEgg UpdateRingNumber(string? ringNumber)
         {
             RingNumber = ringNumber;
 

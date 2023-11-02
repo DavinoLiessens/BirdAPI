@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.Application.Features.Couple.Commands.InputModels;
 using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
@@ -22,6 +23,10 @@ namespace BirdAPI.Application.Features.Couple.AutoMapper
 
 
             CreateMap<Domain.AggregatesModel.CoupleAggregate.Couple, CreatedCoupleResponseModel>()
+                .ForMember(dest => dest.MotherRingNumber, src => src.MapFrom(src => src.Mother.RingNumber))
+                .ForMember(dest => dest.FatherRingNumber, src => src.MapFrom(src => src.Father.RingNumber));
+
+            CreateMap<Domain.AggregatesModel.CoupleAggregate.Couple, BirdCoupleResponseModel>()
                 .ForMember(dest => dest.MotherRingNumber, src => src.MapFrom(src => src.Mother.RingNumber))
                 .ForMember(dest => dest.FatherRingNumber, src => src.MapFrom(src => src.Father.RingNumber));
         }

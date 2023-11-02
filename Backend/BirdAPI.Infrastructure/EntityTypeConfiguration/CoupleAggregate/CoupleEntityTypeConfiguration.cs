@@ -12,6 +12,16 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.CoupleAggregate
 
             builder.Ignore(o => o.DomainEvents);
 
+            builder.HasOne(c => c.Father)
+                .WithMany()
+                .HasForeignKey(c => c.FatherId)
+                .IsRequired();
+
+            builder.HasOne(c => c.Mother)
+                .WithMany()
+                .HasForeignKey(c => c.MotherId)
+                .IsRequired();
+
             builder.HasMany(o => o.BirdEggs);
         }
     }

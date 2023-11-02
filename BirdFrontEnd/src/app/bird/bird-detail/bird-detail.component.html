@@ -4,11 +4,8 @@
             <h1>Bird management</h1>
         </div>
         <div class="page-body">
+            <h2>Algemene informatie</h2>
             <form *ngIf="birdForm && !(loading$ | async)" [formGroup]="birdForm">
-                <div class="p-d-flex p-jc-between">
-                    <h2>Vogel aanmaken</h2>
-                    <button *ngIf="bird.coupleId" pButton type="button" class="p-button" (click)="goToCouple(bird.coupleId)" icon="pi pi-arrow-right" iconPos="right" label="Ga naar koppel"></button>    
-                </div>
                 <div class="form-group-wrapper">
                     <div class="form-group">
                         <label for="ringNumber">Ringnummer</label>
@@ -75,6 +72,67 @@
                     <button pButton type="submit" (click)="onSubmit()" [disabled]="!birdForm.valid" label="Opslaan"></button>
                 </div>
             </form>
+
+            <!-- Couples -->
+            <h2 class="p-mt-5">Koppels</h2>
+            <div class="couples" *ngIf="bird?.birdCouples.length > 0">
+                <p-table #dt1 [value]="bird?.birdCouples" dataKey="id"
+                [rows]="10" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
+                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Naam
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Vader
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Moeder
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Jaartal
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Ga naar koppel
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-couple>
+                    <tr>
+                        <td>
+                            <p>{{ couple.name }}</p>
+                        </td>
+                        <td>
+                            <p>{{ couple.fatherRingNumber }}</p>
+                        </td>
+                        <td>
+                            <p>{{ couple.motherRingNumber }}</p>
+                        </td>
+                        <td>
+                            <p>{{ couple.startedAt | date: 'MM/yyyy' }}</p>
+                        </td>                       
+                        <td>
+                            <button pButton pRipple type="button" label="Open" class="detail-button" style="margin-left: 5px;" (click)="goToCouple(couple.id)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Geen koppels gevonden.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
             <div class="p-mt-4">
                 <c-loader *ngIf="loading$ | async"></c-loader>
             </div>
