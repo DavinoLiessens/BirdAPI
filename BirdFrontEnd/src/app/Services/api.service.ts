@@ -13,7 +13,7 @@ export class ApiService {
   public searchnameBird: string = '';
   public ringNumber: string;
   public kotNumber: number;
-  public baseUrl: string = 'http://localhost:7254/api/v1';
+  public baseUrl: string = 'https://localhost:44384/api/v1';
 
   // OWNER
   public noOwners: number = 10;

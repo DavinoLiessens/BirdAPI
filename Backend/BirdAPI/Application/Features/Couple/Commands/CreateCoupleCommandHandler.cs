@@ -30,6 +30,12 @@ namespace BirdAPI.Application.Features.Couple.Commands
                     .AddError($"Validation Error: Couple name is required!");
             }
 
+            if(_context.Couples.Any(c => c.Name == request.Model.Name))
+            {
+                return new BaseResponse<CreatedCoupleResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError($"Validation Error: Couple name already exist!");
+            }
+
             var father = await _context.Birds.FirstOrDefaultAsync(b => b.Id == request.Model.FatherId);
 
             if (father == null)
@@ -54,6 +60,9 @@ namespace BirdAPI.Application.Features.Couple.Commands
                                                                               request.Model.CageNumber,
                                                                               request.Model.Description);
 
+            // add father and mother
+            father.BelongsToCouple(newCouple);
+            mother.BelongsToCouple(newCouple);
 
             await _context.Couples.AddAsync(newCouple);
             await _context.SaveChangesAsync();

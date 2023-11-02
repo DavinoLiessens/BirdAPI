@@ -3,7 +3,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 import { BirdService } from 'src/app/Services/bird.service';
-import { IBird, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
 import * as actions from './bird.actions';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class BirdEffects {
     getBird$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getBird.type),
         concatMap(({ birdId }: { birdId: number }) => this.birdService.getBird(birdId).pipe(
-            map((bird: IBird) => actions.getBirdSuccess({ birdDetail: bird })),
+            map((bird: IBirdDetail) => actions.getBirdSuccess({ birdDetail: bird })),
             catchError((error: any) => of(actions.getBirdError({ error }))),
         ))
     ));

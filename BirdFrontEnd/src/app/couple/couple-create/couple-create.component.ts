@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +15,7 @@ import { IPagination } from 'src/app/types/pagination.types';
   templateUrl: './couple-create.component.html',
   styleUrls: ['./couple-create.component.scss']
 })
-export class CoupleCreateComponent implements OnInit {
+export class CoupleCreateComponent implements OnInit, OnDestroy {
 
   private destroyed$: Subject<boolean> = new Subject<boolean>();
   public birds$: Observable<IBird[]> = this.birdFacade.getBirds();
@@ -76,13 +76,12 @@ export class CoupleCreateComponent implements OnInit {
     // create couple success has coupleResponseModel!
     this.coupleFacade.onCreateCoupleSuccess().pipe(
       takeUntil(this.destroyed$),
-    ).subscribe((model: ICreatedCoupleResponseModel) => {
+    ).subscribe((result: any) => {
       this.toastrService.success('Koppel aangemaakt!', 'Gelukt', {
         timeOut: 6000,
       });
+      const model = result.response;
 
-      // don't think that this line is needed -> check it in network tab
-      this.coupleFacade.getCoupleRequest(model.id);
       this.router.navigate([`couples/detail/${model.id}`]);
     });
   }
@@ -102,8 +101,13 @@ export class CoupleCreateComponent implements OnInit {
       takeUntil(this.destroyed$),
     ).subscribe((birds: IBird[]) => {
       if (birds !== null && birds !== undefined) {
-        const males = birds.filter(b => b.gender === "MALE");
-        const females = birds.filter(b => b.gender === "FEMALE");
+        // clear before calculation
+        this.maleBirds = [];
+        this.femaleBirds = [];
+
+        // get seperate list of birds that are NOT dead!
+        const males = birds.filter(b => b.gender === "MALE" && !b.isDead);
+        const females = birds.filter(b => b.gender === "FEMALE" && !b.isDead);
 
         males.forEach((bird: IBird) => {
           const existingBird = this.maleBirds.find(b => b.id === bird.id);
@@ -127,4 +131,9 @@ export class CoupleCreateComponent implements OnInit {
   public goBack() {
     this.router.navigate(['../..'], { relativeTo: this.route });
   }
+
+  public ngOnDestroy(): void {
+		this.destroyed$.next(true);
+		this.destroyed$.complete();
+	}
 }

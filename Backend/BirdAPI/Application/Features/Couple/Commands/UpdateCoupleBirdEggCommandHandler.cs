@@ -30,19 +30,19 @@ namespace BirdAPI.Application.Features.Couple.Commands
                                 .AddError($"No birdEgg found with id {request.Model.Id}");
             }
 
-            if (request.Model.CameOutOn != null)
+            if (request.Model.CameOutOn != existingEgg.CameOutOn)
             {
-                existingEgg.UpdateCameOutOn((DateTime)request.Model.CameOutOn);
+                existingEgg.UpdateCameOutOn(request.Model.CameOutOn);
             }
 
-            if (request.Model.RingNumber != null)
+            if (request.Model.RingNumber != existingEgg.RingNumber)
             {
-                existingEgg.UpdateRingNumber((string)request.Model.RingNumber);
+                existingEgg.UpdateRingNumber(request.Model.RingNumber);
             }
 
-            if (request.Model.FlyOutOn != null)
+            if (request.Model.FlyOutOn != existingEgg.FlyOutOn)
             {
-                existingEgg.UpdateFlyOutOn((DateTime)request.Model.FlyOutOn);
+                existingEgg.UpdateFlyOutOn(request.Model.FlyOutOn);
             }
 
             if (request.Model.CameOutOn != null && request.Model.RingNumber != null)

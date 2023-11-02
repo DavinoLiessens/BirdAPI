@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
+using BirdAPI.Domain.AggregatesModel.BreederAggregate;
+using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
 using BirdAPI.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -63,8 +65,13 @@ namespace BirdAPI.Application.Features.Bird.Commands
                     .AddError($"No owner found with id '{request.Model.OwnerId}'");
             }
 
-            newBird.BelongsToBreeder(breeder);
             newBird.BelongsToOwner(owner);
+            var ownerBird = new OwnerBird(owner, newBird);
+            await _context.OwnerBird.AddAsync(ownerBird);
+
+            newBird.BelongsToBreeder(breeder);
+            var breederBird = new BreederBird(breeder, newBird);
+            await _context.BreederBird.AddAsync(breederBird);
 
             // add to db
             await _context.Birds.AddAsync(newBird);

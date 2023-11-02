@@ -1,4 +1,5 @@
 ﻿using BirdAPI.Domain.AggregatesModel.BreederAggregate;
+using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
 using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
 using BirdAPI.Domain.Enums;
 using System;
@@ -22,12 +23,15 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
         public int BreederId { get; set; }
         public virtual Owner Owner { get; set; }
         public int OwnerId { get; set; }
+
+        public readonly List<CoupleBird> _birdCouples;
+        public virtual IReadOnlyCollection<CoupleBird> BirdCouples => _birdCouples;
         public string Description { get; set; }
         public bool? IsDead { get; set; }
 
         protected Bird()
         {
-
+            _birdCouples = new List<CoupleBird>();
         }
 
         public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, string cageNumber, string description, bool isDead = false)
@@ -54,6 +58,14 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
         {
             Breeder = breeder;
             BreederId = breeder.Id;
+
+            return this;
+        }
+
+        public Bird BelongsToCouple(Couple couple)
+        {
+            var birdCouple = new CoupleBird(couple, this);
+            _birdCouples.Add(birdCouple);
 
             return this;
         }
