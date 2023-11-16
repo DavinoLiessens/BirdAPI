@@ -16,5 +16,15 @@ namespace BirdAPI.Application.Features.Bird.ResponseModels
         public BirdType BirdType { get; set; }
         public bool IsDead { get; set; }
         public List<BirdCoupleResponseModel> BirdCouples { get; set; }
+        public BirdParentResponseModel Parents { get; set; }
+    }
+
+    public class BirdParentResponseModel
+    {
+        public int FatherId { get; set; }
+        public int MotherId { get; set; }
+        public string FatherRingNumber { get; set; }
+        public string MotherRingNumber { get; set; }
+        public int CoupleId { get; set; }
     }
 }

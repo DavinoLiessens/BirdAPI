@@ -38,10 +38,22 @@ namespace BirdAPI.Application.Features.Bird.Commands
                     .AddError($"Bird with id '{request.Id}' does not exist");
             }
 
+            // if you update the ringnumber also make sure you update the birdEgg if exists
+            // else you can't find the couple references anymore
             if (await _context.Birds.AnyAsync(b => b.RingNumber == request.Model.RingNumber && b.Id != request.Id))
             {
                 return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
                     .AddError($"Bird with ringnumber '{request.Model.RingNumber}' already exist");
+            }
+
+            if (existingBird.RingNumber != request.Model.RingNumber)
+            {
+                var existingBirdEgg = await _context.BirdEggs.FirstOrDefaultAsync(be => be.RingNumber == existingBird.RingNumber);
+
+                if (existingBirdEgg != null)
+                {
+                    existingBirdEgg.UpdateRingNumber(request.Model.RingNumber);
+                }
             }
 
             // execution

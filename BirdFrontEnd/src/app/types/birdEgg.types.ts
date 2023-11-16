@@ -5,6 +5,9 @@ export interface IBirdEgg {
     ringNumber?: string; // ringnummer
     flyOutOn?: Date; // Vogeltje uitgevlogen op
     coupleId: number;
+    color?: string;
+    gender?: string;
+    birdId?: number;
 }
 
 export interface IBirdEggRequest {
@@ -19,6 +22,8 @@ export interface ICreateBirdEggRequest {
     cameOutOn?: Date;
     flyOutOn?: Date;
     ringNumber?: string;
+    color?: string;
+    gender?: string;
 }
 
 export interface IUpdateBirdEggRequest {
@@ -28,4 +33,6 @@ export interface IUpdateBirdEggRequest {
     cameOutOn?: Date;
     flyOutOn?: Date;
     ringNumber?: string;
+    color?: string;
+    gender?: string;
 }
