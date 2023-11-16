@@ -7,6 +7,8 @@
         public DateTime? CameOutOn { get; set; }
         public string? RingNumber { get; set; }
         public DateTime? FlyOutOn { get; set; }
+        public string? Gender { get; set; }
+        public string? Color { get; set; }
         public int CoupleId { get; set; }
     }
 }

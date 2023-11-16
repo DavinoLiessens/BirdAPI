@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { SelectItemGroup } from "primeng/api";
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { BirdFacade } from "src/app/store/entities/bird/bird.facade";
 import { CoupleFacade } from "src/app/store/entities/couple/couple.facade";
 import { ICreateBirdEggRequest } from "src/app/types/birdEgg.types";
+import { IGenderOption } from "src/app/types/dropdown.types";
 
 @Component({
     selector: 'birdegg-create-modal',
@@ -16,11 +19,14 @@ export class BirdEggCreateModal implements OnInit {
     public birdEggForm: FormGroup;
     private destroyed$: Subject<boolean> = new Subject<boolean>();
     public loading$: Observable<boolean> = this.coupleFacade.getLoadingModal();
+    public groupedColors: SelectItemGroup[] = [];
+    public genderOptions: IGenderOption[] = [];
     
     constructor(
         public ref: DynamicDialogRef,
         public config: DynamicDialogConfig,
         private coupleFacade: CoupleFacade,
+        private birdFacade: BirdFacade,
         private fb: FormBuilder,
         private toastrService: ToastrService
     ) { }
@@ -30,8 +36,13 @@ export class BirdEggCreateModal implements OnInit {
             layedOn: ['', Validators.required],
             cameOutOn: [null],
             flyOutOn: [null],
-            ringNumber: [null]
+            ringNumber: [null],
+            color: [null],
+            gender: [null],
         });
+
+        this.groupedColors = this.birdFacade.createBirdTypeColors();
+        this.createGenderOptions();
     }
 
     public handleSubmit(): void {
@@ -41,7 +52,9 @@ export class BirdEggCreateModal implements OnInit {
             coupleId: this.config.data.coupleId,
             cameOutOn: this.birdEggForm.get('cameOutOn').value ?? null,
             flyOutOn: this.birdEggForm.get('flyOutOn').value ?? null,
-            ringNumber: this.birdEggForm.get('ringNumber').value ?? null
+            ringNumber: this.birdEggForm.get('ringNumber').value ?? null,
+            color: this.birdEggForm.get('color').value ?? null,
+            gender: this.birdEggForm.get('gender').value ?? null,
         }
 
         this.coupleFacade.createBirdEgg(request);
@@ -66,5 +79,12 @@ export class BirdEggCreateModal implements OnInit {
                 timeOut: 6000,
             });
         });
+    }
+
+    private createGenderOptions(): void {
+        this.genderOptions = [
+          { type: 'Pop', value: 'FEMALE' },
+          { type: 'Man', value: 'MALE' }
+        ];
     }
 }

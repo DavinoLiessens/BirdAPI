@@ -4,6 +4,7 @@ import { ApiService, Bird, ChangeBird, CreateBird } from './api.service';
 import { Observable } from 'rxjs';
 import { BaseService } from './base.service';
 import { IBird, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from '../types/bird.types';
+import { SelectItemGroup } from 'primeng/api';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,5 +26,5 @@ export class BirdService {
 
   public updateBird(request: IUpdateBirdRequest): Observable<IBird> {
     return this.baseService.put(`/birds/${request.id}`, request) as Observable<IBird>;
-  }
+  }  
 }

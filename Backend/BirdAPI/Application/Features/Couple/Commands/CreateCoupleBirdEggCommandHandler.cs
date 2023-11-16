@@ -29,7 +29,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
 
             var birdEggs = new List<BirdEgg>();
 
-            var newEgg = new BirdEgg(existingCouple.Id, request.Model.LayedOn, request.Model.CameOutOn ?? null, request.Model.FlyOutOn ?? null, request.Model.RingNumber ?? null);
+            var newEgg = new BirdEgg(existingCouple.Id, request.Model.LayedOn, request.Model.CameOutOn ?? null, request.Model.FlyOutOn ?? null, request.Model.RingNumber ?? null, request.Model.Gender ?? null, request.Model.Color ?? null);
             birdEggs.Add(newEgg);
 
             existingCouple.AddBirdEggs(birdEggs);

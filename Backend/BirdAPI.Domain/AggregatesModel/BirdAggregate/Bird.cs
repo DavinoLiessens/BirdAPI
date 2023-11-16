@@ -26,7 +26,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
 
         public readonly List<CoupleBird> _birdCouples;
         public virtual IReadOnlyCollection<CoupleBird> BirdCouples => _birdCouples;
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public bool? IsDead { get; set; }
 
         protected Bird()
@@ -34,7 +34,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             _birdCouples = new List<CoupleBird>();
         }
 
-        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, string cageNumber, string description, bool isDead = false)
+        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, string cageNumber, string? description = null, bool isDead = false)
         {
             RingNumber = ringNumber;
             Gender = gender;
