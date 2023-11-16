@@ -8,15 +8,20 @@ namespace BirdAPI.Domain.AggregatesModel.CoupleAggregate
         public DateTime? CameOutOn { get; set; }
         public string? RingNumber { get; set; }
         public DateTime? FlyOutOn { get; set; }
+        public string? Gender { get; set; }
+        public string? Color { get; set; }
+        public int? BirdId { get; set; }
         public int CoupleId { get; set; }
 
-        public BirdEgg(int coupleId, DateTime layedOn, DateTime? cameOutOn, DateTime? flyOutOn, string? ringNumber)
+        public BirdEgg(int coupleId, DateTime layedOn, DateTime? cameOutOn, DateTime? flyOutOn, string? ringNumber, string? gender, string? color)
         {
             CoupleId = coupleId;
             LayedOn = layedOn;
             CameOutOn = cameOutOn;
             FlyOutOn = flyOutOn;
             RingNumber = ringNumber;
+            Gender = gender;
+            Color = color;
         }
 
         public BirdEgg UpdateCameOutOn(DateTime? cameOutOn)
@@ -36,6 +41,20 @@ namespace BirdAPI.Domain.AggregatesModel.CoupleAggregate
         public BirdEgg UpdateRingNumber(string? ringNumber)
         {
             RingNumber = ringNumber;
+
+            return this;
+        }
+
+        public BirdEgg UpdateGender(string? gender)
+        {
+            Gender = gender;
+
+            return this;
+        }
+
+        public BirdEgg UpdateColor(string? color)
+        {
+            Color = color;
 
             return this;
         }

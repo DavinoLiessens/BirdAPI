@@ -81,6 +81,16 @@
                         </th>
                         <th>
                             <div class="p-d-flex p-jc-between p-ai-center">
+                                Kleur
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Geslacht
+                            </div>
+                        </th>
+                        <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
                                 Opties
                             </div>
                         </th>
@@ -99,9 +109,15 @@
                         </td>
                         <td>
                             <p>{{egg.flyOutOn | date: 'dd/MM/yyyy' }}</p>
-                        </td>                       
+                        </td>   
                         <td>
-                            <button pButton pRipple type="button" label="" icon="pi pi-pencil" class="detail-button" style="margin-left: 5px;" (click)="openUpdateModal(egg.id, couple.id)"></button>
+                            <p>{{egg.color }}</p>
+                        </td>  
+                        <td>
+                            <p>{{egg.gender === 'FEMALE' ? 'POP' : 'MAN' }}</p>
+                        </td>                      
+                        <td>
+                            <button pButton pRipple type="button" label="" icon="pi pi-pencil" class="detail-button" style="margin-left: 5px;" (click)="openUpdateModal(egg.id, couple.id)" [disabled]="egg.birdId"></button>
                         </td>
                     </tr>
                 </ng-template>

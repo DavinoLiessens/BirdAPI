@@ -50,8 +50,8 @@ export class BirdCreateComponent implements OnInit {
 
     // generate enums
     this.createGenderOptions();
-    this.createBirdTypeOptions();
-    this.createBirdTypeColors();
+    this.typeOfBirdOptions = this.birdFacade.createBirdTypeOptions();
+    this.groupedColors = this.birdFacade.createBirdTypeColors();
 
     // get breeders and owners
     this.getAllBreeders();
@@ -102,105 +102,6 @@ export class BirdCreateComponent implements OnInit {
     this.genderOptions = [
       { type: 'Pop', value: 'FEMALE' },
       { type: 'Man', value: 'MALE' }
-    ];
-  }
-
-  private createBirdTypeOptions(): void {
-    this.typeOfBirdOptions = [
-      { type: 'Appelvink', value: 0 },
-      { type: 'Barmsijs', value: 1 },
-      { type: 'Distelvink', value: 2 },
-      { type: 'Fischeri', value: 3 },
-      { type: 'Goudvink', value: 4 },
-      { type: 'Kanarie', value: 5 },
-      { type: 'Roodmus', value: 6 },
-      { type: 'Sijzen', value: 7 },
-      { type: 'Mexicaanse roodmus', value: 8 }
-    ];
-  }
-
-  private createBirdTypeColors(): void {
-    this.groupedColors = [
-      {
-        label: 'Kanarie', value: 'kanarie',
-        items: [
-          { label: 'Intensief', value: 'Intensief' },
-          { label: 'Schimmel', value: 'Schimmel' },
-          { label: 'Wit', value: 'Wit' },
-          { label: 'Agaat Wit', value: 'Agaat Wit' },
-          { label: 'Agaat Geel', value: 'Agaat Geel' },
-          { label: 'Agaat Groen', value: 'Agaat Groen' },
-          { label: 'Agaat Rood', value: 'Agaat Rood' }
-        ]
-      },
-      {
-        label: 'Goudvink', value: 'Goudvink',
-        items: [
-          { label: 'Wildkleur', value: 'Wildkleur' },
-          { label: 'Wildkleur/Bruin', value: 'Wildkleur/Bruin' },
-          { label: 'Wildkleur/Bruin Pastel', value: 'Wildkleur/Bruin Pastel' },
-          { label: 'Bruin', value: 'Bruin' },
-          { label: 'Bruin Pastel', value: 'Bruin Pastel' },
-        ]
-      },
-      {
-        label: 'Distelvink', value: 'Distelvink',
-        items: [
-          { label: 'Bruin', value: 'Bruin' },
-          { label: 'Agaat', value: 'Agaat' },
-          { label: 'Agaat Bruin', value: 'Agaat Bruin' },
-          { label: 'Agaat Pastel', value: 'Agaat Pastel' },
-          { label: 'Isabel', value: 'Isabel' },
-          { label: 'Satinet', value: 'Satinet' },
-          { label: 'Eumo', value: 'Eumo' },
-          { label: 'Pastel', value: 'Pastel' },
-          { label: 'Bruin Pastel', value: 'Bruin Pastel' },
-          { label: 'Witkop', value: 'Witkop' },
-        ]
-      },
-      {
-        label: 'Sijzen', value: 'Sijzen',
-        items: [
-          { label: 'Wildkleur', value: 'Wildkleur' },
-          { label: 'Wildkleur/Bruin', value: 'Wildkleur/Bruin' },
-          { label: 'Wildkleur/Ivoor', value: 'Wildkleur/Ivoor' },
-          { label: 'Bruin', value: 'Bruin' },
-          { label: 'Ivoor', value: 'Ivoor' },
-          { label: 'Zwartkop', value: 'Zwartkop' }
-        ]
-      },
-      {
-        label: 'Appelvink', value: 'Appelvink',
-        items: [
-          { label: 'Wildkleur', value: 'Wildkleur' }
-        ]
-      },
-      {
-        label: 'Fischeri', value: 'Fischeri',
-        items: [
-          { label: 'Groen', value: 'Groen' },
-          { label: 'Blauw', value: 'Blauw' },
-          { label: 'Lutino', value: 'Lutino' },
-          { label: 'Paars', value: 'Paars' },
-          { label: 'Wit', value: 'Wit' }
-        ]
-      },
-      {
-        label: 'Barmsijzen', value: 'Barmsijzen',
-        items: [
-          { label: 'Wildkleur', value: 'Wildkleur' },
-          { label: 'Wildkleur/Satinet', value: 'Wildkleur/Satinet' },
-          { label: 'Wildkleur/Ivoor', value: 'Wildkleur/Ivoor' },
-          { label: 'Satinet', value: 'Satinet' },
-          { label: 'Ivoor', value: 'Ivoor' }
-        ]
-      },
-      {
-        label: 'Roodmus', value: 'Mexicaanse Roodmus',
-        items: [
-          { label: 'Wildkleur', value: 'Wildkleur' }
-        ]
-      },
     ];
   }
 

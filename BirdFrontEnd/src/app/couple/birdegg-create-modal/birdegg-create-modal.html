@@ -20,6 +20,23 @@
             <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber">
         </div>
 
+        <div class="form-group">
+            <label for="color">Kleur</label>
+            <p-dropdown [options]="groupedColors" autoWidth="false" [style]="{'width':'100%'}" formControlName="color" optionLabel="label" optionValue="value" [showClear]="true" [filter]="true" filterBy="label" placeholder="Selecteer een kleur..." [group]="true">
+                <ng-template let-group pTemplate="group">
+                    <div class="p-d-flex p-ai-center">
+                        <img src="../../../assets/{{group.label}}.jpg" class="p-mr-2" style="width: 32px"/>
+                        <span>{{group.label}}</span>
+                    </div>
+                </ng-template>
+            </p-dropdown>                
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Geslacht</label>
+            <p-dropdown [options]="genderOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-dropdown>                
+        </div>
+
         <div class="form-footer">
             <button pButton type="submit" (click)="handleSubmit()" [disabled]="!birdEggForm.valid" label="Opslaan"></button>
         </div>                      

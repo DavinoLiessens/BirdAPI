@@ -33,7 +33,8 @@ export interface IBirdDetail {
     ownerId: number;
     description: string;
     isDead: boolean;
-    birdCouples?: BirdCouple[];
+    birdCouples?: IBirdCouple[];
+    parents: IBirdParents;
 }
 
 export interface ICreateBirdRequest {
@@ -58,12 +59,20 @@ export interface IUpdateBirdRequest {
     isDead: boolean;
 }
 
-export interface BirdCouple {
+export interface IBirdCouple {
     id: number;
     name: string;
     fatherRingNumber: string;
     motherRingNumber: string;
     startedAt: Date;
+}
+
+export interface IBirdParents {
+    fatherId: number;
+    motherId: number;
+    fatherRingNumber: string;
+    motherRingNumber: string;
+    coupleId: number;
 }
 
 export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest {}

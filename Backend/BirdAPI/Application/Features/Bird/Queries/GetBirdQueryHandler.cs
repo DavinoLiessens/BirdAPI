@@ -49,6 +49,25 @@ namespace BirdAPI.Application.Features.Bird.Queries
 
             result.BirdCouples = _mapper.Map<List<BirdCoupleResponseModel>>(coupleMatchesForBird);
 
+            // add father and mother to model
+            var coupleWhereBirdIsBorn = await _context.Couples
+                                         .Include(c => c.BirdEggs)
+                                         .Include(c => c.Father)
+                                         .Include(c => c.Mother)
+                                         .FirstOrDefaultAsync(c => c.BirdEggs.Any(be => be.RingNumber == existingBird.RingNumber));
+
+            if (coupleWhereBirdIsBorn != null)
+            {
+                result.Parents = new BirdParentResponseModel()
+                {
+                    FatherId = coupleWhereBirdIsBorn.FatherId,
+                    MotherId = coupleWhereBirdIsBorn.MotherId,
+                    FatherRingNumber = coupleWhereBirdIsBorn.Father.RingNumber,
+                    MotherRingNumber = coupleWhereBirdIsBorn.Mother.RingNumber,
+                    CoupleId = coupleWhereBirdIsBorn.Id
+                };
+            }           
+
             return new BaseResponse<BirdDetailResponseModel>(result);
         }
     }

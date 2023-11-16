@@ -4,7 +4,10 @@
             <h1>Bird management</h1>
         </div>
         <div class="page-body">
-            <h2>Algemene informatie</h2>
+            <div class="p-d-flex p-jc-between p-ai-center">
+                <h2>Algemene informatie</h2>
+                <button *ngIf="bird.parents" pButton pRipple type="button" icon="pi pi-arrow-right" iconPos="right" label="Ga naar stamboom" class="p-button-raised" (click)="goToBirthTree()"></button>
+            </div>
             <form *ngIf="birdForm && !(loading$ | async)" [formGroup]="birdForm">
                 <div class="form-group-wrapper">
                     <div class="form-group">
@@ -73,9 +76,23 @@
                 </div>
             </form>
 
+            <!-- Parents -->
+            <h2>Ouders</h2>
+            <div class="p-d-flex p-jc-start">
+                <div class="p-d-flex p-flex-column p-mr-3">
+                    <label for="father">Vader</label>
+                    <input pInputText type="text" [style]="{'width':'200px'}" class="form-control" id="father" placeholder="-" [value]="bird?.parents ? bird.parents.fatherRingNumber : '-'" disabled>
+                </div>
+        
+                <div class="p-d-flex p-flex-column">
+                    <label for="mother">Moeder</label>
+                    <input pInputText type="text" [style]="{'width':'200px'}" class="form-control" id="mother" placeholder="-" [value]="bird?.parents ? bird.parents.motherRingNumber : '-'" disabled>
+                </div>
+            </div>
+
             <!-- Couples -->
             <h2 class="p-mt-5">Koppels</h2>
-            <div class="couples" *ngIf="bird?.birdCouples.length > 0">
+            <div class="couples">
                 <p-table #dt1 [value]="bird?.birdCouples" dataKey="id"
                 [rows]="10" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
                 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">

@@ -67,7 +67,7 @@ export class BirdDetailComponent implements OnInit {
       ringNumber: this.birdForm.get('ringNumber').value,
       cageNumber: this.birdForm.get('cageNumber').value,
       ownerId: this.birdForm.get('owner').value.value,
-      description: this.birdForm.get('description').value,
+      description: this.birdForm.get('description').value ?? '',
       isDead: this.birdForm.get('isDead').value
     };
 
@@ -81,6 +81,10 @@ export class BirdDetailComponent implements OnInit {
 
   public goToCouple(coupleId: number){
     this.router.navigate([`couples/detail/${coupleId}`]);
+  }
+
+  public goToBirthTree(){
+    this.router.navigate([`couples/detail/${this.bird.parents.coupleId}`]);
   }
 
   private createDefaultForm(bird: IBirdDetail): void {
