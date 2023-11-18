@@ -24,6 +24,7 @@ namespace BirdAPI.Infrastructure
         public DbSet<BirdEgg> BirdEggs { get; set; }
         public DbSet<Couple> Couples { get; set; }
         public DbSet<CoupleBird> BirdCouples { get; set; }
+        public DbSet<BirdShow> BirdShows { get; set; }
 
         public BirdAPIContext()
         {

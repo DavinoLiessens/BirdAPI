@@ -3,14 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
 import { birdReducer } from 'src/app/store/entities/bird/bird.reducer';
 import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
-import { IBird, IBirdDetail, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, IBirdShowRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
 import { IOwnerDropdownOption } from 'src/app/types/dropdown.types';
 import { IGetOwnersRequest, IOwner } from 'src/app/types/owner.types';
+import { BirdShowCreateModal } from '../bird-show-create/bird-show-create.modal';
+import { BirdShowUpdateModal } from '../bird-show-update/bird-show-update.modal';
 
 @Component({
   selector: 'app-bird-detail',
@@ -37,7 +40,8 @@ export class BirdDetailComponent implements OnInit {
     private ownerFacade: OwnerFacade,
     private router: Router,
     private route: ActivatedRoute,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit(): void {
@@ -124,6 +128,41 @@ export class BirdDetailComponent implements OnInit {
           this.owners.push({ name: fullname, value: owner.id });
         });
       }
+    });
+  }
+
+  public openCreateBirdShowModel(birdId: number) {
+    // open modal and pass id
+    const ref = this.dialogService.open(BirdShowCreateModal, {
+      header: 'Tentoonstelling toevoegen',
+      width: 'auto',
+      height: 'auto',
+      contentStyle: { overflow: 'visible' },
+      data: {
+        birdId
+      }
+    });
+  }
+
+  public openUpdateBirdShowModel(birdId: number, id: number) {
+    const request: IBirdShowRequest = {
+      birdId,
+      id
+    };
+
+    // open update modal
+    var ref: DynamicDialogRef = this.dialogService.open(BirdShowUpdateModal, {
+      header: 'Tentoonstelling bewerken',
+      width: 'auto',
+      height: 'auto',
+      contentStyle: { overflow: 'visible' },
+      data: {
+        request
+      }
+    });
+
+    ref.onClose.subscribe(() => {
+      this.birdFacade.clearBirdShowDetail();
     });
   }
 

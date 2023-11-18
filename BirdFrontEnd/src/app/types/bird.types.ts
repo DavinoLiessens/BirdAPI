@@ -34,6 +34,7 @@ export interface IBirdDetail {
     description: string;
     isDead: boolean;
     birdCouples?: IBirdCouple[];
+    birdShows?: IBirdShow[];
     parents: IBirdParents;
 }
 
@@ -67,12 +68,39 @@ export interface IBirdCouple {
     startedAt: Date;
 }
 
+export interface IBirdShow {
+    id: number;
+    birdId: number;
+    location: string;
+    rank: number;
+    points: number;
+}
+
+export interface ICreateBirdShowRequest {
+    birdId: number;
+    location: string;
+    rank: number;
+    points: number;
+}
+
+export interface IUpdateBirdShowRequest {
+    birdId: number;
+    location: string;
+    rank: number;
+    points: number;
+}
+
 export interface IBirdParents {
     fatherId: number;
     motherId: number;
     fatherRingNumber: string;
     motherRingNumber: string;
     coupleId: number;
+}
+
+export interface IBirdShowRequest {
+    birdId: number;
+    id: number;
 }
 
 export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest {}

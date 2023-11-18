@@ -1,0 +1,23 @@
+<div class="modal-body">
+    <form [formGroup]="birdShowForm" *ngIf="birdShowForm && !(loading$ | async)">
+        <div class="form-group">
+            <label for="location">Locatie</label>
+            <input pInputText type="text" class="form-control" formControlName="location" id="location">
+        </div>
+        
+        <div class="form-group">
+            <label for="points">Punten</label>
+            <input pInputText type="text" class="form-control" formControlName="points" id="points">
+        </div>
+        
+        <div class="form-group">
+            <label for="name">Rangschikking</label>
+            <input pInputText type="text" class="form-control" formControlName="rank" id="rank">
+        </div>
+
+        <div class="form-footer">
+            <button pButton type="submit" (click)="handleSubmit()" [disabled]="!birdShowForm.valid" label="Opslaan"></button>
+        </div>                      
+    </form>
+    <c-loader *ngIf="(loading$ | async)"></c-loader>
+</div>

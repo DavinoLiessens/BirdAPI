@@ -17,6 +17,7 @@ namespace BirdAPI.Application.Features.Bird.ResponseModels
         public bool IsDead { get; set; }
         public List<BirdCoupleResponseModel> BirdCouples { get; set; }
         public BirdParentResponseModel Parents { get; set; }
+        public List<BirdShowResponseModel> BirdShows { get; set; }
     }
 
     public class BirdParentResponseModel
@@ -26,5 +27,14 @@ namespace BirdAPI.Application.Features.Bird.ResponseModels
         public string FatherRingNumber { get; set; }
         public string MotherRingNumber { get; set; }
         public int CoupleId { get; set; }
+    }
+
+    public class BirdShowResponseModel
+    {
+        public int Id { get; set; }
+        public int BirdId { get; set; }
+        public string Location { get; set; }
+        public int Rank { get; set; }
+        public int Points { get; set; }
     }
 }

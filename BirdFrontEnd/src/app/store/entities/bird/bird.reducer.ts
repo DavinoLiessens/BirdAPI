@@ -75,13 +75,59 @@ const reducer = createReducer(
         };
     }),
 
+    // bird
+    on(actions.getBirdShow, (state) => {
+        return {
+            ...state,
+            loadingModal: true,
+        };
+    }),
+    on(actions.getBirdShowSuccess, (state, { birdShowDetail }) => {
+        return {
+            ...state,
+            birdShowDetail: birdShowDetail,
+            loadingModal: false,
+            errors: null
+        };
+    }),
+    on(actions.getBirdShowError, (state, { error }) => {
+        return {
+            ...state,
+            loadingModal: false,
+            errors: error
+        };
+    }),
+
+    on(actions.updateBirdShow, (state) => {
+        return {
+            ...state,
+            loadingModal: true,
+        };
+    }),
+    on(actions.updateBirdShowSuccess, (state) => {
+        return {
+            ...state,
+            loadingModal: false,
+            errors: null
+        };
+    }),
+    on(actions.updateBirdShowError, (state, { error }) => {
+        return {
+            ...state,
+            loadingModal: false,
+            errors: error
+        };
+    }),
+
     // Clear detail
     on(actions.clearBirdDetail, (state) => {
         return {
             ...state,
-            birdDetail: null
+            birdShowDetail: null
         }
     }),
+
+
 );
 
 export function birdReducer(state: IBirdState | undefined, action: Action) {

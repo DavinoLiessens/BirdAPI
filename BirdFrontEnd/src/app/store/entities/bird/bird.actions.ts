@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IBird, IBirdDetail, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, IBirdShow, IBirdShowRequest, IBirdsResponse, ICreateBirdRequest, ICreateBirdShowRequest, IGetBirdsRequest, IUpdateBirdRequest, IUpdateBirdShowRequest } from 'src/app/types/bird.types';
 
 // GET all birds
 // TODO add request for search and pagination
@@ -22,6 +22,21 @@ export const updateBird = createAction('[Bird] UPDATE Bird', props<{ request: IU
 export const updateBirdSuccess = createAction('[Bird] UPDATE Bird Success');
 export const updateBirdError = createAction('[Bird] UPDATE Bird Error', props<{ error: any }>());
 
+// CREATE birdShow
+export const createBirdShow = createAction('[Bird] CREATE BirdShow', props<{ request: ICreateBirdShowRequest }>());
+export const createBirdShowSuccess = createAction('[Bird] CREATE BirdShow Success');
+export const createBirdShowError = createAction('[Bird] CREATE BirdShow Error', props<{ error: any }>());
+
+// UPDATE BirdShow
+export const updateBirdShow = createAction('[Bird] UPDATE BirdShow', props<{ id: number, request: IUpdateBirdShowRequest }>());
+export const updateBirdShowSuccess = createAction('[Bird] UPDATE BirdShow Success');
+export const updateBirdShowError = createAction('[Bird] UPDATE BirdShow Error', props<{ error: any }>());
+
+// GET BirdShow
+export const getBirdShow = createAction('[Bird] GET BirdShow', props<{ request: IBirdShowRequest }>());
+export const getBirdShowSuccess = createAction('[Bird] GET BirdShow Success', props<{ birdShowDetail: IBirdShow }>());
+export const getBirdShowError = createAction('[Bird] GET BirdShow Error', props<{ error: any }>());
 
 // Clear
 export const clearBirdDetail = createAction('[Bird] Clear Bird detail');
+export const clearBirdShowDetail = createAction('[Bird] Clear BirdShow detail');

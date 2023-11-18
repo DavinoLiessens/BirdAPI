@@ -25,7 +25,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 // *** COMPONENTS ***
 import { AppComponent } from './app.component';
-import { BirdComponent, BirdDetailComponent, BirdCreateComponent } from './bird/index';
+import { BirdComponent, BirdDetailComponent, BirdCreateComponent, BirdShowCreateModal, BirdShowUpdateModal } from './bird/index';
 import { OwnerComponent, OwnerDetailComponent, OwnerCreateComponent } from './owner/index';
 import { BreederComponent, BreederDetailComponent, BreederCreateComponent} from './breeder/index';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -63,7 +63,9 @@ import { BaseService } from './Services/base.service';
     BreederDetailComponent,
     BirdEggCreateModal,
     BirdEggUpdateModal,
-    LoaderComponent
+    LoaderComponent,
+    BirdShowCreateModal,
+    BirdShowUpdateModal,
   ],
   imports: [
     AppStoreModule,
