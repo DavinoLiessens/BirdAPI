@@ -33,7 +33,8 @@ export class BirdDetailComponent implements OnInit {
   public owners$: Observable<IOwner[]> = this.ownerFacade.getOwners();
   private destroyed$: Subject<boolean> = new Subject<boolean>();
   public loading$: Observable<boolean> = this.birdFacade.getLoadingDetail();
-  
+  private owner: IOwnerDropdownOption;
+
   constructor(
     private fb: FormBuilder,
     private birdFacade: BirdFacade,
@@ -53,16 +54,16 @@ export class BirdDetailComponent implements OnInit {
     ).subscribe((bird: IBirdDetail) => {
       if (bird !== null && bird !== undefined) {
         this.bird = bird;
-        this.createDefaultForm(bird);        
+        this.createDefaultForm(bird);
       }
     });
 
     // get breeders and owners
     this.getAllOwners();
 
-        // handle success and errors
-        this.handleSuccesses();
-        this.handleErrors();
+    // handle success and errors
+    this.handleSuccesses();
+    this.handleErrors();
   }
 
   public onSubmit() {
@@ -70,7 +71,7 @@ export class BirdDetailComponent implements OnInit {
       id: parseInt(this.birdId),
       ringNumber: this.birdForm.get('ringNumber').value,
       cageNumber: this.birdForm.get('cageNumber').value,
-      ownerId: this.birdForm.get('owner').value.value,
+      ownerId: this.birdForm.get('owner').value,
       description: this.birdForm.get('description').value ?? '',
       isDead: this.birdForm.get('isDead').value
     };
@@ -100,7 +101,7 @@ export class BirdDetailComponent implements OnInit {
       color: [{ value: bird.color, disabled: true }, Validators.required],
       cageNumber: [bird.cageNumber, Validators.required],
       breeder: [{ value: `${bird.breeder.firstName} ${bird.breeder.lastName}`, disabled: true }, Validators.required],
-      owner: [{ name: `${bird.owner.firstName} ${bird.owner.lastName}`, value: bird.owner.id }, Validators.required],
+      owner: [bird.owner.id, Validators.required],
       description: [bird.description],
       isDead: [bird.isDead]
     });
