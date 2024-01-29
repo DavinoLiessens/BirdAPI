@@ -30,6 +30,16 @@ namespace BirdAPI.Application.Features.Bird.Queries
                                     .Include(b => b.Breeder)
                                     .AsNoTracking();
 
+            if (!string.IsNullOrWhiteSpace(request.SearchValue))
+            {
+                birds = birds.Where(b => b.CageNumber.Contains(request.SearchValue) ||
+                                         b.RingNumber.Contains(request.SearchValue) ||
+                                         b.Breeder.FirstName.StartsWith(request.SearchValue) ||
+                                         b.Breeder.LastName.StartsWith(request.SearchValue) ||
+                                         b.Owner.FirstName.StartsWith(request.SearchValue) ||
+                                         b.Owner.LastName.StartsWith(request.SearchValue));
+            }
+
             // get paged result
             var pagedResult = await birds.GetPaged<Domain.AggregatesModel.BirdAggregate.Bird, BirdResponseModel>(request.Page, request.PageSize, _mapper);
 
