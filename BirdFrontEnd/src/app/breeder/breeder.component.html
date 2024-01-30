@@ -1,26 +1,25 @@
 <div class="c-breeder-overview">
     <p-table #dt1 [value]="breeders" dataKey="id" *ngIf="!(loading$ | async)"
-        [rows]="25" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
-        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        styleClass="p-datatable-customers p-datatable-gridlines">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">
                 <span class="p-input-icon-left" style="margin-left: 20px;">
                     <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Zoek Kweker" (keyup)="onSearch($event.target.value)" />
+                    <input type="text" pInputText placeholder="Zoek Kweker" (keyup)="onSearch($event.target.value)" [(ngModel)]="search" />
                 </span>
             </div>
-            
+
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Voornaam 
+                        Voornaam
                     </div>
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Naam 
+                        Naam
                     </div>
                 </th>
                 <th>
@@ -32,7 +31,7 @@
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Email
                     </div>
-                </th>               
+                </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Edit
@@ -66,6 +65,11 @@
                     <button pButton pRipple type="button" label="Verwijder" class="p-button-danger" style="margin-left: 5px;" (click)="DeleteBreeder(breeder.id)"></button>
                 </td> -->
             </tr>
+        </ng-template>
+            <ng-template pTemplate="footer">
+            <div [style]="{'width':'99vw'}">
+                <p-paginator class="p-d-flex p-jc-center" [rows]="pagination.pageSize" [first]="first" [totalRecords]="pagination.totalAmount" currentPageReportTemplate="{first} van de {totalRecords} resultaten" showCurrentPageReport="true" [rowsPerPageOptions]="[5,10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
+            </div>
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
