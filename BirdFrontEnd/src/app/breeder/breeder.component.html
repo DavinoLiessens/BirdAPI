@@ -1,5 +1,5 @@
 <div class="c-breeder-overview">
-    <p-table #dt1 [value]="breeders" dataKey="id" *ngIf="!(loading$ | async)"
+    <p-table #dt1 [value]="breeders" dataKey="id" *ngIf="!(loading$ | async) && breeders"
         styleClass="p-datatable-customers p-datatable-gridlines">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">

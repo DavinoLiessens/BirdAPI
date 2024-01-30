@@ -25,7 +25,7 @@ export class BirdComponent implements OnInit {
   public pagination: IPagination;
   public search: string = '';
   public page: number = 1;
-  public pageSize: number = 5;
+  public pageSize: number = 10;
   public first: number = (this.page - 1) * this.pageSize;
 
   constructor(private birdFacade: BirdFacade, private router: Router, private route: ActivatedRoute) { }

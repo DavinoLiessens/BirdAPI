@@ -20,9 +20,9 @@ namespace BirdAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOwners(int? page, int? pageSize)
+        public async Task<IActionResult> GetOwners(int? page, int? pageSize, string? searchValue)
         {
-            return new JsonContentResult<PagedResponse<OwnerResponseModel>>(await _mediator.Send(new GetOwnersQuery(page, pageSize)));
+            return new JsonContentResult<PagedResponse<OwnerResponseModel>>(await _mediator.Send(new GetOwnersQuery(page, pageSize, searchValue)));
         }
 
         [HttpGet("{ownerId}")]

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdAPI.Application.Features.Owner.ResponseModels;
 using BirdAPI.BaseModels;
+using BirdAPI.Domain.AggregatesModel.BreederAggregate;
 using BirdAPI.Extensions;
 using BirdAPI.Infrastructure;
 using MediatR;
@@ -25,6 +26,12 @@ namespace BirdAPI.Application.Features.Owner.Queries
         public async Task<BaseResponse<PagedResponse<OwnerResponseModel>>> Handle(GetOwnersQuery request, CancellationToken cancellationToken)
         {
             var owners = _context.Owners.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(request.SearchValue))
+            {
+                owners = owners.Where(o => o.FirstName.StartsWith(request.SearchValue) ||
+                                           o.LastName.StartsWith(request.SearchValue));
+            }
 
             var result = await owners.GetPaged<Domain.AggregatesModel.OwnerAggregate.Owner, OwnerResponseModel>(request.Page, request.PageSize, _mapper);
 
