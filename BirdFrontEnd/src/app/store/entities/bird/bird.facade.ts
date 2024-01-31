@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IBird, IBirdDetail, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, IBirdShow, IBirdShowRequest, ICreateBirdRequest, ICreateBirdShowRequest, IGetBirdsRequest, IUpdateBirdRequest, IUpdateBirdShowRequest } from 'src/app/types/bird.types';
 import { IPagination } from 'src/app/types/pagination.types';
 import { IAppState } from '../../store.interface';
 import * as actions from './bird.actions';
@@ -38,8 +38,20 @@ export class BirdFacade {
         return this.store.select(selectors.selectLoadingDetail);
     }
 
+    public getLoadingModal(): Observable<boolean> {
+      return this.store.select(selectors.selectLoadingModal);
+    }
+
+    public getBirdShow(): Observable<IBirdShow> {
+      return this.store.select(selectors.selectBirdShow);
+    }
+
     public clearDetail(): void {
         this.store.dispatch(actions.clearBirdDetail());
+    }
+
+    public clearBirdShowDetail(): void {
+      this.store.dispatch(actions.clearBirdShowDetail());
     }
 
     // Actions
@@ -59,6 +71,18 @@ export class BirdFacade {
         this.store.dispatch(actions.updateBird({ request }));
     }
 
+    public createBirdShowRequest(request: ICreateBirdShowRequest): void {
+      this.store.dispatch(actions.createBirdShow({ request }));
+    }
+
+    public updateBirdShowRequest(id: number, request: IUpdateBirdShowRequest): void {
+      this.store.dispatch(actions.updateBirdShow({ id, request }));
+    }
+
+    public getBirdShowRequest(request: IBirdShowRequest): void {
+      this.store.dispatch(actions.getBirdShow({ request }));
+    }
+
     // ActionSubjects
     public onCreateBirdSuccess(): Observable<ActionsSubject> {
         return this.action$.pipe(ofType(actions.createBirdSuccess.type));
@@ -74,6 +98,22 @@ export class BirdFacade {
 
     public onUpdateBirdError(): Observable<ActionsSubject> {
         return this.action$.pipe(ofType(actions.updateBirdError.type));
+    }
+
+    public onCreateBirdShowSuccess(): Observable<ActionsSubject> {
+      return this.action$.pipe(ofType(actions.createBirdShowSuccess.type));
+    }
+
+    public onCreateBirdShowError(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.createBirdShowError.type));
+    }
+
+    public onUpdateBirdShowSuccess(): Observable<ActionsSubject> {
+      return this.action$.pipe(ofType(actions.updateBirdShowSuccess.type));
+    }
+
+    public onUpdateBirdShowError(): Observable<ActionsSubject> {
+        return this.action$.pipe(ofType(actions.updateBirdShowError.type));
     }
 
     // Static objects

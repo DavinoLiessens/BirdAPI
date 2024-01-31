@@ -75,12 +75,16 @@ export class BirdEggCreateModal implements OnInit {
             takeUntil(this.destroyed$)
         ).subscribe(() => {
             // add toastr message
-            this.toastrService.success('Oeps, er liep iets mis met het aanmaken van dit ei!', 'Error', {
+            this.toastrService.error('Oeps, er liep iets mis met het aanmaken van dit ei!', 'Error', {
                 timeOut: 6000,
             });
         });
     }
 
+    public goBack() {
+        this.ref.close();
+    }
+    
     private createGenderOptions(): void {
         this.genderOptions = [
           { type: 'Pop', value: 'FEMALE' },

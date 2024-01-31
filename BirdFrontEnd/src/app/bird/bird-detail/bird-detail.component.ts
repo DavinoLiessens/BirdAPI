@@ -3,14 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
 import { birdReducer } from 'src/app/store/entities/bird/bird.reducer';
 import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
-import { IBird, IBirdDetail, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, IBirdShowRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
 import { IOwnerDropdownOption } from 'src/app/types/dropdown.types';
 import { IGetOwnersRequest, IOwner } from 'src/app/types/owner.types';
+import { BirdShowCreateModal } from '../bird-show-create/bird-show-create.modal';
+import { BirdShowUpdateModal } from '../bird-show-update/bird-show-update.modal';
 
 @Component({
   selector: 'app-bird-detail',
@@ -30,14 +33,16 @@ export class BirdDetailComponent implements OnInit {
   public owners$: Observable<IOwner[]> = this.ownerFacade.getOwners();
   private destroyed$: Subject<boolean> = new Subject<boolean>();
   public loading$: Observable<boolean> = this.birdFacade.getLoadingDetail();
-  
+  private owner: IOwnerDropdownOption;
+
   constructor(
     private fb: FormBuilder,
     private birdFacade: BirdFacade,
     private ownerFacade: OwnerFacade,
     private router: Router,
     private route: ActivatedRoute,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit(): void {
@@ -49,16 +54,16 @@ export class BirdDetailComponent implements OnInit {
     ).subscribe((bird: IBirdDetail) => {
       if (bird !== null && bird !== undefined) {
         this.bird = bird;
-        this.createDefaultForm(bird);        
+        this.createDefaultForm(bird);
       }
     });
 
     // get breeders and owners
     this.getAllOwners();
 
-        // handle success and errors
-        this.handleSuccesses();
-        this.handleErrors();
+    // handle success and errors
+    this.handleSuccesses();
+    this.handleErrors();
   }
 
   public onSubmit() {
@@ -66,7 +71,7 @@ export class BirdDetailComponent implements OnInit {
       id: parseInt(this.birdId),
       ringNumber: this.birdForm.get('ringNumber').value,
       cageNumber: this.birdForm.get('cageNumber').value,
-      ownerId: this.birdForm.get('owner').value.value,
+      ownerId: this.birdForm.get('owner').value,
       description: this.birdForm.get('description').value ?? '',
       isDead: this.birdForm.get('isDead').value
     };
@@ -96,7 +101,7 @@ export class BirdDetailComponent implements OnInit {
       color: [{ value: bird.color, disabled: true }, Validators.required],
       cageNumber: [bird.cageNumber, Validators.required],
       breeder: [{ value: `${bird.breeder.firstName} ${bird.breeder.lastName}`, disabled: true }, Validators.required],
-      owner: [{ name: `${bird.owner.firstName} ${bird.owner.lastName}`, value: bird.owner.id }, Validators.required],
+      owner: [bird.owner.id, Validators.required],
       description: [bird.description],
       isDead: [bird.isDead]
     });
@@ -124,6 +129,41 @@ export class BirdDetailComponent implements OnInit {
           this.owners.push({ name: fullname, value: owner.id });
         });
       }
+    });
+  }
+
+  public openCreateBirdShowModel(birdId: number) {
+    // open modal and pass id
+    const ref = this.dialogService.open(BirdShowCreateModal, {
+      header: 'Tentoonstelling toevoegen',
+      width: 'auto',
+      height: 'auto',
+      contentStyle: { overflow: 'visible' },
+      data: {
+        birdId
+      }
+    });
+  }
+
+  public openUpdateBirdShowModel(birdId: number, id: number) {
+    const request: IBirdShowRequest = {
+      birdId,
+      id
+    };
+
+    // open update modal
+    var ref: DynamicDialogRef = this.dialogService.open(BirdShowUpdateModal, {
+      header: 'Tentoonstelling bewerken',
+      width: 'auto',
+      height: 'auto',
+      contentStyle: { overflow: 'visible' },
+      data: {
+        request
+      }
+    });
+
+    ref.onClose.subscribe(() => {
+      this.birdFacade.clearBirdShowDetail();
     });
   }
 

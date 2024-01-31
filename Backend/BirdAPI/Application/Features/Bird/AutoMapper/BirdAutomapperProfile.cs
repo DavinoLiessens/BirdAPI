@@ -10,6 +10,7 @@ namespace BirdAPI.Application.Features.Bird.AutoMapper
         {
             CreateMap<Domain.AggregatesModel.BirdAggregate.Bird, BirdResponseModel>();
             CreateMap<Domain.AggregatesModel.BirdAggregate.Bird, BirdDetailResponseModel>();
+            CreateMap<Domain.AggregatesModel.BirdAggregate.BirdShow, BirdShowResponseModel>();
         }
     }
 }

@@ -3,7 +3,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 import { BirdService } from 'src/app/Services/bird.service';
-import { IBird, IBirdDetail, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
+import { IBird, IBirdDetail, IBirdShow, IBirdShowRequest, IBirdsResponse, ICreateBirdRequest, ICreateBirdShowRequest, IGetBirdsRequest, IUpdateBirdRequest, IUpdateBirdShowRequest } from 'src/app/types/bird.types';
 import * as actions from './bird.actions';
 
 @Injectable()
@@ -46,6 +46,33 @@ export class BirdEffects {
         concatMap(({ request }: { request: IUpdateBirdRequest }) => this.birdService.updateBird(request).pipe(
             map(() => actions.updateBirdSuccess()),
             catchError((error: any) => of(actions.updateBirdError({ error }))),
+        ))
+    ));
+
+    // create birdShow
+    createBirdShow$ = createEffect(() => this.actions$.pipe(
+        ofType(actions.createBirdShow.type),
+        concatMap(({ request }: { request: ICreateBirdShowRequest }) => this.birdService.createBirdShow(request).pipe(
+            map(() => actions.createBirdShowSuccess()),
+            catchError((error: any) => of(actions.createBirdShowError({ error }))),
+        ))
+    ));
+
+    // update breeder
+    updateBirdShow$ = createEffect(() => this.actions$.pipe(
+        ofType(actions.updateBirdShow.type),
+        concatMap(({ id, request }: { id: number, request: IUpdateBirdShowRequest }) => this.birdService.updateBirdShow(id, request).pipe(
+            map(() => actions.updateBirdShowSuccess()),
+            catchError((error: any) => of(actions.updateBirdShowError({ error }))),
+        ))
+    ));
+
+    // fetch bird
+    getBirdShow$ = createEffect(() => this.actions$.pipe(
+        ofType(actions.getBirdShow.type),
+        concatMap(({ request }: { request: IBirdShowRequest }) => this.birdService.getBirdShow(request.birdId, request.id).pipe(
+            map((birdShowDetail: IBirdShow) => actions.getBirdShowSuccess({ birdShowDetail })),
+            catchError((error: any) => of(actions.getBirdShowError({ error }))),
         ))
     ));
 }

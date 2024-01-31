@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService, Bird, ChangeBird, CreateBird } from './api.service';
 import { Observable } from 'rxjs';
 import { BaseService } from './base.service';
-import { IBird, IBirdsResponse, ICreateBirdRequest, IGetBirdsRequest, IUpdateBirdRequest } from '../types/bird.types';
+import { IBird, IBirdShow, IBirdsResponse, ICreateBirdRequest, ICreateBirdShowRequest, IGetBirdsRequest, IUpdateBirdRequest, IUpdateBirdShowRequest } from '../types/bird.types';
 import { SelectItemGroup } from 'primeng/api';
 @Injectable({
   providedIn: 'root'
@@ -26,5 +26,17 @@ export class BirdService {
 
   public updateBird(request: IUpdateBirdRequest): Observable<IBird> {
     return this.baseService.put(`/birds/${request.id}`, request) as Observable<IBird>;
+  }  
+
+  public getBirdShow(birdId: number, id: number): Observable<IBirdShow> {
+    return this.baseService.get(`/birds/${birdId}/birdshow/${id}`) as Observable<IBirdShow>;
+  }
+
+  public createBirdShow(request: ICreateBirdShowRequest): Observable<null> {
+    return this.baseService.post(`/birds/${request.birdId}/birdshow`, request) as Observable<null>;
+  }
+
+  public updateBirdShow(id: number, request: IUpdateBirdShowRequest): Observable<null> {
+    return this.baseService.put(`/birds/${request.birdId}/birdshow/${id}`, request) as Observable<null>;
   }  
 }

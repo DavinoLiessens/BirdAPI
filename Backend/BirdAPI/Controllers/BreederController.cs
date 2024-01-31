@@ -21,9 +21,9 @@ namespace BirdAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetBreeders(int? page, int? pageSize)
+        public async Task<IActionResult> GetBreeders(int? page, int? pageSize, string? searchValue)
         {
-            return new JsonContentResult<PagedResponse<BreederResponseModel>>(await _mediator.Send(new GetBreedersQuery(page, pageSize)));
+            return new JsonContentResult<PagedResponse<BreederResponseModel>>(await _mediator.Send(new GetBreedersQuery(page, pageSize, searchValue)));
         }
 
         [HttpGet("{breederId}")]

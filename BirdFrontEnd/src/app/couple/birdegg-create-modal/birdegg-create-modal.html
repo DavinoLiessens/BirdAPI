@@ -38,8 +38,9 @@
         </div>
 
         <div class="form-footer">
+            <button pButton type="submit" (click)="goBack()" label="Terug"></button>
             <button pButton type="submit" (click)="handleSubmit()" [disabled]="!birdEggForm.valid" label="Opslaan"></button>
         </div>                      
     </form>
-    <c-loader *ngIf="loading$ | async"></c-loader>
+    <c-loader *ngIf="(loading$ | async)"></c-loader>
 </div>

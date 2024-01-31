@@ -1,15 +1,14 @@
 <div class="card">
-    <p-table #dt1 [value]="couples" dataKey="id" *ngIf="!(loading$ | async)"
-        [rows]="25" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
-        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <p-table #dt1 [value]="couples" dataKey="id" *ngIf="!(loading$ | async) && couples"
+        styleClass="p-datatable-customers p-datatable-gridlines">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">
                 <span class="p-input-icon-left" style="margin-left: 20px;">
                     <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Zoek Koppel" (keyup)="onSearch($event.target.value)"/>
+                    <input type="text" pInputText placeholder="Zoek Koppel" [(ngModel)]="search" (keyup)="onSearch($event.target.value)"/>
                 </span>
             </div>
-            
+
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
@@ -25,7 +24,7 @@
                 </th>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                        Vader 
+                        Vader
                     </div>
                 </th>
                 <th>
@@ -58,7 +57,7 @@
                 </td>
                 <td>
                     <p>{{couple.motherRingNumber}}</p>
-                </td>                
+                </td>
                 <td>
                     <p>{{couple.cageNumber}}</p>
                 </td>
@@ -67,6 +66,11 @@
                     <!-- <button pButton pRipple type="button" label="Verwijder" class="p-button-danger" style="margin-left: 5px;" (click)="DeleteCouple(couple.id)"></button> -->
                 </td>
             </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div [style]="{'width':'99vw'}">
+                <p-paginator class="p-d-flex p-jc-center" [rows]="pagination.pageSize" [first]="first" [totalRecords]="pagination.totalAmount" currentPageReportTemplate="{first} van de {totalRecords} resultaten" showCurrentPageReport="true" [rowsPerPageOptions]="[5,10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
+            </div>
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>

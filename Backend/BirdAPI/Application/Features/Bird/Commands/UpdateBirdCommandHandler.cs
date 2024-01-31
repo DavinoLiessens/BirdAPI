@@ -67,8 +67,9 @@ namespace BirdAPI.Application.Features.Bird.Commands
                 // search for owner
                 var owner = await _context.Owners.FirstOrDefaultAsync(o => o.Id == request.Model.OwnerId);
 
-                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
-                    .AddError($"No owner found with id '{request.Model.OwnerId}'");
+                if (owner == null) 
+                    return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
+                        .AddError($"No owner found with id '{request.Model.OwnerId}'");
 
 
                 existingBird.BelongsToOwner(owner);

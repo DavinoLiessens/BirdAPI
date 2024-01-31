@@ -27,6 +27,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
             var existingBird = await _context.Birds
                                                 .Include(b => b.Owner)
                                                 .Include(b => b.Breeder)
+                                                .Include(b => b.BirdShows)
                                                 .FirstOrDefaultAsync(b => b.Id == request.BirdId);
 
             if (existingBird == null)
@@ -66,7 +67,11 @@ namespace BirdAPI.Application.Features.Bird.Queries
                     MotherRingNumber = coupleWhereBirdIsBorn.Mother.RingNumber,
                     CoupleId = coupleWhereBirdIsBorn.Id
                 };
-            }           
+            }
+
+            // add bird shows
+            var birdShows = await _context.BirdShows.Where(bs => bs.BirdId == existingBird.Id).ToListAsync();
+            result.BirdShows = _mapper.Map<List<BirdShowResponseModel>>(birdShows);
 
             return new BaseResponse<BirdDetailResponseModel>(result);
         }

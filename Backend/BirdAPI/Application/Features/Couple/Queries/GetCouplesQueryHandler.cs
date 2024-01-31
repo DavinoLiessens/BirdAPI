@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.BaseModels;
+using BirdAPI.Domain.AggregatesModel.BirdAggregate;
 using BirdAPI.Extensions;
 using BirdAPI.Infrastructure;
 using MediatR;
@@ -24,11 +25,17 @@ namespace BirdAPI.Application.Features.Couple.Queries
 
         public async Task<BaseResponse<PagedResponse<CouplesResponseModel>>> Handle(GetCouplesQuery request, CancellationToken cancellationToken)
         {
-            var couples = await _context.Couples
-                                            .Include(c => c.Father)
-                                            .Include(c => c.Mother)
-                                            .AsNoTracking()
-                                            .ToListAsync();
+            var couples = _context.Couples
+                                .Include(c => c.Father)
+                                .Include(c => c.Mother)
+                                .AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(request.SearchValue))
+            {
+                couples = couples.Where(c => c.Name.Contains(request.SearchValue) ||
+                                         c.Mother.RingNumber.Equals(request.SearchValue) ||
+                                         c.Father.RingNumber.Equals(request.SearchValue));
+            }
 
             var result = await couples.GetPaged<Domain.AggregatesModel.CoupleAggregate.Couple, CouplesResponseModel>(request.Page, request.PageSize, _mapper);
 

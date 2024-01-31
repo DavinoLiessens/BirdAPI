@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdAPI.Application.Features.Breeder.ResponseModels;
 using BirdAPI.BaseModels;
+using BirdAPI.Domain.AggregatesModel.BirdAggregate;
 using BirdAPI.Extensions;
 using BirdAPI.Infrastructure;
 using MediatR;
@@ -26,6 +27,12 @@ namespace BirdAPI.Application.Features.Breeder.Queries
         {
             // get all breeders from db
             var breeders = _context.Breeders.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(request.SearchValue))
+            {
+                breeders = breeders.Where(b => b.FirstName.StartsWith(request.SearchValue) ||
+                                               b.LastName.StartsWith(request.SearchValue));
+            }
 
             var result = await breeders.GetPaged<Domain.AggregatesModel.BreederAggregate.Breeder, BreederResponseModel>(request.Page, request.PageSize, _mapper);
             

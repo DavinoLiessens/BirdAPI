@@ -100,6 +100,10 @@ export class BirdEggUpdateModal implements OnInit {
         });
     }
 
+    public goBack() {
+        this.ref.close();
+    }
+
     private createForm(birdEgg: IBirdEgg) {
         this.birdEggForm = this.fb.group({
             layedOn: [{ value: birdEgg.layedOn ? new Date(birdEgg.layedOn) : '', disabled: true }],

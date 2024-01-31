@@ -46,5 +46,24 @@ namespace BirdAPI.Controllers
             return new JsonContentResult<BirdResponseModel>(await _mediator.Send(command));
         }
 
+        [HttpGet("{birdId}/birdshow/{id}")]
+        public async Task<IActionResult> GetBirdShow(int birdId, int id)
+        {
+            return new JsonContentResult<BirdShowResponseModel>(await _mediator.Send(new GetBirdShowQuery(birdId, id)));
+        }
+
+        [HttpPost("{birdId}/birdshow")]
+        public async Task<IActionResult> AddBirdShow([FromBody] BirdShowInputModel model)
+        {
+            var command = new CreateBirdShowCommand(model);
+            return new JsonContentResult<object>(await _mediator.Send(command));
+        }
+
+        [HttpPut("{birdId}/birdshow/{id}")]
+        public async Task<IActionResult> UpdateBirdShow(int id, [FromBody] BirdShowInputModel model)
+        {
+            var command = new UpdateBirdShowCommand(id, model);
+            return new JsonContentResult<object>(await _mediator.Send(command));
+        }
     }
 }

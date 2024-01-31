@@ -11,6 +11,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { TableModule } from 'primeng/table';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
@@ -22,10 +23,11 @@ import { ToastrModule } from 'ngx-toastr';
 import { CalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PaginatorModule } from 'primeng/paginator';
 
 // *** COMPONENTS ***
 import { AppComponent } from './app.component';
-import { BirdComponent, BirdDetailComponent, BirdCreateComponent } from './bird/index';
+import { BirdComponent, BirdDetailComponent, BirdCreateComponent, BirdShowCreateModal, BirdShowUpdateModal } from './bird/index';
 import { OwnerComponent, OwnerDetailComponent, OwnerCreateComponent } from './owner/index';
 import { BreederComponent, BreederDetailComponent, BreederCreateComponent} from './breeder/index';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -63,7 +65,9 @@ import { BaseService } from './Services/base.service';
     BreederDetailComponent,
     BirdEggCreateModal,
     BirdEggUpdateModal,
-    LoaderComponent
+    LoaderComponent,
+    BirdShowCreateModal,
+    BirdShowUpdateModal,
   ],
   imports: [
     AppStoreModule,
@@ -84,16 +88,18 @@ import { BaseService } from './Services/base.service';
     TableModule,
     VirtualScrollerModule,
     ReactiveFormsModule,
+    FormsModule,
     InputTextModule,
     InputNumberModule,
-    DropdownModule, 
+    DropdownModule,
     PanelModule,
     InputTextareaModule,
     OrganizationChartModule,
     CheckboxModule,
     CalendarModule,
     InputMaskModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    PaginatorModule
   ],
   providers: [BaseService, DialogService],
   bootstrap: [AppComponent]

@@ -20,9 +20,9 @@ namespace BirdAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCouples(int? page, int? pageSize)
+        public async Task<IActionResult> GetCouples(int? page, int? pageSize, string? searchValue)
         {
-            return new JsonContentResult<PagedResponse<CouplesResponseModel>>(await _mediator.Send(new GetCouplesQuery(page, pageSize)));
+            return new JsonContentResult<PagedResponse<CouplesResponseModel>>(await _mediator.Send(new GetCouplesQuery(page, pageSize, searchValue)));
         }
 
         [HttpGet("{coupleId}")]

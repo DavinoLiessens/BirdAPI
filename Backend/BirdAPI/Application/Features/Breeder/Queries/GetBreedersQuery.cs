@@ -8,11 +8,13 @@ namespace BirdAPI.Application.Features.Breeder.Queries
     {
         public int? Page { get; set; }
         public int? PageSize { get; set; }
+        public string? SearchValue { get; set; }
 
-        public GetBreedersQuery(int? page, int? pageSize)
+        public GetBreedersQuery(int? page, int? pageSize, string? searchValue)
         {
             Page = page;
             PageSize = pageSize;
+            SearchValue = searchValue;
         }
     }
 }
