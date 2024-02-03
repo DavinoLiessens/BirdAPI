@@ -13,3 +13,9 @@ export interface IPaginationRequest {
 export interface ISearchRequest {
     searchValue?: string;
 }
+
+export interface IFilterRequest {
+    gender: string;
+    typeOfBird: string;
+    year: string;
+}

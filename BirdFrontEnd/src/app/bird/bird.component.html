@@ -12,6 +12,35 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                    <p-columnFilter field="gender" matchMode="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-dropdown [ngModel]="selectedGender" [options]="genderOptions" optionLabel="type" optionValue="value" (onChange)="FilterGender($event.value)" placeholder="Alles"></p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter field="birdType" matchMode="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-dropdown [ngModel]="selectedTypeOfBird" [options]="typeOfBirdOptions" optionLabel="type" optionValue="value" (onChange)="FilterTypeOfBird($event.value)" placeholder="Alles"></p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </th>
+                <th></th>
+                <th>
+                    <p-columnFilter field="year" matchMode="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-dropdown [ngModel]="selectedYear" [options]="yearDropdownOptions" optionLabel="name" optionValue="value" (onChange)="FilterYear($event.value)" [placeholder]="selectedYear"></p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
                 <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Ringnummer

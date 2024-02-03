@@ -97,7 +97,6 @@ export class CoupleComponent implements OnInit {
     this.pageSize = event.rows;
     this.CalculateFirst();
 
-    console.log("paginate", event);
     const request: IGetCouplesRequest = {
       page: this.page,
       pageSize: this.pageSize,

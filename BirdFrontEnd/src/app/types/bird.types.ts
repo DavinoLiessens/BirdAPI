@@ -2,7 +2,7 @@ import { IBreeder } from "./breeder.types";
 import { ICouple } from "./couple.types";
 import { IOwner } from "./owner.types";
 import { PagedResponse } from "./paged-response.types";
-import { IPaginationRequest, ISearchRequest } from "./pagination.types";
+import { IFilterRequest, IPaginationRequest, ISearchRequest } from "./pagination.types";
 
 export interface IBird {
     id: number;
@@ -103,5 +103,5 @@ export interface IBirdShowRequest {
     id: number;
 }
 
-export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest {}
+export interface IGetBirdsRequest extends IPaginationRequest, ISearchRequest, IFilterRequest {}
 export type IBirdsResponse = PagedResponse<IBird>;
