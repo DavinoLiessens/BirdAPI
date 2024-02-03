@@ -98,7 +98,6 @@ export class OwnerComponent implements OnInit {
     this.pageSize = event.rows;
     this.CalculateFirst();
 
-    console.log("paginate", event);
     const request: IGetOwnersRequest = {
       page: this.page,
       pageSize: this.pageSize,

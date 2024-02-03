@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
+using BirdAPI.Domain.Enums;
 using BirdAPI.Extensions;
+using BirdAPI.Helpers;
 using BirdAPI.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +40,22 @@ namespace BirdAPI.Application.Features.Bird.Queries
                                          b.Breeder.LastName.StartsWith(request.SearchValue) ||
                                          b.Owner.FirstName.StartsWith(request.SearchValue) ||
                                          b.Owner.LastName.StartsWith(request.SearchValue));
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Gender) && request.Gender != "ALL")
+            {
+                birds = birds.Where(b => b.Gender == request.Gender);
+            }
+
+            var result = BirdChecker.CheckBirdType(request.TypeOfBird!);
+            if (!string.IsNullOrWhiteSpace(request.TypeOfBird) && result.IsNotAll)
+            {
+                birds = birds.Where(b => b.BirdType == result.BirdType);                
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Year) && request.Year != "ALL")
+            {
+                birds = birds.Where(b => b.BirthDate.Year == int.Parse(request.Year));
             }
 
             // get paged result

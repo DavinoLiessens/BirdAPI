@@ -6,25 +6,25 @@
         <div class="page-body">
             <form [formGroup]="birdForm">
                 <h2>Vogel aanmaken</h2>
-        
+
                 <div class="form-group-wrapper">
                     <div class="form-group">
                         <label for="ringNumber">Ringnummer</label>
                         <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber" placeholder="XX123456789XX">
                     </div>
-            
+
                     <div class="form-group">
                         <label for="gender">Geslacht</label>
-                        <p-dropdown [options]="genderOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-dropdown>                
+                        <p-dropdown [options]="genderOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-dropdown>
                     </div>
                 </div>
-        
+
                 <div class="form-group-wrapper">
                     <div class="form-group">
                         <label for="birdType">Type</label>
                         <p-dropdown [options]="typeOfBirdOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een type..." optionLabel="type" optionValue="value" formControlName="birdType"></p-dropdown>
                     </div>
-    
+
                     <div class="form-group">
                         <label for="birthDate">Jaartal</label>
                         <p-calendar formControlName="birthDate" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
@@ -41,9 +41,9 @@
                                     <span>{{group.label}}</span>
                                 </div>
                             </ng-template>
-                        </p-dropdown>                
+                        </p-dropdown>
                     </div>
-    
+
                     <div class="form-group">
                         <label for="cageNumber">Kotnummer</label>
                         <input pInputText type="text" class="form-control" formControlName="cageNumber" id="cageNumber" placeholder="A1">
@@ -55,7 +55,7 @@
                         <label for="breederId">Kweker</label>
                         <p-dropdown *ngIf="breeders$ | async" autoWidth="false" [style]="{'width':'100%'}" [options]="breeders" optionLabel="name" optionValue="value" formControlName="breederId" placeholder="Selecteer een kweker..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
                     </div>
-    
+
                     <div class="form-group">
                         <label for="ownerId">Eigenaar</label>
                         <p-dropdown *ngIf="owners$ | async" autoWidth="false" [style]="{'width':'100%'}" [options]="owners" optionLabel="name" optionValue="value" formControlName="ownerId" placeholder="Selecteer een eigenaar..." [showClear]="true" [filter]="true" filterBy="name"></p-dropdown>
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="form-footer">
                     <button pButton type="button" class="p-button-outlined" (click)="goBack()" label="Terug"></button>
                     <button pButton type="submit" (click)="onSubmit()" [disabled]="!birdForm.valid" label="Opslaan"></button>

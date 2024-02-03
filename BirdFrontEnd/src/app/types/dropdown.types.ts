@@ -17,3 +17,8 @@ export interface IOwnerDropdownOption {
     name: string;
     value: number;
 }
+
+export interface IYearDropdownOption {
+    name: string;
+    value: string;
+}

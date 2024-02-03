@@ -46,7 +46,11 @@ export class CoupleCreateComponent implements OnInit, OnDestroy {
 
     const request: IGetBirdsRequest = {
       page: 1,
-      pageSize: 10
+      pageSize: 10,
+      searchValue: '',
+      gender: 'ALL',
+      typeOfBird: '0',
+      year: 'ALL'
     };
 
     this.birdFacade.getAllBirdsRequest(request);
@@ -114,7 +118,7 @@ export class CoupleCreateComponent implements OnInit, OnDestroy {
 
           if (existingBird === undefined){
             this.maleBirds.push({ type: bird.ringNumber, value: bird.id });
-          }            
+          }
         });
 
         females.forEach((bird: IBird) => {

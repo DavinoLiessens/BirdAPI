@@ -102,7 +102,6 @@ export class BreederComponent implements OnInit {
         this.pageSize = event.rows;
         this.CalculateFirst();
 
-        console.log("paginate", event);
         const request: IGetBreedersRequest = {
         page: this.page,
         pageSize: this.pageSize,

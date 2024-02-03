@@ -8,6 +8,7 @@ namespace BirdAPI.Domain.Enums
 {
    public enum BirdType
     {
+        ALL,
         APPELVINK,
         BARMSIJZEN,
         DISTELVINK,
