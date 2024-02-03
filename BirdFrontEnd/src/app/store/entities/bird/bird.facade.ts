@@ -205,15 +205,15 @@ export class BirdFacade {
 
     public createBirdTypeOptions(): IBirdTypeOption[] {
         let options = [
-            { type: 'Appelvink', value: 0 },
-            { type: 'Barmsijs', value: 1 },
-            { type: 'Distelvink', value: 2 },
-            { type: 'Fischeri', value: 3 },
-            { type: 'Goudvink', value: 4 },
-            { type: 'Kanarie', value: 5 },
-            { type: 'Roodmus', value: 6 },
-            { type: 'Sijzen', value: 7 },
-            { type: 'Mexicaanse roodmus', value: 8 }
+            { type: 'Appelvink', value: 1 },
+            { type: 'Barmsijs', value: 2 },
+            { type: 'Distelvink', value: 3 },
+            { type: 'Fischeri', value: 4 },
+            { type: 'Goudvink', value: 5 },
+            { type: 'Kanarie', value: 6 },
+            { type: 'Roodmus', value: 7 },
+            { type: 'Sijzen', value: 8 },
+            { type: 'Mexicaanse roodmus', value: 9 }
         ];
 
         return options;

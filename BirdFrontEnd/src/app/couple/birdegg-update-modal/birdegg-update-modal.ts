@@ -70,8 +70,8 @@ export class BirdEggUpdateModal implements OnInit {
             ringNumber:  ringNumber !== '' ? ringNumber : null,
             color: color !== '' ? color : null,
             gender: gender !== '' ? gender : null,
-        };       
-        
+        };
+
         // facade update Birdegg
         this.coupleFacade.updateBirdEggRequest(request);
 
@@ -85,7 +85,7 @@ export class BirdEggUpdateModal implements OnInit {
 
             this.coupleFacade.getCoupleRequest(this.config.data.request.coupleId);
             this.coupleFacade.clearBirdEggDetail();
-            this.birdFacade.getAllBirdsRequest({ page: 1, pageSize: 10});
+            this.birdFacade.getAllBirdsRequest({ page: 1, pageSize: 10, searchValue: '', gender: 'ALL', typeOfBird: '0', year: 'ALL' });
 
             this.ref.close();
         });
