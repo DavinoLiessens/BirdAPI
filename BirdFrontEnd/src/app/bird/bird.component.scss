@@ -8,4 +8,13 @@
     &tr:nth-child(even) {
         background-color: #f7f7f7;
     }
+
+    tr td p{
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.ringnumber {
+    overflow-wrap: break-word;
 }
