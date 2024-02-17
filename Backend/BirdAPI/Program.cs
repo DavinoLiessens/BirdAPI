@@ -1,6 +1,7 @@
 using BirdAPI.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<BirdAPIContext>(options =>
         sqloptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
     });
 });
+builder.Services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp"; });
+
 
 var app = builder.Build();
 
@@ -27,7 +30,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    // uncomment this if you want to access the Swagger UI view !!!
+    //app.UseSwaggerUI();
 }
 
 app.UseCors(builder =>
@@ -36,9 +40,33 @@ app.UseCors(builder =>
             .AllowAnyMethod());
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
+app.UseSpaStaticFiles();
+app.UseRouting();
 app.UseAuthorization();
 
+// Serve Angular static files from the ClientAppDist folder
+app.UseSpa(spa => { spa.Options.SourcePath = "ClientApp"; });
+
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+    // Default Fallback Route: Redirect to /ClientApp/index.html for any other unmatched route
+    endpoints.MapFallbackToFile("/ClientApp/index.html");
+
+    // Custom Endpoint: Redirect to /ClientApp/index.html
+    endpoints.MapGet("/ClientApp", async context =>
+    {
+        context.Response.Redirect("/ClientApp/index.html");
+    });
+
+    // Custom Endpoint: Redirect to /swagger/index.html
+    endpoints.MapGet("/swagger", async context =>
+    {
+        context.Response.Redirect("/swagger/index.html");
+    });
+
+});
 
 app.Run();
