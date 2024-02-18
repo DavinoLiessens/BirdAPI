@@ -1,4 +1,5 @@
 using BirdAPI.Infrastructure;
+using BirdAPI.Infrastructure.Seed;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<BirdAPIContext>(options =>
         sqloptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
     });
 });
+builder.Services.AddHostedService<InitializeDatabaseService>();
 builder.Services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp"; });
 
 

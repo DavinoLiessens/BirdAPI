@@ -20,7 +20,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
         }
         public async Task<BaseResponse<BirdShowResponseModel>> Handle(GetBirdShowQuery request, CancellationToken cancellationToken)
         {
-            var birdShow = _context.BirdShows.Include(bs => bs.Bird).FirstOrDefault(bs => bs.BirdId == request.BirdId && bs.Id == request.Id);
+            var birdShow = _context.BirdShows.Include(bs => bs.BirdId).FirstOrDefault(bs => bs.BirdId == request.BirdId && bs.Id == request.Id);
 
             if (birdShow == null)
             {

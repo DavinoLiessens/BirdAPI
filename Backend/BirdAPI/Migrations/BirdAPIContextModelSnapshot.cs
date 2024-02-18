@@ -90,9 +90,6 @@ namespace BirdAPI.Migrations
                     b.Property<int>("BirdId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BirdId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -112,8 +109,6 @@ namespace BirdAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BirdId");
-
-                    b.HasIndex("BirdId1");
 
                     b.ToTable("BirdShows");
                 });
@@ -385,17 +380,11 @@ namespace BirdAPI.Migrations
 
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BirdAggregate.BirdShow", b =>
                 {
-                    b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", "Bird")
-                        .WithMany()
-                        .HasForeignKey("BirdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", null)
                         .WithMany("BirdShows")
-                        .HasForeignKey("BirdId1");
-
-                    b.Navigation("Bird");
+                        .HasForeignKey("BirdId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BreederAggregate.BreederBird", b =>
