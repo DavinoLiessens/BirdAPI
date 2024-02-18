@@ -28,6 +28,12 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.BirdAggregate
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasMany(b => b.BirdShows)
+                .WithOne()
+                .HasForeignKey(b => b.BirdId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             builder.Ignore(b => b.DomainEvents);
         }
     }

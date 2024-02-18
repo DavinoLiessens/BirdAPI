@@ -13,7 +13,6 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
         public int Points { get; set; }
         public int Rank { get; set; }
 
-        public Bird Bird { get; set; }
         public int BirdId { get; set; }
 
         public BirdShow(string location, int points, int rank)
@@ -32,10 +31,9 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             return this;
         }
 
-        public BirdShow BelongsToBird(Bird bird)
+        public BirdShow BelongsToBird(int birdId)
         {
-            Bird = bird;
-            BirdId = bird.Id;
+            BirdId = birdId;
 
             return this;
         }

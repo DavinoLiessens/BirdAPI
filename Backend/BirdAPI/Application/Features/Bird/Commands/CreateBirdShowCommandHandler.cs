@@ -27,7 +27,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             }
 
             var newBirdShow = new BirdShow(request.Model.Location, request.Model.Points, request.Model.Rank);
-            newBirdShow.BelongsToBird(bird);
+            newBirdShow.BelongsToBird(bird.Id);
 
             _context.BirdShows.Add(newBirdShow);
             _context.SaveChanges();
