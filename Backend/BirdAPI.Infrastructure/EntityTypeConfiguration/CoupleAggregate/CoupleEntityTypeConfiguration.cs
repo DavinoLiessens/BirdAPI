@@ -1,4 +1,5 @@
 ﻿using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BirdAPI.Infrastructure.EntityTypeConfiguration.CoupleAggregate
@@ -15,14 +16,17 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.CoupleAggregate
             builder.HasOne(c => c.Father)
                 .WithMany()
                 .HasForeignKey(c => c.FatherId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(c => c.Mother)
+
+			builder.HasOne(c => c.Mother)
                 .WithMany()
                 .HasForeignKey(c => c.MotherId)
-                .IsRequired();
+                .IsRequired()
+				.OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasMany(o => o.BirdEggs);
+			builder.HasMany(o => o.BirdEggs);
         }
     }
 }

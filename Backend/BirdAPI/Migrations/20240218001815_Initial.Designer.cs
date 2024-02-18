@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirdAPI.Migrations
 {
     [DbContext(typeof(BirdAPIContext))]
-    [Migration("20231115174657_AddedColorAndGenderToBirdEgg")]
-    partial class AddedColorAndGenderToBirdEgg
+    [Migration("20240218001815_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,6 +79,40 @@ namespace BirdAPI.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Birds");
+                });
+
+            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BirdAggregate.BirdShow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BirdId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rank")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BirdId");
+
+                    b.ToTable("BirdShows");
                 });
 
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BreederAggregate.Breeder", b =>
@@ -152,6 +186,9 @@ namespace BirdAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("BirdId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CameOutOn")
                         .HasColumnType("datetime2");
@@ -343,6 +380,15 @@ namespace BirdAPI.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BirdAggregate.BirdShow", b =>
+                {
+                    b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", null)
+                        .WithMany("BirdShows")
+                        .HasForeignKey("BirdId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BreederAggregate.BreederBird", b =>
                 {
                     b.HasOne("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", "Bird")
@@ -431,6 +477,8 @@ namespace BirdAPI.Migrations
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.BirdAggregate.Bird", b =>
                 {
                     b.Navigation("BirdCouples");
+
+                    b.Navigation("BirdShows");
                 });
 
             modelBuilder.Entity("BirdAPI.Domain.AggregatesModel.CoupleAggregate.Couple", b =>
