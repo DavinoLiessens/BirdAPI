@@ -32,3 +32,17 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Visual Studio Professional-abonnement(85568886-ad8d-4e96-980c-5f9c77e70513)'
+    appType: 'webApp'
+    WebAppName: 'BirdPlatform'
+    VirtualApplication: 'BirdPlatform'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
