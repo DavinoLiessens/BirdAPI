@@ -44,5 +44,5 @@ steps:
     azureSubscription: 'Visual Studio Professional-abonnement(85568886-ad8d-4e96-980c-5f9c77e70513)'
     appType: 'webApp'
     WebAppName: 'bird-platform'
-    VirtualApplication: 'BirdPlatform'
+    VirtualApplication: 'bird-platform'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
