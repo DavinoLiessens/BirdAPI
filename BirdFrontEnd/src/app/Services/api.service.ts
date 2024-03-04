@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ApiService {
   public searchnameBird: string = '';
   public ringNumber: string;
   public kotNumber: number;
-  public baseUrl: string = 'https://localhost:44384/api/v1';
+  public baseUrl: string = environment.webApiBaseUrl;
 
   // OWNER
   public noOwners: number = 10;
@@ -78,7 +79,7 @@ export class ApiService {
 
   DeleteOwner(id: number) {
     return this._http.delete<Owner>(`${this.baseUrl}/owners/${id}`);
-  }  
+  }
 
   // ***** COUPLE CALLS *****
   GetAllCouples() {
@@ -103,7 +104,7 @@ export class ApiService {
 
   DeleteCouple(id: number) {
     return this._http.delete<Couple>(`${this.baseUrl}/couples/${id}`);
-  }  
+  }
 }
 
 export interface Bird{
@@ -147,8 +148,8 @@ export interface ChangeBird {
   ringnummer: string;
   kotnummer: number;
   eigenaarID: number;
-  kweker: string;  
-  omschrijving: string; 
+  kweker: string;
+  omschrijving: string;
 }
 
 export interface Couple{

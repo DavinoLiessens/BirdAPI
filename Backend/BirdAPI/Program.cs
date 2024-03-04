@@ -29,12 +29,12 @@ builder.Services.AddApplicationInsightsTelemetry();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     // uncomment this if you want to access the Swagger UI view !!!
     //app.UseSwaggerUI();
-//}
+}
 
 app.UseCors(builder =>
     builder.AllowAnyOrigin()
@@ -51,24 +51,5 @@ app.UseAuthorization();
 app.UseSpa(spa => { spa.Options.SourcePath = "ClientApp"; });
 
 app.MapControllers();
-
-//app.UseEndpoints(endpoints =>
-//{
-//    // Default Fallback Route: Redirect to /ClientApp/index.html for any other unmatched route
-//    endpoints.MapFallbackToFile("/ClientApp/index.html");
-
-//    // Custom Endpoint: Redirect to /ClientApp/index.html
-//    endpoints.MapGet("/ClientApp", async context =>
-//    {
-//        context.Response.Redirect("/ClientApp/index.html");
-//    });
-
-//    // Custom Endpoint: Redirect to /swagger/index.html
-//    endpoints.MapGet("/swagger", async context =>
-//    {
-//        context.Response.Redirect("/swagger/index.html");
-//    });
-
-//});
 
 app.Run();

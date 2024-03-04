@@ -8,6 +8,128 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\assets\Appelvink.jpg" />
+    <None Remove="ClientApp\assets\background.PNG" />
+    <None Remove="ClientApp\assets\Barmsijzen.jpg" />
+    <None Remove="ClientApp\assets\Distelvink.jpg" />
+    <None Remove="ClientApp\assets\Fischeri.jpg" />
+    <None Remove="ClientApp\assets\Goudvink.jpg" />
+    <None Remove="ClientApp\assets\Kanarie.jpg" />
+    <None Remove="ClientApp\assets\Roodmus.jpg" />
+    <None Remove="ClientApp\assets\Sijzen.jpg" />
+    <None Remove="ClientApp\background.png" />
+    <None Remove="ClientApp\color.png" />
+    <None Remove="ClientApp\favicon.ico" />
+    <None Remove="ClientApp\hue.png" />
+    <None Remove="ClientApp\index.html" />
+    <None Remove="ClientApp\main.js" />
+    <None Remove="ClientApp\nimbus-sans-l-bold.woff" />
+    <None Remove="ClientApp\nimbus-sans-l-regular.woff" />
+    <None Remove="ClientApp\polyfills.js" />
+    <None Remove="ClientApp\primeicons.eot" />
+    <None Remove="ClientApp\primeicons.svg" />
+    <None Remove="ClientApp\primeicons.ttf" />
+    <None Remove="ClientApp\primeicons.woff" />
+    <None Remove="ClientApp\roboto-bold.woff" />
+    <None Remove="ClientApp\roboto-light.woff" />
+    <None Remove="ClientApp\roboto-medium.woff" />
+    <None Remove="ClientApp\roboto-regular.woff" />
+    <None Remove="ClientApp\runtime.js" />
+    <None Remove="ClientApp\styles.css" />
+    <None Remove="ClientApp\vendor.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ClientApp\assets\Appelvink.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\assets\background.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\assets\Barmsijzen.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\assets\Distelvink.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\assets\Fischeri.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\assets\Goudvink.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\assets\Kanarie.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\assets\Roodmus.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\assets\Sijzen.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\color.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\hue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\main.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\nimbus-sans-l-bold.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\nimbus-sans-l-regular.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\polyfills.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\primeicons.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\primeicons.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\primeicons.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\primeicons.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\roboto-bold.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\roboto-light.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\roboto-medium.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\roboto-regular.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\runtime.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\styles.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientApp\vendor.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>  
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
@@ -33,7 +155,6 @@
   <ItemGroup>
     <Folder Include="Infrastructure\Migrations\" />
     <Folder Include="Infrastructure\Services\" />
-    <Folder Include="ClientApp\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
@@ -57,5 +178,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  
 
 </Project>
