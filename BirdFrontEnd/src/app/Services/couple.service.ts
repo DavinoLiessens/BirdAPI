@@ -1,42 +1,61 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { IBirdEgg, IBirdEggRequest, ICreateBirdEggRequest, IUpdateBirdEggRequest } from "../types/birdEgg.types";
-import { ICouple, ICouplesResponse, ICreateCoupleRequest, IGetCouplesRequest, IUpdateCoupleRequest } from "../types/couple.types";
-import { BaseService } from "./base.service";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseHttpService } from './base-http.service';
+import {
+  IBirdEgg,
+  IBirdEggRequest,
+  ICreateBirdEggRequest,
+  IUpdateBirdEggRequest,
+} from '../types/birdEgg.types';
+import {
+  ICouple,
+  ICouplesResponse,
+  ICreateCoupleRequest,
+  ICreatedCoupleResponseModel,
+  IGetCouplesRequest,
+  IUpdateCoupleRequest,
+} from '../types/couple.types';
 
 @Injectable({
-    providedIn: 'root'
-  })
-  export class CoupleService { 
+  providedIn: 'root',
+})
+export class CoupleService {
+  constructor(private readonly httpService: BaseHttpService) {}
 
-    constructor(private baseService: BaseService) { }
-
-    public getAllCouples(request: IGetCouplesRequest): Observable<ICouplesResponse> {
-        return this.baseService.get(`/couples`, request) as Observable<ICouplesResponse>;
-    }
-
-    public getCouple(coupleId: number): Observable<ICouple> {
-      return this.baseService.get(`/couples/${coupleId}`) as Observable<ICouple>;
-    }
-
-    public createCouple(request: ICreateCoupleRequest): Observable<null> {
-      return this.baseService.post(`/couples`, request) as Observable<null>;
-    }
-
-    public updateCouple(request: IUpdateCoupleRequest): Observable<null> {
-      return this.baseService.put(`/couples`, request) as Observable<null>;
-    }
-
-    public createBirdEgg(request: ICreateBirdEggRequest): Observable<null> {
-      return this.baseService.post(`/couples/birdEggs`, request) as Observable<null>;
-    }  
-
-    public updateBirdEgg(request: IUpdateBirdEggRequest): Observable<null> {
-      return this.baseService.put(`/couples/birdEggs`, request) as Observable<null>;
-    } 
-    
-    public getCoupleBirdEgg(request: IBirdEggRequest): Observable<IBirdEgg> {
-      return this.baseService.get(`/couples/${request.coupleId}/birdEggs/${request.birdEggId}`) as Observable<IBirdEgg>;
-    }
+  getAllCouples(request: IGetCouplesRequest): Observable<ICouplesResponse> {
+    return this.httpService.get<ICouplesResponse>('/couples', {
+      params: request as any,
+    });
   }
-  
+
+  getCouple(coupleId: number): Observable<ICouple> {
+    return this.httpService.get<ICouple>(`/couples/${coupleId}`);
+  }
+
+  createCouple(
+    request: ICreateCoupleRequest
+  ): Observable<ICreatedCoupleResponseModel> {
+    return this.httpService.post<ICreatedCoupleResponseModel>(
+      '/couples',
+      request
+    );
+  }
+
+  updateCouple(request: IUpdateCoupleRequest): Observable<void> {
+    return this.httpService.put<void>('/couples', request);
+  }
+
+  createBirdEgg(request: ICreateBirdEggRequest): Observable<void> {
+    return this.httpService.post<void>('/couples/birdEggs', request);
+  }
+
+  updateBirdEgg(request: IUpdateBirdEggRequest): Observable<void> {
+    return this.httpService.put<void>('/couples/birdEggs', request);
+  }
+
+  getCoupleBirdEgg(request: IBirdEggRequest): Observable<IBirdEgg> {
+    return this.httpService.get<IBirdEgg>(
+      `/couples/${request.coupleId}/birdEggs/${request.birdEggId}`
+    );
+  }
+}

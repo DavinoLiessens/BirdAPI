@@ -1,87 +1,134 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
-import { IGetOwnersRequest } from 'src/app/types/owner.types';
+import { ICreateOwnerRequest } from 'src/app/types/owner.types';
+import { FormUtilsService } from 'src/app/Services/form-utils.service';
+import { APP_CONFIG } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-owner-create',
   templateUrl: './owner-create.component.html',
-  styleUrls: ['./owner-create.component.scss']
+  styleUrls: ['./owner-create.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OwnerCreateComponent implements OnInit {
+export class OwnerCreateComponent implements OnInit, OnDestroy {
+  private readonly destroyed$ = new Subject<void>();
+  private readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
-  // local variables
-  public ownerForm: FormGroup;
-  private destroyed$: Subject<boolean> = new Subject<boolean>();
+  // Form and observables
+  ownerForm!: FormGroup;
+  readonly loading$ = this.isLoading$.asObservable();
 
-  constructor(private fb: FormBuilder,
-    private ownerFacade: OwnerFacade,
-    private router: Router,
-    private route: ActivatedRoute,
-    private toastrService: ToastrService
-  ) { }
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly ownerFacade: OwnerFacade,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly toastrService: ToastrService,
+    private readonly formUtils: FormUtilsService
+  ) {}
 
   ngOnInit(): void {
-    // fill in the form
-    this.ownerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      email: ['', Validators.required],
-    });
-
-    // handle success and errors
-    this.handleSuccesses();
-    this.handleErrors();
-
+    this.initializeForm();
+    this.setupSuccessHandling();
+    this.setupErrorHandling();
   }
 
-  public onSubmit() {
-    const request: any = {
-      firstName: this.ownerForm.get('firstName').value,
-      lastName: this.ownerForm.get('lastName').value,
-      phoneNumber: this.ownerForm.get('phoneNumber').value,
-      email: this.ownerForm.get('email').value
+  private initializeForm(): void {
+    this.ownerForm = this.fb.group({
+      firstName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(APP_CONFIG.forms.validation.minNameLength),
+          Validators.maxLength(APP_CONFIG.forms.validation.maxNameLength),
+        ],
+      ],
+      lastName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(APP_CONFIG.forms.validation.minNameLength),
+          Validators.maxLength(APP_CONFIG.forms.validation.maxNameLength),
+        ],
+      ],
+      phoneNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[0-9+\-\s()]+$/), // Basic phone number pattern
+        ],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+    });
+  }
+
+  onSubmit(): void {
+    if (this.ownerForm.invalid) {
+      this.markFormGroupTouched();
+      return;
+    }
+
+    this.isLoading$.next(true);
+
+    const formValue = this.ownerForm.value;
+    const request: ICreateOwnerRequest = {
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
+      phoneNumber: formValue.phoneNumber,
+      email: formValue.email,
     };
 
     this.ownerFacade.createOwner(request);
-
   }
 
-  public goBack() {
+  private markFormGroupTouched(): void {
+    this.formUtils.markFormGroupTouched(this.ownerForm);
+  }
+
+  goBack(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  private handleSuccesses(): void {
-    this.ownerFacade.onCreateOwnerSuccess().pipe(
-      takeUntil(this.destroyed$),
-    ).subscribe(() => {
-      this.toastrService.success('Eigenaar aangemaakt!', 'Gelukt', {
-        timeOut: 6000,
+  private setupSuccessHandling(): void {
+    this.ownerFacade
+      .onCreateOwnerSuccess()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        this.isLoading$.next(false);
+        this.toastrService.success('Eigenaar succesvol aangemaakt!', 'Gelukt', {
+          timeOut: APP_CONFIG.ui.toastTimeout,
+        });
+        this.goBack();
       });
-
-      const request: IGetOwnersRequest = {
-        page: 1,
-        pageSize: 10,
-      }
-      this.ownerFacade.getAllOwnersRequest(request);
-
-      this.goBack();
-    });
   }
 
-  private handleErrors(): void {
-    this.ownerFacade.onCreateOwnerError().pipe(
-      takeUntil(this.destroyed$),
-    ).subscribe(() => {
-      this.toastrService.error('Oeps, er liep iets mis tijdens het aanmaken van deze eigenaar!', 'Error', {
-        timeOut: 6000,
+  private setupErrorHandling(): void {
+    this.ownerFacade
+      .onCreateOwnerError()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        this.isLoading$.next(false);
+        this.toastrService.error(
+          'Er is een fout opgetreden bij het aanmaken van de eigenaar. Probeer het opnieuw.',
+          'Fout',
+          { timeOut: APP_CONFIG.ui.toastTimeout + 2000 }
+        );
       });
-    });
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+    this.isLoading$.complete();
+  }
 }

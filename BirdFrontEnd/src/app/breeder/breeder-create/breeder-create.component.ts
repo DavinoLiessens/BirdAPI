@@ -1,86 +1,133 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { BreederFacade } from "src/app/store/entities/breeder/breeder.facade";
-import { IGetBreedersRequest } from "src/app/types/breeder.types";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { BreederFacade } from 'src/app/store/entities/breeder/breeder.facade';
+import { ICreateBreederRequest } from 'src/app/types/breeder.types';
+import { FormUtilsService } from 'src/app/Services/form-utils.service';
+import { APP_CONFIG } from 'src/app/config/app.config';
 @Component({
-    selector: 'c-breeder-create',
-    templateUrl: './breeder-create.component.html',
-    styleUrls: ['./breeder-create.component.scss']
+  selector: 'c-breeder-create',
+  templateUrl: './breeder-create.component.html',
+  styleUrls: ['./breeder-create.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BreederCreateComponent implements OnInit {
+export class BreederCreateComponent implements OnInit, OnDestroy {
+  private readonly destroyed$ = new Subject<void>();
+  private readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
-    // local variables
-    public breederForm: FormGroup;
-    private destroyed$: Subject<boolean> = new Subject<boolean>();
+  // Form and observables
+  breederForm!: FormGroup;
+  readonly loading$ = this.isLoading$.asObservable();
 
-    constructor(
-        private fb: FormBuilder,
-        private breederFacade: BreederFacade,
-        private router: Router,
-        private route: ActivatedRoute,
-        private toastrService: ToastrService
-    ) { }
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly breederFacade: BreederFacade,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly toastrService: ToastrService,
+    private readonly formUtils: FormUtilsService
+  ) {}
 
-    ngOnInit(): void {
-        // fill in the form
-        this.breederForm = this.fb.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            phoneNumber: ['', Validators.required],
-            email: ['', Validators.required],
-        });
-        // handle success and errors
-        this.handleSuccesses();
-        this.handleErrors();
+  ngOnInit(): void {
+    this.initializeForm();
+    this.setupSuccessHandling();
+    this.setupErrorHandling();
+  }
 
+  private initializeForm(): void {
+    this.breederForm = this.fb.group({
+      firstName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(APP_CONFIG.forms.validation.minNameLength),
+          Validators.maxLength(APP_CONFIG.forms.validation.maxNameLength),
+        ],
+      ],
+      lastName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(APP_CONFIG.forms.validation.minNameLength),
+          Validators.maxLength(APP_CONFIG.forms.validation.maxNameLength),
+        ],
+      ],
+      phoneNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[0-9+\-\s()]+$/), // Basic phone number pattern
+        ],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+    });
+  }
+
+  onSubmit(): void {
+    if (this.breederForm.invalid) {
+      this.markFormGroupTouched();
+      return;
     }
 
-    public onSubmit() {
-        const request: any = {
-            firstName: this.breederForm.get('firstName').value,
-            lastName: this.breederForm.get('lastName').value,
-            phoneNumber: this.breederForm.get('phoneNumber').value,
-            email: this.breederForm.get('email').value
-        };
+    this.isLoading$.next(true);
 
-        this.breederFacade.createBreeder(request);
+    const formValue = this.breederForm.value;
+    const request: ICreateBreederRequest = {
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
+      phoneNumber: formValue.phoneNumber,
+      email: formValue.email,
+    };
 
-    }
+    this.breederFacade.createBreeder(request);
+  }
 
-    public goBack() {
-        this.router.navigate(['../'], { relativeTo: this.route });
-    }
+  private markFormGroupTouched(): void {
+    this.formUtils.markFormGroupTouched(this.breederForm);
+  }
 
-    private handleSuccesses(): void {
-        this.breederFacade.onCreateBreederSuccess().pipe(
-          takeUntil(this.destroyed$),
-        ).subscribe(() => {
-          this.toastrService.success('Kweker aangemaakt!', 'Gelukt', {
-            timeOut: 6000,
-          });
-    
-          const request: IGetBreedersRequest = {
-            page: 1,
-            pageSize: 10,
-          }
-          this.breederFacade.getAllBreedersRequest(request);
-    
-          this.goBack();
+  goBack(): void {
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  private setupSuccessHandling(): void {
+    this.breederFacade
+      .onCreateBreederSuccess()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        this.isLoading$.next(false);
+        this.toastrService.success('Kweker succesvol aangemaakt!', 'Gelukt', {
+          timeOut: APP_CONFIG.ui.toastTimeout,
         });
-      }
-    
-      private handleErrors(): void {
-        this.breederFacade.onCreateBreederError().pipe(
-          takeUntil(this.destroyed$),
-        ).subscribe(() => {
-          this.toastrService.error('Oeps, er liep iets mis tijdens het aanmaken van deze kweker!', 'Error', {
-            timeOut: 6000,
-          });
-        });
-      }
-    
+        this.goBack();
+      });
+  }
+
+  private setupErrorHandling(): void {
+    this.breederFacade
+      .onCreateBreederError()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        this.isLoading$.next(false);
+        this.toastrService.error(
+          'Er is een fout opgetreden bij het aanmaken van de kweker. Probeer het opnieuw.',
+          'Fout',
+          { timeOut: APP_CONFIG.ui.toastTimeout + 2000 }
+        );
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+    this.isLoading$.complete();
+  }
 }

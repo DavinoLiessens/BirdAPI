@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ICreateOwnerRequest, IGetOwnersRequest, IOwner, IOwnersResponse, IUpdateOwnerRequest } from '../types/owner.types';
-import { BaseService } from './base.service';
+import { BaseHttpService } from './base-http.service';
+import {
+  ICreateOwnerRequest,
+  IGetOwnersRequest,
+  IOwner,
+  IOwnersResponse,
+  IUpdateOwnerRequest,
+} from '../types/owner.types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OwnerService {
+  constructor(private readonly httpService: BaseHttpService) {}
 
-  constructor(private baseService: BaseService) { }
-
-  public getAllOwners(request: IGetOwnersRequest): Observable<IOwnersResponse> {
-    return this.baseService.get(`/owners`, request) as Observable<IOwnersResponse>;
+  getAllOwners(request: IGetOwnersRequest): Observable<IOwnersResponse> {
+    return this.httpService.get<IOwnersResponse>('/owners', {
+      params: request as any,
+    });
   }
 
-  public getOwner(breederId: number): Observable<IOwner> {
-    return this.baseService.get(`/owners/${breederId}`) as Observable<IOwner>;
+  getOwner(ownerId: number): Observable<IOwner> {
+    return this.httpService.get<IOwner>(`/owners/${ownerId}`);
   }
 
-  public createOwner(request: ICreateOwnerRequest): Observable<null> {
-    return this.baseService.post(`/owners`, request) as Observable<null>;
+  createOwner(request: ICreateOwnerRequest): Observable<void> {
+    return this.httpService.post<void>('/owners', request);
   }
 
-  public updateOwner(request: IUpdateOwnerRequest): Observable<null> {
-    return this.baseService.put(`/owners/${request.id}`, request) as Observable<null>;
+  updateOwner(request: IUpdateOwnerRequest): Observable<void> {
+    return this.httpService.put<void>(`/owners/${request.id}`, request);
   }
 }
