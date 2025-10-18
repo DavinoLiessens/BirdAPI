@@ -1,42 +1,60 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ApiService, Bird, ChangeBird, CreateBird } from './api.service';
 import { Observable } from 'rxjs';
-import { BaseService } from './base.service';
-import { IBird, IBirdShow, IBirdsResponse, ICreateBirdRequest, ICreateBirdShowRequest, IGetBirdsRequest, IUpdateBirdRequest, IUpdateBirdShowRequest } from '../types/bird.types';
-import { SelectItemGroup } from 'primeng/api';
+import { BaseHttpService } from './base-http.service';
+import {
+  IBird,
+  IBirdDetail,
+  IBirdShow,
+  IBirdsResponse,
+  ICreateBirdRequest,
+  ICreateBirdShowRequest,
+  IGetBirdsRequest,
+  IUpdateBirdRequest,
+  IUpdateBirdShowRequest,
+} from '../types/bird.types';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BirdService {
+  constructor(private readonly httpService: BaseHttpService) {}
 
-  constructor(private baseService: BaseService) { }
-
-  public getBirds(request: IGetBirdsRequest): Observable<IBirdsResponse> {
-      return this.baseService.get('/birds', request) as Observable<IBirdsResponse>;
+  getBirds(request: IGetBirdsRequest): Observable<IBirdsResponse> {
+    return this.httpService.get<IBirdsResponse>('/birds', {
+      params: request as any,
+    });
   }
 
-  public getBird(birdId: number): Observable<IBird> {
-    return this.baseService.get(`/birds/${birdId}`) as Observable<IBird>;
+  getBird(birdId: number): Observable<IBirdDetail> {
+    return this.httpService.get<IBirdDetail>(`/birds/${birdId}`);
   }
 
-  public createBird(request: ICreateBirdRequest): Observable<null> {
-    return this.baseService.post(`/birds`, request) as Observable<null>;
+  createBird(request: ICreateBirdRequest): Observable<void> {
+    return this.httpService.post<void>('/birds', request);
   }
 
-  public updateBird(request: IUpdateBirdRequest): Observable<IBird> {
-    return this.baseService.put(`/birds/${request.id}`, request) as Observable<IBird>;
-  }  
-
-  public getBirdShow(birdId: number, id: number): Observable<IBirdShow> {
-    return this.baseService.get(`/birds/${birdId}/birdshow/${id}`) as Observable<IBirdShow>;
+  updateBird(request: IUpdateBirdRequest): Observable<IBirdDetail> {
+    return this.httpService.put<IBirdDetail>(`/birds/${request.id}`, request);
   }
 
-  public createBirdShow(request: ICreateBirdShowRequest): Observable<null> {
-    return this.baseService.post(`/birds/${request.birdId}/birdshow`, request) as Observable<null>;
+  getBirdShow(birdId: number, id: number): Observable<IBirdShow> {
+    return this.httpService.get<IBirdShow>(`/birds/${birdId}/birdshow/${id}`);
   }
 
-  public updateBirdShow(id: number, request: IUpdateBirdShowRequest): Observable<null> {
-    return this.baseService.put(`/birds/${request.birdId}/birdshow/${id}`, request) as Observable<null>;
-  }  
+  createBirdShow(request: ICreateBirdShowRequest): Observable<void> {
+    return this.httpService.post<void>(
+      `/birds/${request.birdId}/birdshow`,
+      request
+    );
+  }
+
+  updateBirdShow(
+    id: number,
+    request: IUpdateBirdShowRequest
+  ): Observable<void> {
+    return this.httpService.put<void>(
+      `/birds/${request.birdId}/birdshow/${id}`,
+      request
+    );
+  }
 }

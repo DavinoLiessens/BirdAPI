@@ -1,51 +1,122 @@
 <div class="page">
-    <div class="page-wrapper">
-        <div class="page-header">
-            <h1>Couple management</h1>
-        </div>
-        <div class="page-body">
-            <form [formGroup]="coupleForm" *ngIf="coupleForm && birds$ | async">
-                <h2>Koppel aanmaken</h2>
-                <div class="grid">
-                    <div class="p-d-flex p-flex-column p-col-3">
-                        <label for="name">Koppel naam</label>
-                        <input pInputText type="text" class="form-control" formControlName="name" id="name">
-                    </div>
-
-                    <div class="p-d-flex p-jc-between">
-                        <div class="p-d-flex p-flex-column p-col-3">
-                            <label for="startedAt">Gestart op</label>
-                            <p-calendar formControlName="startedAt" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
-                        </div>
-        
-                        <div class="p-d-flex p-flex-column p-col-3">
-                            <label for="cageNumber">Kotnummer</label>
-                            <input pInputText type="text" class="form-control" formControlName="cageNumber" id="cageNumber">
-                        </div> 
-                    </div>            
-                    <div class="p-d-flex p-jc-between couple-parents">
-                        <div class="p-d-flex p-flex-column p-col-4">
-                            <label for="fatherId">Vader</label>
-                            <p-dropdown [options]="maleBirds" [filter]="true" filterBy="type" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een man..." optionLabel="type" optionValue="value" formControlName="fatherId"></p-dropdown>                
-                        </div>
-                        <div class="p-d-flex p-ai-center p-jc-center p-col-4"><i class="pi pi-minus p-mt-4"></i></div>
-                        <div class="p-d-flex p-flex-column p-col-4">
-                            <label for="motherId">Moeder</label>
-                            <p-dropdown [options]="femaleBirds" [filter]="true" filterBy="type" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een pop..." optionLabel="type" optionValue="value" formControlName="motherId"></p-dropdown>                
-                        </div>  
-                    </div>
-    
-                    <div class="p-d-flex p-flex-column p-col-4">
-                        <label for="description">Omschrijving</label>
-                        <input pInputTextarea type="text" class="form-control" formControlName="description" id="description">
-                    </div>    
-                </div>
-
-                <div class="form-footer">
-                    <button pButton type="button" class="p-button-outlined" (click)="goBack()" label="Terug"></button>
-                    <button pButton type="submit" (click)="onSubmit()" [disabled]="!coupleForm.valid" label="Opslaan"></button>
-                </div>                      
-            </form>
-        </div>
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h1>Couple management</h1>
     </div>
+    <div class="page-body">
+      <form [formGroup]="coupleForm" *ngIf="coupleForm">
+        <h2>Koppel aanmaken</h2>
+
+        <!-- Loading indicator -->
+        <div *ngIf="loading$ | async" class="p-d-flex p-ai-center p-mb-3">
+          <p-progressSpinner
+            [style]="{ width: '30px', height: '30px' }"
+            styleClass="p-mr-2"
+          ></p-progressSpinner>
+          <span>Gegevens laden...</span>
+        </div>
+        <div class="grid">
+          <div class="p-d-flex p-flex-column p-col-3">
+            <label for="name">Koppel naam</label>
+            <input
+              pInputText
+              type="text"
+              class="form-control"
+              formControlName="name"
+              id="name"
+            />
+          </div>
+
+          <div class="p-d-flex p-jc-between">
+            <div class="p-d-flex p-flex-column p-col-3">
+              <label for="startedAt">Gestart op</label>
+              <p-calendar
+                formControlName="startedAt"
+                [style]="{ width: '100%' }"
+                dateFormat="dd-mm-yy"
+                inputId="dateformat"
+              ></p-calendar>
+            </div>
+
+            <div class="p-d-flex p-flex-column p-col-3">
+              <label for="cageNumber">Kotnummer</label>
+              <input
+                pInputText
+                type="text"
+                class="form-control"
+                formControlName="cageNumber"
+                id="cageNumber"
+              />
+            </div>
+          </div>
+          <div class="p-d-flex p-jc-between couple-parents">
+            <div class="p-d-flex p-flex-column p-col-4">
+              <label for="fatherId">Vader</label>
+              <p-dropdown
+                [options]="maleBirds$ | async"
+                [filter]="true"
+                filterBy="label"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                placeholder="Selecteer een man..."
+                optionLabel="label"
+                optionValue="value"
+                formControlName="fatherId"
+                [loading]="loading$ | async"
+              >
+              </p-dropdown>
+            </div>
+            <div class="p-d-flex p-ai-center p-jc-center p-col-4">
+              <i class="pi pi-minus p-mt-4"></i>
+            </div>
+            <div class="p-d-flex p-flex-column p-col-4">
+              <label for="motherId">Moeder</label>
+              <p-dropdown
+                [options]="femaleBirds$ | async"
+                [filter]="true"
+                filterBy="label"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                placeholder="Selecteer een pop..."
+                optionLabel="label"
+                optionValue="value"
+                formControlName="motherId"
+                [loading]="loading$ | async"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="p-d-flex p-flex-column p-col-4">
+            <label for="description">Omschrijving</label>
+            <input
+              pInputTextarea
+              type="text"
+              class="form-control"
+              formControlName="description"
+              id="description"
+            />
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <button
+            pButton
+            type="button"
+            class="p-button-outlined"
+            (click)="goBack()"
+            label="Terug"
+            [disabled]="loading$ | async"
+          ></button>
+          <button
+            pButton
+            type="submit"
+            (click)="onSubmit()"
+            [disabled]="!coupleForm.valid || (loading$ | async)"
+            label="Opslaan"
+          ></button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

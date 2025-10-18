@@ -1,30 +1,35 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { IBreeder, IBreedersResponse, ICreateBreederRequest, IGetBreedersRequest, IUpdateBreederRequest } from "../types/breeder.types";
-import { BaseService } from "./base.service";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseHttpService } from './base-http.service';
+import {
+  IBreeder,
+  IBreedersResponse,
+  ICreateBreederRequest,
+  IGetBreedersRequest,
+  IUpdateBreederRequest,
+} from '../types/breeder.types';
 
 @Injectable({
-    providedIn: 'root'
-  })
-  export class BreederService { 
+  providedIn: 'root',
+})
+export class BreederService {
+  constructor(private readonly httpService: BaseHttpService) {}
 
-    constructor(private baseService: BaseService) { }
-
-    public getAllBreeders(request: IGetBreedersRequest): Observable<IBreedersResponse> {
-        return this.baseService.get(`/breeders`, request) as Observable<IBreedersResponse>;
-    }
-
-    public getBreeder(breederId: number): Observable<IBreeder> {
-      return this.baseService.get(`/breeders/${breederId}`) as Observable<IBreeder>;
-    }
-
-    public createBreeder(request: ICreateBreederRequest): Observable<null> {
-      return this.baseService.post(`/breeders`, request) as Observable<null>;
-    }
-
-    public updateBreeder(request: IUpdateBreederRequest): Observable<null> {
-      return this.baseService.put(`/breeders/${request.id}`, request) as Observable<null>;
-    }
-
+  getAllBreeders(request: IGetBreedersRequest): Observable<IBreedersResponse> {
+    return this.httpService.get<IBreedersResponse>('/breeders', {
+      params: request as any,
+    });
   }
-  
+
+  getBreeder(breederId: number): Observable<IBreeder> {
+    return this.httpService.get<IBreeder>(`/breeders/${breederId}`);
+  }
+
+  createBreeder(request: ICreateBreederRequest): Observable<void> {
+    return this.httpService.post<void>('/breeders', request);
+  }
+
+  updateBreeder(request: IUpdateBreederRequest): Observable<void> {
+    return this.httpService.put<void>(`/breeders/${request.id}`, request);
+  }
+}

@@ -2,7 +2,6 @@ using BirdAPI.Infrastructure;
 using BirdAPI.Infrastructure.Seed;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,143 +1,215 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
 import { CoupleFacade } from 'src/app/store/entities/couple/couple.facade';
 import { IBird, IGetBirdsRequest } from 'src/app/types/bird.types';
-import { ICouple, ICreateCoupleRequest, ICreatedCoupleResponseModel } from 'src/app/types/couple.types';
-import { IPagination } from 'src/app/types/pagination.types';
+import { ICreateCoupleRequest } from 'src/app/types/couple.types';
+import {
+  DropdownUtilsService,
+  DropdownOption,
+} from 'src/app/Services/dropdown-utils.service';
+import { FormUtilsService } from 'src/app/Services/form-utils.service';
+import { APP_CONFIG } from 'src/app/config/app.config';
+import { CustomValidators } from 'src/app/validators/custom-validators';
 
 @Component({
   selector: 'c-couple-create',
   templateUrl: './couple-create.component.html',
-  styleUrls: ['./couple-create.component.scss']
+  styleUrls: ['./couple-create.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoupleCreateComponent implements OnInit, OnDestroy {
+  private readonly destroyed$ = new Subject<void>();
+  private readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
-  private destroyed$: Subject<boolean> = new Subject<boolean>();
-  public birds$: Observable<IBird[]> = this.birdFacade.getBirds();
-  public birdPagination$: Observable<IPagination> = this.birdFacade.getPagination();
+  // Observables with proper typing
+  readonly birds$ = this.birdFacade.getBirds();
+  readonly loading$ = this.isLoading$.asObservable();
 
-  // local variables
-  public coupleForm: FormGroup;
-  public maleBirds: any[] = [];
-  public femaleBirds: any[] = [];
+  // Better typed dropdown options using utility service
+  readonly maleBirds$: Observable<DropdownOption<number>[]>;
+  readonly femaleBirds$: Observable<DropdownOption<number>[]>;
 
-  constructor(private route: ActivatedRoute,
-    private router: Router,
-    private fb: FormBuilder,
-    private coupleFacade: CoupleFacade,
-    private birdFacade: BirdFacade,
-    private toastrService: ToastrService
-  ) { }
+  // Form with proper typing
+  coupleForm!: FormGroup;
+
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly fb: FormBuilder,
+    private readonly coupleFacade: CoupleFacade,
+    private readonly birdFacade: BirdFacade,
+    private readonly toastrService: ToastrService,
+    private readonly dropdownUtils: DropdownUtilsService,
+    private readonly formUtils: FormUtilsService
+  ) {
+    // Set up reactive streams for dropdown options using utility service
+    this.maleBirds$ = this.birds$.pipe(
+      filter((birds) => birds != null),
+      map((birds) => this.dropdownUtils.birdsToDropdownOptions(birds, 'MALE'))
+    );
+
+    this.femaleBirds$ = this.birds$.pipe(
+      filter((birds) => birds != null),
+      map((birds) => this.dropdownUtils.birdsToDropdownOptions(birds, 'FEMALE'))
+    );
+  }
 
   ngOnInit(): void {
+    this.initializeForm();
+    this.loadBirds();
+    this.setupSuccessHandling();
+    this.setupErrorHandling();
+  }
+
+  private initializeForm(): void {
     this.coupleForm = this.fb.group({
-      name: ['', Validators.required],
-      startedAt: [new Date(), Validators.required],
-      fatherId: ['', Validators.required],
-      motherId: ['', Validators.required],
-      cageNumber: ['', Validators.required],
-      description: ['']
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(APP_CONFIG.forms.validation.minNameLength),
+          Validators.maxLength(APP_CONFIG.forms.validation.maxNameLength),
+        ],
+      ],
+      startedAt: [
+        new Date(),
+        [
+          Validators.required,
+          CustomValidators.notFutureDate(),
+          CustomValidators.notTooOldDate(50), // Max 50 years in past
+        ],
+      ],
+      fatherId: ['', [Validators.required]],
+      motherId: ['', [Validators.required]],
+      cageNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(APP_CONFIG.forms.validation.minCageNumberLength),
+          CustomValidators.cageNumber(),
+        ],
+      ],
+      description: [
+        '',
+        [
+          Validators.maxLength(
+            APP_CONFIG.forms.validation.maxDescriptionLength
+          ),
+        ],
+      ],
     });
+
+    // Add cross-field validation to ensure father and mother are different
+    this.coupleForm
+      .get('motherId')
+      ?.setValidators([
+        Validators.required,
+        CustomValidators.notEqual('fatherId'),
+      ]);
+  }
+
+  private loadBirds(): void {
+    this.isLoading$.next(true);
 
     const request: IGetBirdsRequest = {
       page: 1,
-      pageSize: 10,
+      pageSize: APP_CONFIG.api.maxPageSize, // Use config instead of magic number
       searchValue: '',
       gender: 'ALL',
       typeOfBird: '0',
-      year: 'ALL'
+      year: 'ALL',
     };
 
     this.birdFacade.getAllBirdsRequest(request);
 
-    this.handleBirdsList();
-
-    // handle success and errors
-    this.handleSuccesses();
-    this.handleErrors();
+    // Stop loading when birds are loaded
+    this.birds$
+      .pipe(
+        filter((birds) => birds != null && birds.length > 0),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(() => {
+        this.isLoading$.next(false);
+      });
   }
 
-  public onSubmit() {
+  onSubmit(): void {
+    if (this.coupleForm.invalid) {
+      this.markFormGroupTouched();
+      return;
+    }
+
+    this.isLoading$.next(true);
+
+    const formValue = this.coupleForm.value;
     const request: ICreateCoupleRequest = {
-      name: this.coupleForm.get('name').value,
-      startedAt: this.coupleForm.get('startedAt').value,
-      fatherId: parseInt(this.coupleForm.get('fatherId').value),
-      motherId: parseInt(this.coupleForm.get('motherId').value),
-      cageNumber: this.coupleForm.get('cageNumber').value,
-      description: this.coupleForm.get('description').value,
+      name: formValue.name,
+      startedAt: formValue.startedAt,
+      fatherId: parseInt(formValue.fatherId, 10),
+      motherId: parseInt(formValue.motherId, 10),
+      cageNumber: formValue.cageNumber,
+      description: formValue.description || '',
     };
 
     this.coupleFacade.createCouple(request);
   }
 
-  private handleSuccesses(): void {
-    // go to detail after success hits
-    // create couple success has coupleResponseModel!
-    this.coupleFacade.onCreateCoupleSuccess().pipe(
-      takeUntil(this.destroyed$),
-    ).subscribe((result: any) => {
-      this.toastrService.success('Koppel aangemaakt!', 'Gelukt', {
-        timeOut: 6000,
+  private markFormGroupTouched(): void {
+    this.formUtils.markFormGroupTouched(this.coupleForm);
+  }
+
+  private setupSuccessHandling(): void {
+    this.coupleFacade
+      .onCreateCoupleSuccess()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((result: any) => {
+        this.isLoading$.next(false);
+        this.toastrService.success(
+          APP_CONFIG.messages.success.coupleCreated,
+          'Gelukt',
+          { timeOut: APP_CONFIG.ui.toastTimeout }
+        );
+
+        const coupleId = result.response?.id;
+        if (coupleId) {
+          this.router.navigate([`couples/detail/${coupleId}`]);
+        } else {
+          this.goBack();
+        }
       });
-      const model = result.response;
-
-      this.router.navigate([`couples/detail/${model.id}`]);
-    });
   }
 
-  private handleErrors(): void {
-    this.coupleFacade.onCreateCoupleError().pipe(
-      takeUntil(this.destroyed$),
-    ).subscribe(() => {
-      this.toastrService.error('Oeps er liep iets mis tijdens het aanmaken van dit koppel!', 'Error', {
-        timeOut: 6000,
+  private setupErrorHandling(): void {
+    this.coupleFacade
+      .onCreateCoupleError()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        this.isLoading$.next(false);
+        this.toastrService.error(
+          APP_CONFIG.messages.error.coupleCreateFailed,
+          'Fout',
+          { timeOut: APP_CONFIG.ui.toastTimeout + 2000 }
+        );
       });
-    });
   }
 
-  private handleBirdsList(): void {
-    this.birds$.pipe(
-      takeUntil(this.destroyed$),
-    ).subscribe((birds: IBird[]) => {
-      if (birds !== null && birds !== undefined) {
-        // clear before calculation
-        this.maleBirds = [];
-        this.femaleBirds = [];
-
-        // get seperate list of birds that are NOT dead!
-        const males = birds.filter(b => b.gender === "MALE" && !b.isDead);
-        const females = birds.filter(b => b.gender === "FEMALE" && !b.isDead);
-
-        males.forEach((bird: IBird) => {
-          const existingBird = this.maleBirds.find(b => b.id === bird.id);
-
-          if (existingBird === undefined){
-            this.maleBirds.push({ type: bird.ringNumber, value: bird.id });
-          }
-        });
-
-        females.forEach((bird: IBird) => {
-          const existingBird = this.femaleBirds.find(b => b.id === bird.id);
-
-          if (existingBird === undefined) {
-            this.femaleBirds.push({ type: bird.ringNumber, value: bird.id });
-          }
-        });
-      }
-    });
-  }
-
-  public goBack() {
+  goBack(): void {
     this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
-  public ngOnDestroy(): void {
-		this.destroyed$.next(true);
-		this.destroyed$.complete();
-	}
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+    this.isLoading$.complete();
+  }
 }
