@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  webApiBaseUrl: 'http://localhost:5254/api/v1',
 };
