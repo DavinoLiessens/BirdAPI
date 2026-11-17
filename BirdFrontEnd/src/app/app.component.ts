@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from './auth/services/auth.service';
+import { UserInfo } from './auth/models/auth.models';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +15,21 @@ export class AppComponent {
   ownerItems: MenuItem[];
   coupleItems: MenuItem[];
   breederItems: MenuItem[];
+  isAuthenticated = false;
+  currentUser: UserInfo | null = null;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
+    // Subscribe to auth state changes
+    this.authService.authState$.subscribe(state => {
+      this.isAuthenticated = state.isAuthenticated;
+      this.currentUser = state.user;
+    });
+
     this.birdItems = [
       {
         label: 'Overzicht Vogels',
@@ -72,5 +85,10 @@ export class AppComponent {
 
   public navigateToPage(path: string) {
     this.router.navigate([path]);
+  }
+
+  public logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

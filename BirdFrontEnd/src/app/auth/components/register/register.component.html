@@ -1,0 +1,217 @@
+<div class="register-container">
+  <div class="register-wrapper">
+    <p-card styleClass="register-card">
+      <ng-template pTemplate="header">
+        <div class="register-header">
+          <i class="pi pi-user-plus register-icon"></i>
+          <h2>Registreren</h2>
+          <p class="register-subtitle">Maak een account aan voor Bird Platform</p>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="content">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <!-- First Name -->
+          <div class="p-field">
+            <label for="firstName">Voornaam</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-user"></i>
+              <input
+                type="text"
+                id="firstName"
+                formControlName="firstName"
+                pInputText
+                placeholder="Uw voornaam"
+                class="p-inputtext-lg"
+                [ngClass]="{
+                  'ng-invalid ng-dirty':
+                    f['firstName'].invalid && f['firstName'].touched
+                }"
+              />
+            </span>
+            <small
+              class="p-error"
+              *ngIf="f['firstName'].invalid && f['firstName'].touched"
+            >
+              <span *ngIf="f['firstName'].errors?.['required']">
+                Voornaam is verplicht
+              </span>
+              <span *ngIf="f['firstName'].errors?.['minlength']">
+                Voornaam moet minimaal 2 tekens bevatten
+              </span>
+            </small>
+          </div>
+
+          <!-- Last Name -->
+          <div class="p-field">
+            <label for="lastName">Achternaam</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-user"></i>
+              <input
+                type="text"
+                id="lastName"
+                formControlName="lastName"
+                pInputText
+                placeholder="Uw achternaam"
+                class="p-inputtext-lg"
+                [ngClass]="{
+                  'ng-invalid ng-dirty':
+                    f['lastName'].invalid && f['lastName'].touched
+                }"
+              />
+            </span>
+            <small
+              class="p-error"
+              *ngIf="f['lastName'].invalid && f['lastName'].touched"
+            >
+              <span *ngIf="f['lastName'].errors?.['required']">
+                Achternaam is verplicht
+              </span>
+              <span *ngIf="f['lastName'].errors?.['minlength']">
+                Achternaam moet minimaal 2 tekens bevatten
+              </span>
+            </small>
+          </div>
+
+          <!-- Email -->
+          <div class="p-field">
+            <label for="email">E-mailadres</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-envelope"></i>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                pInputText
+                placeholder="uw-email@voorbeeld.nl"
+                class="p-inputtext-lg"
+                [ngClass]="{
+                  'ng-invalid ng-dirty': f['email'].invalid && f['email'].touched
+                }"
+              />
+            </span>
+            <small
+              class="p-error"
+              *ngIf="f['email'].invalid && f['email'].touched"
+            >
+              <span *ngIf="f['email'].errors?.['required']">
+                E-mailadres is verplicht
+              </span>
+              <span *ngIf="f['email'].errors?.['email']">
+                Voer een geldig e-mailadres in
+              </span>
+            </small>
+          </div>
+
+          <!-- Date of Birth (Optional) -->
+          <div class="p-field">
+            <label for="dateOfBirth">Geboortedatum (optioneel)</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-calendar"></i>
+              <p-calendar
+                id="dateOfBirth"
+                formControlName="dateOfBirth"
+                [showIcon]="true"
+                [maxDate]="maxDate"
+                dateFormat="dd-mm-yy"
+                placeholder="Selecteer datum"
+                styleClass="p-calendar-lg"
+              ></p-calendar>
+            </span>
+          </div>
+
+          <!-- Password -->
+          <div class="p-field">
+            <label for="password">Wachtwoord</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-lock"></i>
+              <p-password
+                id="password"
+                formControlName="password"
+                placeholder="Minimaal 6 tekens"
+                [toggleMask]="true"
+                [feedback]="true"
+                styleClass="p-password-input-lg"
+                [ngClass]="{
+                  'ng-invalid ng-dirty':
+                    f['password'].invalid && f['password'].touched
+                }"
+              >
+                <ng-template pTemplate="footer">
+                  <p-divider></p-divider>
+                  <p class="password-requirements">Vereisten:</p>
+                  <ul class="password-requirements-list">
+                    <li>Minimaal 6 tekens</li>
+                    <li>Minimaal 1 cijfer</li>
+                    <li>Minimaal 1 kleine letter</li>
+                  </ul>
+                </ng-template>
+              </p-password>
+            </span>
+            <small
+              class="p-error"
+              *ngIf="f['password'].invalid && f['password'].touched"
+            >
+              <span *ngIf="f['password'].errors?.['required']">
+                Wachtwoord is verplicht
+              </span>
+              <span *ngIf="f['password'].errors?.['minlength']">
+                Wachtwoord moet minimaal 6 tekens bevatten
+              </span>
+            </small>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="p-field">
+            <label for="confirmPassword">Bevestig wachtwoord</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-lock"></i>
+              <p-password
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                placeholder="Herhaal uw wachtwoord"
+                [toggleMask]="true"
+                [feedback]="false"
+                styleClass="p-password-input-lg"
+                [ngClass]="{
+                  'ng-invalid ng-dirty':
+                    f['confirmPassword'].invalid && f['confirmPassword'].touched
+                }"
+              ></p-password>
+            </span>
+            <small
+              class="p-error"
+              *ngIf="f['confirmPassword'].invalid && f['confirmPassword'].touched"
+            >
+              <span *ngIf="f['confirmPassword'].errors?.['required']">
+                Wachtwoordbevestiging is verplicht
+              </span>
+              <span *ngIf="f['confirmPassword'].errors?.['passwordMismatch']">
+                Wachtwoorden komen niet overeen
+              </span>
+            </small>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="submit-button-container">
+            <p-button
+              type="submit"
+              label="Account aanmaken"
+              icon="pi pi-user-plus"
+              [loading]="loading"
+              styleClass="p-button-lg p-button-primary submit-button"
+            ></p-button>
+          </div>
+
+          <!-- Login Link -->
+          <div class="login-link">
+            <span>Heeft u al een account? </span>
+            <a href="javascript:void(0)" (click)="navigateToLogin()">
+              Log hier in
+            </a>
+          </div>
+        </form>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

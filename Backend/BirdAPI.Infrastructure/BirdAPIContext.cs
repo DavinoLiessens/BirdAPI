@@ -2,6 +2,8 @@
 using BirdAPI.Domain.AggregatesModel.BreederAggregate;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
 using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
+using BirdAPI.Domain.AggregatesModel.UserAggregate;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,7 +16,7 @@ using Wwsv.Domain.SeedWork;
 
 namespace BirdAPI.Infrastructure
 {
-    public class BirdAPIContext : DbContext
+    public class BirdAPIContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Bird> Birds { get; set; }
         public DbSet<Owner> Owners { get; set; }
@@ -56,7 +58,8 @@ namespace BirdAPI.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
+            base.OnModelCreating(builder); // Required for Identity tables
+            
             builder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(BirdAPIContext)));
         }
 

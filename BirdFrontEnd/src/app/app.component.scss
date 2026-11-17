@@ -1,3 +1,19 @@
 .button-toolbar{
     margin-left: 20px;
 }
+
+.user-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-weight: 500;
+  color: #495057;
+
+  i {
+    color: #667eea;
+  }
+}

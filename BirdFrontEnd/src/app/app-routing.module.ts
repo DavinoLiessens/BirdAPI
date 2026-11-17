@@ -14,35 +14,41 @@ import { OwnerDetailComponent } from './owner/owner-detail/owner-detail.componen
 import { OwnerComponent } from './owner/owner.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
+// Auth components and guard
+import { LoginComponent } from './auth/components/login/login.component';
+import { RegisterComponent } from './auth/components/register/register.component';
+import { ForgotPasswordComponent } from './auth/components/forgot-password/forgot-password.component';
+import { AuthGuard } from './auth/guards/auth.guard';
+
 const routes: Routes = [
-  // BIRD
-  { path: 'birds', component: BirdComponent },
-  { path: 'birds/create', component: BirdCreateComponent },
-  { path: 'birds/detail/:id', component: BirdDetailComponent },
+  // AUTH ROUTES (public)
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
 
-  // OWNER
-  { path: 'owners', component: OwnerComponent },
-  { path: 'owners/create', component: OwnerCreateComponent },
-  { path: 'owners/detail/:id', component: OwnerDetailComponent },
+  // BIRD (protected)
+  { path: 'birds', component: BirdComponent, canActivate: [AuthGuard] },
+  { path: 'birds/create', component: BirdCreateComponent, canActivate: [AuthGuard] },
+  { path: 'birds/detail/:id', component: BirdDetailComponent, canActivate: [AuthGuard] },
 
+  // OWNER (protected)
+  { path: 'owners', component: OwnerComponent, canActivate: [AuthGuard] },
+  { path: 'owners/create', component: OwnerCreateComponent, canActivate: [AuthGuard] },
+  { path: 'owners/detail/:id', component: OwnerDetailComponent, canActivate: [AuthGuard] },
 
-  // COUPLE
-  { path: 'couples', component: CoupleComponent },
-  { path: 'couples/create', component: CoupleCreateComponent },
-  { path: 'couples/detail/:id', component: CoupleDetailComponent },
+  // COUPLE (protected)
+  { path: 'couples', component: CoupleComponent, canActivate: [AuthGuard] },
+  { path: 'couples/create', component: CoupleCreateComponent, canActivate: [AuthGuard] },
+  { path: 'couples/detail/:id', component: CoupleDetailComponent, canActivate: [AuthGuard] },
 
-  // BREEDER
-  { path: 'breeders', component: BreederComponent },
-  { path: 'breeders/create', component: BreederCreateComponent },
-  { path: 'breeders/detail/:id', component: BreederDetailComponent },
+  // BREEDER (protected)
+  { path: 'breeders', component: BreederComponent, canActivate: [AuthGuard] },
+  { path: 'breeders/create', component: BreederCreateComponent, canActivate: [AuthGuard] },
+  { path: 'breeders/detail/:id', component: BreederDetailComponent, canActivate: [AuthGuard] },
 
-
-  // PAGE NOT FOUND
-  { path: 'signout', component: PageNotFoundComponent },
-  
   // OTHER  
   { path: '', redirectTo: 'birds', pathMatch: 'full' },
-  { path: '**', redirectTo: 'birds', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
