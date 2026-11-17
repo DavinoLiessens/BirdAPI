@@ -1,4 +1,5 @@
-﻿using BirdAPI.Application.Features.Couple.Commands;
+﻿using Microsoft.AspNetCore.Authorization;
+using BirdAPI.Application.Features.Couple.Commands;
 using BirdAPI.Application.Features.Couple.Commands.InputModels;
 using BirdAPI.Application.Features.Couple.Queries;
 using BirdAPI.Application.Features.Couple.ResponseModels;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BirdAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/v1/couples")]
     public class CoupleController : ControllerBase
     {

@@ -32,10 +32,10 @@
               class="p-error"
               *ngIf="f['email'].invalid && f['email'].touched"
             >
-              <span *ngIf="f['email'].errors?.['required']">
+              <span *ngIf="f['email'].errors?.required">
                 E-mailadres is verplicht
               </span>
-              <span *ngIf="f['email'].errors?.['email']">
+              <span *ngIf="f['email'].errors?.email">
                 Voer een geldig e-mailadres in
               </span>
             </small>
@@ -63,10 +63,10 @@
               class="p-error"
               *ngIf="f['password'].invalid && f['password'].touched"
             >
-              <span *ngIf="f['password'].errors?.['required']">
+              <span *ngIf="f['password'].errors?.required">
                 Wachtwoord is verplicht
               </span>
-              <span *ngIf="f['password'].errors?.['minlength']">
+              <span *ngIf="f['password'].errors?.minlength">
                 Wachtwoord moet minimaal 6 tekens bevatten
               </span>
             </small>

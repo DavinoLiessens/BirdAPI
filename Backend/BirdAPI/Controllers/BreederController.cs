@@ -1,4 +1,5 @@
-﻿using BirdAPI.Application.Features.Breeder.Commands;
+﻿using Microsoft.AspNetCore.Authorization;
+using BirdAPI.Application.Features.Breeder.Commands;
 using BirdAPI.Application.Features.Breeder.Commands.InputModel;
 using BirdAPI.Application.Features.Breeder.Queries;
 using BirdAPI.Application.Features.Breeder.ResponseModels;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BirdAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/v1/breeders")]
     public class BreederController
     {

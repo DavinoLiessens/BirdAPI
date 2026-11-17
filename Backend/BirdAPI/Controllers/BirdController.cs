@@ -1,4 +1,5 @@
-﻿using BirdAPI.Application.Features.Bird.Commands;
+﻿using Microsoft.AspNetCore.Authorization;
+using BirdAPI.Application.Features.Bird.Commands;
 using BirdAPI.Application.Features.Bird.Commands.InputModels;
 using BirdAPI.Application.Features.Bird.Queries;
 using BirdAPI.Application.Features.Bird.ResponseModels;
@@ -10,6 +11,7 @@ using System;
 namespace BirdAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/v1/birds")]
     public class BirdController : ControllerBase
     {
