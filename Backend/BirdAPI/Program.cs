@@ -17,6 +17,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
+// The signing secret is never stored in appsettings.json.
+// Development: dotnet user-secrets set "JwtSettings:Secret" "<random value>"
+// Production:  environment variable JwtSettings__Secret
+if (jwtSettings == null || string.IsNullOrWhiteSpace(jwtSettings.Secret) || Encoding.UTF8.GetByteCount(jwtSettings.Secret) < 32)
+{
+    throw new InvalidOperationException(
+        "JwtSettings:Secret is missing or shorter than 32 bytes. " +
+        "Set it with 'dotnet user-secrets set \"JwtSettings:Secret\" \"<value>\"' (development) " +
+        "or the JwtSettings__Secret environment variable (production).");
+}
+
 // Add services to the container.
 builder.Services.AddControllers();
 

@@ -1,4 +1,5 @@
-﻿using BirdAPI.Application.Features.Owner.Commands;
+﻿using Microsoft.AspNetCore.Authorization;
+using BirdAPI.Application.Features.Owner.Commands;
 using BirdAPI.Application.Features.Owner.Commands.InputModel;
 using BirdAPI.Application.Features.Owner.Queries;
 using BirdAPI.Application.Features.Owner.ResponseModels;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BirdAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/v1/owners")]
     public class OwnerController : ControllerBase
     {

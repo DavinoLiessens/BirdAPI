@@ -81,7 +81,11 @@ export class BaseHttpService {
     const url = `${this.baseUrl}${endpoint}`;
     const headers = options.headers || this.defaultHeaders;
     const params = options.params;
-    const retries = options.retries ?? 2;
+    // Only GET is retried by default. POST/PUT/PATCH/DELETE may already have been
+    // processed by the server when the response fails (timeout, 5xx), so retrying
+    // them can create duplicates (e.g. the same egg twice). Pass `retries` explicitly
+    // to opt in for a request that is known to be safe to repeat.
+    const retries = options.retries ?? (method === 'GET' ? 2 : 0);
     const retryDelay = options.retryDelay ?? 1000;
 
     const httpOptions = { headers, params };

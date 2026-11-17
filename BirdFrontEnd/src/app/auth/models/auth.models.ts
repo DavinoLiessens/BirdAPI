@@ -26,7 +26,6 @@ export interface ResetPasswordRequest {
 
 export interface AuthResponse {
   token: string;
-  refreshToken: string;
   expiration: Date;
   user: UserInfo;
 }
