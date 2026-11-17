@@ -17,7 +17,6 @@ import {
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
-  private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_KEY = 'user_info';
   private readonly EXPIRES_AT_KEY = 'token_expires_at';
 
@@ -31,23 +30,23 @@ export class AuthService {
   }
 
   login(request: LoginRequest): Observable<AuthResponse> {
-    return this.baseHttp.post<AuthResponse>('/api/v1/auth/login', request).pipe(
+    return this.baseHttp.post<AuthResponse>('/auth/login', request).pipe(
       tap((response) => this.handleAuthResponse(response))
     );
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
     return this.baseHttp
-      .post<AuthResponse>('/api/v1/auth/register', request)
+      .post<AuthResponse>('/auth/register', request)
       .pipe(tap((response) => this.handleAuthResponse(response)));
   }
 
   forgotPassword(request: ForgotPasswordRequest): Observable<any> {
-    return this.baseHttp.post('/api/v1/auth/forgot-password', request);
+    return this.baseHttp.post('/auth/forgot-password', request);
   }
 
   resetPassword(request: ResetPasswordRequest): Observable<any> {
-    return this.baseHttp.post('/api/v1/auth/reset-password', request);
+    return this.baseHttp.post('/auth/reset-password', request);
   }
 
   logout(): void {
@@ -81,10 +80,6 @@ export class AuthService {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
-  getRefreshToken(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
-  }
-
   getCurrentUser(): UserInfo | null {
     const userJson = localStorage.getItem(this.USER_KEY);
     if (!userJson) {
@@ -98,7 +93,7 @@ export class AuthService {
   }
 
   validateToken(): Observable<boolean> {
-    return this.baseHttp.get<any>('/api/v1/auth/validate').pipe(
+    return this.baseHttp.get<any>('/auth/validate').pipe(
       map(() => true),
       tap(
         () => {},
@@ -111,7 +106,6 @@ export class AuthService {
     const expiresAt = new Date(response.expiration);
 
     localStorage.setItem(this.TOKEN_KEY, response.token);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
     localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
     localStorage.setItem(this.EXPIRES_AT_KEY, expiresAt.toISOString());
 
@@ -125,7 +119,6 @@ export class AuthService {
 
   private clearAuthData(): void {
     localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
     localStorage.removeItem(this.EXPIRES_AT_KEY);
   }

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/auth.models';
-import { MessageService } from 'primeng/api';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private messageService: MessageService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -50,24 +50,15 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(request).subscribe(
       (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succesvol ingelogd',
-          detail: `Welkom terug, ${response.user.firstName}!`,
-        });
+        this.toastr.success(`Welkom terug, ${response.user.firstName}!`, 'Succesvol ingelogd');
 
         // Navigate to return url
         this.router.navigate([this.returnUrl]);
       },
       (error) => {
         this.loading = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Inloggen mislukt',
-          detail:
-            error.message ||
-            'Ongeldige inloggegevens. Controleer uw e-mail en wachtwoord.',
-        });
+        this.toastr.error(error.message ||
+            'Ongeldige inloggegevens. Controleer uw e-mail en wachtwoord.', 'Inloggen mislukt');
       }
     );
   }

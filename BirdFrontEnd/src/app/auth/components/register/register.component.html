@@ -33,10 +33,10 @@
               class="p-error"
               *ngIf="f['firstName'].invalid && f['firstName'].touched"
             >
-              <span *ngIf="f['firstName'].errors?.['required']">
+              <span *ngIf="f['firstName'].errors?.required">
                 Voornaam is verplicht
               </span>
-              <span *ngIf="f['firstName'].errors?.['minlength']">
+              <span *ngIf="f['firstName'].errors?.minlength">
                 Voornaam moet minimaal 2 tekens bevatten
               </span>
             </small>
@@ -64,10 +64,10 @@
               class="p-error"
               *ngIf="f['lastName'].invalid && f['lastName'].touched"
             >
-              <span *ngIf="f['lastName'].errors?.['required']">
+              <span *ngIf="f['lastName'].errors?.required">
                 Achternaam is verplicht
               </span>
-              <span *ngIf="f['lastName'].errors?.['minlength']">
+              <span *ngIf="f['lastName'].errors?.minlength">
                 Achternaam moet minimaal 2 tekens bevatten
               </span>
             </small>
@@ -94,10 +94,10 @@
               class="p-error"
               *ngIf="f['email'].invalid && f['email'].touched"
             >
-              <span *ngIf="f['email'].errors?.['required']">
+              <span *ngIf="f['email'].errors?.required">
                 E-mailadres is verplicht
               </span>
-              <span *ngIf="f['email'].errors?.['email']">
+              <span *ngIf="f['email'].errors?.email">
                 Voer een geldig e-mailadres in
               </span>
             </small>
@@ -152,10 +152,10 @@
               class="p-error"
               *ngIf="f['password'].invalid && f['password'].touched"
             >
-              <span *ngIf="f['password'].errors?.['required']">
+              <span *ngIf="f['password'].errors?.required">
                 Wachtwoord is verplicht
               </span>
-              <span *ngIf="f['password'].errors?.['minlength']">
+              <span *ngIf="f['password'].errors?.minlength">
                 Wachtwoord moet minimaal 6 tekens bevatten
               </span>
             </small>
@@ -183,10 +183,10 @@
               class="p-error"
               *ngIf="f['confirmPassword'].invalid && f['confirmPassword'].touched"
             >
-              <span *ngIf="f['confirmPassword'].errors?.['required']">
+              <span *ngIf="f['confirmPassword'].errors?.required">
                 Wachtwoordbevestiging is verplicht
               </span>
-              <span *ngIf="f['confirmPassword'].errors?.['passwordMismatch']">
+              <span *ngIf="f['confirmPassword'].errors?.passwordMismatch">
                 Wachtwoorden komen niet overeen
               </span>
             </small>

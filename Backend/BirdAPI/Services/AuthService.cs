@@ -20,15 +20,21 @@ namespace BirdAPI.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly IHostEnvironment _environment;
+        private readonly ILogger<AuthService> _logger;
 
         public AuthService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IOptions<JwtSettings> jwtSettings)
+            IOptions<JwtSettings> jwtSettings,
+            IHostEnvironment environment,
+            ILogger<AuthService> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtSettings = jwtSettings.Value;
+            _environment = environment;
+            _logger = logger;
         }
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
@@ -44,7 +50,12 @@ namespace BirdAPI.Services
                 throw new UnauthorizedAccessException("Account is gedeactiveerd");
             }
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
+            if (result.IsLockedOut)
+            {
+                throw new UnauthorizedAccessException("Account is tijdelijk geblokkeerd door te veel mislukte pogingen. Probeer het over enkele minuten opnieuw.");
+            }
+
             if (!result.Succeeded)
             {
                 throw new UnauthorizedAccessException("Email of wachtwoord is onjuist");
@@ -124,9 +135,12 @@ namespace BirdAPI.Services
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             
-            // TODO: Stuur email met reset link
-            // Voor nu loggen we de token (in productie moet dit via email)
-            Console.WriteLine($"Password reset token for {user.Email}: {token}");
+            // TODO: Stuur email met reset link.
+            // Tot er email-verzending is, enkel in Development loggen zodat de flow lokaal testbaar blijft.
+            if (_environment.IsDevelopment())
+            {
+                _logger.LogInformation("Password reset token for user {UserId}: {Token}", user.Id, token);
+            }
 
             return true;
         }
@@ -154,7 +168,7 @@ namespace BirdAPI.Services
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+                var key = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -178,7 +192,7 @@ namespace BirdAPI.Services
         private string GenerateJwtToken(ApplicationUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var key = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
 
             var claims = new List<Claim>
             {

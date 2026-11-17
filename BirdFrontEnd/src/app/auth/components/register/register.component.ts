@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RegisterRequest } from '../../models/auth.models';
-import { MessageService } from 'primeng/api';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private messageService: MessageService
+    private toastr: ToastrService
   ) {
     // Set max date to 18 years ago
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
@@ -79,23 +79,14 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(request).subscribe(
       (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Registratie succesvol',
-          detail: `Welkom ${response.user.firstName}! Uw account is aangemaakt.`,
-        });
+        this.toastr.success(`Welkom ${response.user.firstName}! Uw account is aangemaakt.`, 'Registratie succesvol');
 
         this.router.navigate([this.returnUrl]);
       },
       (error) => {
         this.loading = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Registratie mislukt',
-          detail:
-            error.message ||
-            'Er is een fout opgetreden bij het aanmaken van uw account.',
-        });
+        this.toastr.error(error.message ||
+            'Er is een fout opgetreden bij het aanmaken van uw account.', 'Registratie mislukt');
       }
     );
   }
