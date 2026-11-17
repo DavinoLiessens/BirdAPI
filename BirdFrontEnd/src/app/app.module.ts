@@ -47,6 +47,9 @@ import { AppStoreModule } from './store/store.module';
 import { CoreStoreModule } from './store/entities/store.module';
 import { BaseService } from './Services/base.service';
 
+// *** AUTH MODULE ***
+import { AuthModule } from './auth/auth.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,6 +84,7 @@ import { BaseService } from './Services/base.service';
     BrowserAnimationsModule,
     DynamicDialogModule,
     HttpClientModule,
+    AuthModule,
     AppRoutingModule,
     ToolbarModule,
     ButtonModule,

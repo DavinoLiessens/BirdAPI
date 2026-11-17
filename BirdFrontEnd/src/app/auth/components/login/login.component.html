@@ -1,0 +1,116 @@
+<div class="login-container">
+  <div class="login-wrapper">
+    <p-card styleClass="login-card">
+      <ng-template pTemplate="header">
+        <div class="login-header">
+          <i class="pi pi-user login-icon"></i>
+          <h2>Inloggen</h2>
+          <p class="login-subtitle">Welkom terug bij Bird Platform</p>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="content">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Email Field -->
+          <div class="p-field">
+            <label for="email">E-mailadres</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-envelope"></i>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                pInputText
+                placeholder="uw-email@voorbeeld.nl"
+                class="p-inputtext-lg"
+                [ngClass]="{
+                  'ng-invalid ng-dirty': f['email'].invalid && f['email'].touched
+                }"
+              />
+            </span>
+            <small
+              class="p-error"
+              *ngIf="f['email'].invalid && f['email'].touched"
+            >
+              <span *ngIf="f['email'].errors?.['required']">
+                E-mailadres is verplicht
+              </span>
+              <span *ngIf="f['email'].errors?.['email']">
+                Voer een geldig e-mailadres in
+              </span>
+            </small>
+          </div>
+
+          <!-- Password Field -->
+          <div class="p-field">
+            <label for="password">Wachtwoord</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-lock"></i>
+              <p-password
+                id="password"
+                formControlName="password"
+                placeholder="Uw wachtwoord"
+                [toggleMask]="true"
+                [feedback]="false"
+                styleClass="p-password-input-lg"
+                [ngClass]="{
+                  'ng-invalid ng-dirty':
+                    f['password'].invalid && f['password'].touched
+                }"
+              ></p-password>
+            </span>
+            <small
+              class="p-error"
+              *ngIf="f['password'].invalid && f['password'].touched"
+            >
+              <span *ngIf="f['password'].errors?.['required']">
+                Wachtwoord is verplicht
+              </span>
+              <span *ngIf="f['password'].errors?.['minlength']">
+                Wachtwoord moet minimaal 6 tekens bevatten
+              </span>
+            </small>
+          </div>
+
+          <!-- Remember Me & Forgot Password -->
+          <div class="login-options">
+            <div class="p-field-checkbox">
+              <p-checkbox
+                formControlName="rememberMe"
+                [binary]="true"
+                inputId="rememberMe"
+              ></p-checkbox>
+              <label for="rememberMe">Onthoud mij</label>
+            </div>
+            <a
+              href="javascript:void(0)"
+              (click)="navigateToForgotPassword()"
+              class="forgot-password-link"
+            >
+              Wachtwoord vergeten?
+            </a>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="submit-button-container">
+            <p-button
+              type="submit"
+              label="Inloggen"
+              icon="pi pi-sign-in"
+              [loading]="loading"
+              styleClass="p-button-lg p-button-primary submit-button"
+            ></p-button>
+          </div>
+
+          <!-- Register Link -->
+          <div class="register-link">
+            <span>Nog geen account? </span>
+            <a href="javascript:void(0)" (click)="navigateToRegister()">
+              Registreer hier
+            </a>
+          </div>
+        </form>
+      </ng-template>
+    </p-card>
+  </div>
+</div>
