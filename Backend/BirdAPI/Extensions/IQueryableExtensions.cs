@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BirdAPI.BaseModels;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -71,7 +71,7 @@ namespace BirdAPI.Extensions
             where T : class
             where Y : class
         {
-            var totalAmount = query.Count();
+            var totalAmount = await query.CountAsync();
             int currentPage;
             int resultPageSize;
 
@@ -101,7 +101,7 @@ namespace BirdAPI.Extensions
             where T : class
             where Y : class, Z
         {
-            var totalAmount = query.Count();
+            var totalAmount = await query.CountAsync();
             int currentPage;
             int resultPageSize;
 
@@ -129,7 +129,7 @@ namespace BirdAPI.Extensions
 
         public static async Task<PagedResponse<T>> GetPaged<T>(this IQueryable<T> query, int? page, int? pageSize) where T : class
         {
-            var totalAmount = query.Count();
+            var totalAmount = await query.CountAsync();
             int currentPage;
             int resultPageSize;
 

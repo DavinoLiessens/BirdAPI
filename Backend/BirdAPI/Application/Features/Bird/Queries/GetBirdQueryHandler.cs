@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
@@ -32,7 +32,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
 
             if (existingBird == null)
             {
-                return new BaseResponse<BirdDetailResponseModel>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<BirdDetailResponseModel>(false, HttpStatusCode.NotFound)
                     .AddError($"Bird with id '{request.BirdId}' does not exist");
             }
 
@@ -55,7 +55,8 @@ namespace BirdAPI.Application.Features.Bird.Queries
                                          .Include(c => c.BirdEggs)
                                          .Include(c => c.Father)
                                          .Include(c => c.Mother)
-                                         .FirstOrDefaultAsync(c => c.BirdEggs.Any(be => be.RingNumber == existingBird.RingNumber));
+                                         .FirstOrDefaultAsync(c => c.BirdEggs.Any(be => be.BirdId == existingBird.Id ||
+                                                                        (be.BirdId == null && be.RingNumber == existingBird.RingNumber)));
 
             if (coupleWhereBirdIsBorn != null)
             {

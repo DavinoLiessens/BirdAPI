@@ -1,4 +1,4 @@
-﻿using BirdAPI.Domain.AggregatesModel.BirdAggregate;
+using BirdAPI.Domain.AggregatesModel.BirdAggregate;
 using BirdAPI.Domain.AggregatesModel.BreederAggregate;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
 using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
@@ -38,24 +38,6 @@ namespace BirdAPI.Infrastructure
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json",
-                    optional: false,
-                    reloadOnChange: true)
-                .AddJsonFile($"appsettings.json",
-                    true,
-                    true)
-                .Build();
-
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("");
-            }
-            optionsBuilder.EnableSensitiveDataLogging();
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder); // Required for Identity tables
@@ -63,16 +45,17 @@ namespace BirdAPI.Infrastructure
             builder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(BirdAPIContext)));
         }
 
-        public override int SaveChanges()
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             AddAuditInfo();
-            return base.SaveChanges();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
-        public async Task<int> SaveChangesAsync()
+        // All SaveChangesAsync overloads end up here, so audit info is always applied
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             AddAuditInfo();
-            return await base.SaveChangesAsync();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         private void AddAuditInfo()

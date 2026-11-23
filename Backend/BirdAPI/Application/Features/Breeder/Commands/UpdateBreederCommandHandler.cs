@@ -31,7 +31,7 @@ namespace BirdAPI.Application.Features.Breeder.Commands
 
             if (existingBreeder == null)
             {
-                return new BaseResponse<object>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<object>(false, HttpStatusCode.NotFound)
                     .AddError($"Breeder with id '{request.Id}' does not exist");
             }
 

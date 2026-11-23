@@ -27,7 +27,7 @@ namespace BirdAPI.Application.Features.Couple.Queries
 
             if (existingBirdEgg == null)
             {
-                return new BaseResponse<BirdEggResponseModel>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<BirdEggResponseModel>(false, HttpStatusCode.NotFound)
                 .AddError($"No birdEgg found with id {request.BirdEggId}");
             }
 

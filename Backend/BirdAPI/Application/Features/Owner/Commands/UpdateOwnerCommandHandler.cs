@@ -31,7 +31,7 @@ namespace BirdAPI.Application.Features.Owner.Commands
 
             if (existingOwner == null)
             {
-                return new BaseResponse<object>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<object>(false, HttpStatusCode.NotFound)
                     .AddError($"Owner with id '{request.Id}' does not exist");
             }
 

@@ -33,7 +33,7 @@ namespace BirdAPI.Application.Features.Couple.Queries
 
             if (existingCouple == null)
             {
-                return new BaseResponse<CoupleResponseModel>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<CoupleResponseModel>(false, HttpStatusCode.NotFound)
                     .AddError($"Couple with id '{request.CoupleId}' does not exist");
             }
 

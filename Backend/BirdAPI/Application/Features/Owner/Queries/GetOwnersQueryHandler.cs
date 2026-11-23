@@ -33,7 +33,7 @@ namespace BirdAPI.Application.Features.Owner.Queries
                                            o.LastName.StartsWith(request.SearchValue));
             }
 
-            var result = await owners.GetPaged<Domain.AggregatesModel.OwnerAggregate.Owner, OwnerResponseModel>(request.Page, request.PageSize, _mapper);
+            var result = await owners.OrderBy(o => o.Id).GetPaged<Domain.AggregatesModel.OwnerAggregate.Owner, OwnerResponseModel>(request.Page, request.PageSize, _mapper);
 
             return new BaseResponse<PagedResponse<OwnerResponseModel>>(result);
 
