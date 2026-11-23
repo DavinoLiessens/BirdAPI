@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, AbstractControl } from '@angular/forms';
+import { UntypedFormGroup, AbstractControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -8,14 +8,14 @@ export class FormUtilsService {
   /**
    * Marks all controls in a form group as touched to trigger validation display
    */
-  markFormGroupTouched(formGroup: FormGroup): void {
+  markFormGroupTouched(formGroup: UntypedFormGroup): void {
     Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
       if (control) {
         control.markAsTouched();
 
         // If it's a nested form group, recursively mark touched
-        if (control instanceof FormGroup) {
+        if (control instanceof UntypedFormGroup) {
           this.markFormGroupTouched(control);
         }
       }
@@ -73,7 +73,7 @@ export class FormUtilsService {
   /**
    * Resets a form and clears all validation states
    */
-  resetForm(formGroup: FormGroup): void {
+  resetForm(formGroup: UntypedFormGroup): void {
     formGroup.reset();
     Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
@@ -100,7 +100,7 @@ export class FormUtilsService {
   /**
    * Gets the value from a form control safely
    */
-  getControlValue<T>(formGroup: FormGroup, controlName: string): T | null {
+  getControlValue<T>(formGroup: UntypedFormGroup, controlName: string): T | null {
     const control = formGroup.get(controlName);
     return control ? control.value : null;
   }

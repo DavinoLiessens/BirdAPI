@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -17,14 +17,15 @@ import { BirdShowUpdateModal } from '../bird-show-update/bird-show-update.modal'
 import { APP_CONFIG } from 'src/app/config/app.config';
 
 @Component({
-  selector: 'app-bird-detail',
-  templateUrl: './bird-detail.component.html',
-  styleUrls: ['./bird-detail.component.scss']
+    selector: 'app-bird-detail',
+    templateUrl: './bird-detail.component.html',
+    styleUrls: ['./bird-detail.component.scss'],
+    standalone: false
 })
 export class BirdDetailComponent implements OnInit, OnDestroy {
 
   // local variables
-  public birdForm: FormGroup;
+  public birdForm: UntypedFormGroup;
   public birdId: string;
   public owners: IOwnerDropdownOption[] = [];
   public bird: IBirdDetail;
@@ -37,7 +38,7 @@ export class BirdDetailComponent implements OnInit, OnDestroy {
   private owner: IOwnerDropdownOption;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private birdFacade: BirdFacade,
     private ownerFacade: OwnerFacade,
     private router: Router,

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Observable, Subject } from "rxjs";
@@ -10,7 +10,8 @@ import { IBreeder, IGetBreedersRequest, IUpdateBreederRequest } from "src/app/ty
 @Component({
     selector: 'c-breeder-detail',
     templateUrl: './breeder-detail.component.html',
-    styleUrls: ['./breeder-detail.component.scss']
+    styleUrls: ['./breeder-detail.component.scss'],
+    standalone: false
 })
 export class BreederDetailComponent implements OnInit, OnDestroy {
 
@@ -21,10 +22,10 @@ export class BreederDetailComponent implements OnInit, OnDestroy {
 
     // local variables
     public breederId: string;
-    public breederForm: FormGroup;
+    public breederForm: UntypedFormGroup;
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private breederFacade: BreederFacade,
         private router: Router,
         private route: ActivatedRoute,

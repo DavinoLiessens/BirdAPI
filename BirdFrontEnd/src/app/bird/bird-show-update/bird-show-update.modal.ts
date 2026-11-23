@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { Observable, Subject } from "rxjs";
@@ -10,10 +10,11 @@ import { IBirdShow, ICreateBirdShowRequest, IUpdateBirdShowRequest } from "src/a
 @Component({
     selector: 'bird-show-update-modal',
     templateUrl: './bird-show-update.modal.html',
-    providers: [DialogService]
+    providers: [DialogService],
+    standalone: false
 })
 export class BirdShowUpdateModal implements OnInit, OnDestroy {
-    public birdShowForm: FormGroup;
+    public birdShowForm: UntypedFormGroup;
     public birdShow$: Observable<IBirdShow> = this.birdFacade.getBirdShow();
     private destroyed$: Subject<boolean> = new Subject<boolean>();
     public loading$: Observable<boolean> = this.birdFacade.getLoadingModal();
@@ -22,7 +23,7 @@ export class BirdShowUpdateModal implements OnInit, OnDestroy {
         public ref: DynamicDialogRef,
         public config: DynamicDialogConfig,
         private birdFacade: BirdFacade,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private toastrService: ToastrService
     ) {}
 

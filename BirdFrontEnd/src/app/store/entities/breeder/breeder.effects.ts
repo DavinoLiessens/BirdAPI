@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, ofType, createEffect, Effect } from '@ngrx/effects';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { BreederService } from 'src/app/Services/breeder.service';

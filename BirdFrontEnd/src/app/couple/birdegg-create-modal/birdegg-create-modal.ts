@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { SelectItemGroup } from "primeng/api";
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
@@ -14,10 +14,11 @@ import { toDateOnly } from 'src/app/utils/date.utils';
 @Component({
     selector: 'birdegg-create-modal',
     templateUrl: './birdegg-create-modal.html',
-    providers: [DialogService]
+    providers: [DialogService],
+    standalone: false
 })
 export class BirdEggCreateModal implements OnInit, OnDestroy {
-    public birdEggForm: FormGroup;
+    public birdEggForm: UntypedFormGroup;
     private destroyed$: Subject<boolean> = new Subject<boolean>();
     public loading$: Observable<boolean> = this.coupleFacade.getLoadingModal();
     public groupedColors: SelectItemGroup[] = [];
@@ -28,7 +29,7 @@ export class BirdEggCreateModal implements OnInit, OnDestroy {
         public config: DynamicDialogConfig,
         private coupleFacade: CoupleFacade,
         private birdFacade: BirdFacade,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private toastrService: ToastrService
     ) { }
 

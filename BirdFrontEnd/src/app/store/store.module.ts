@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -8,17 +8,10 @@ import { environment } from 'src/environments/environment';
 import { Reducers } from './entities/entities.reducer';
 import { MetaReducers } from './entities/entities.metareducers';
 
-@NgModule({
-    declarations: [],
-    imports: [
-        HttpClientModule,
-        StoreModule.forRoot({}),
+@NgModule({ declarations: [], imports: [StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({
             maxAge: 25,
             logOnly: environment.production,
-        }),
-    ],
-    providers: [],
-})
+        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppStoreModule { }

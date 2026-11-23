@@ -4,7 +4,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -23,10 +23,11 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 import { toDateOnly } from 'src/app/utils/date.utils';
 
 @Component({
-  selector: 'c-couple-create',
-  templateUrl: './couple-create.component.html',
-  styleUrls: ['./couple-create.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'c-couple-create',
+    templateUrl: './couple-create.component.html',
+    styleUrls: ['./couple-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CoupleCreateComponent implements OnInit, OnDestroy {
   private readonly destroyed$ = new Subject<void>();
@@ -41,12 +42,12 @@ export class CoupleCreateComponent implements OnInit, OnDestroy {
   readonly femaleBirds$: Observable<DropdownOption<number>[]>;
 
   // Form with proper typing
-  coupleForm!: FormGroup;
+  coupleForm!: UntypedFormGroup;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly fb: FormBuilder,
+    private readonly fb: UntypedFormBuilder,
     private readonly coupleFacade: CoupleFacade,
     private readonly birdFacade: BirdFacade,
     private readonly toastrService: ToastrService,
