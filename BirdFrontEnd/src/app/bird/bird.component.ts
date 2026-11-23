@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { BirdFacade } from '../store/entities/bird/bird.facade';
@@ -11,7 +11,6 @@ import { IBirdTypeOption, IGenderOption, IYearDropdownOption } from '../types/dr
     selector: 'c-bird-overview',
     templateUrl: './bird.component.html',
     styleUrls: ['./bird.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BirdComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
+import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { SelectItemGroup } from "primeng/api";
@@ -15,7 +15,6 @@ import { toDateOnly } from 'src/app/utils/date.utils';
     selector: 'birdegg-create-modal',
     templateUrl: './birdegg-create-modal.html',
     providers: [DialogService],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BirdEggCreateModal implements OnInit, OnDestroy {

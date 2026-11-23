@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { CoupleFacade } from '../store/entities/couple/couple.facade';
@@ -10,7 +10,6 @@ import { ActivatedRoute, Router } from '@angular/router';
     selector: 'c-couple-overview',
     templateUrl: './couple.component.html',
     styleUrls: ['./couple.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CoupleComponent implements OnInit, OnDestroy {
