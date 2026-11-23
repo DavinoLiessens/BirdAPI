@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { debounceTime, takeUntil } from "rxjs/operators";
 import { BreederFacade } from "../store/entities/breeder/breeder.facade";
@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from "@angular/router";
     selector: 'c-breeder-overview',
     templateUrl: './breeder.component.html',
     styleUrls: ['./breeder.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BreederComponent implements OnInit, OnDestroy {

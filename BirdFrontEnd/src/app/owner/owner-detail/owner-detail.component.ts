@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,7 @@ import { IGetOwnersRequest, IOwner, IUpdateOwnerRequest } from 'src/app/types/ow
     selector: 'app-owner-detail',
     templateUrl: './owner-detail.component.html',
     styleUrls: ['./owner-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class OwnerDetailComponent implements OnInit, OnDestroy {

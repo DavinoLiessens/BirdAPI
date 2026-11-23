@@ -6,7 +6,7 @@ import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeuix/themes/lara';
 import { definePreset } from '@primeuix/themes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -116,7 +116,7 @@ const BirdPreset = definePreset(Lara, {
         ProgressSpinnerModule,
         PaginatorModule], providers: [
         DialogService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideAnimationsAsync(),
         // PrimeNG 18+ themes are presets instead of CSS files. Lara (blue) is the closest
         // to the former saga-blue theme. Dark mode only via an explicit class, so the

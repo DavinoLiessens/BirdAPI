@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -11,6 +11,7 @@ import { IBreeder, IGetBreedersRequest, IUpdateBreederRequest } from "src/app/ty
     selector: 'c-breeder-detail',
     templateUrl: './breeder-detail.component.html',
     styleUrls: ['./breeder-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BreederDetailComponent implements OnInit, OnDestroy {
