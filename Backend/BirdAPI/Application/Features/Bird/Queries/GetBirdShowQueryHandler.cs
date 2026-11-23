@@ -1,4 +1,4 @@
-using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
@@ -11,12 +11,10 @@ namespace BirdAPI.Application.Features.Bird.Queries
     public class GetBirdShowQueryHandler : IRequestHandler<GetBirdShowQuery, BaseResponse<BirdShowResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
 
-        public GetBirdShowQueryHandler(BirdAPIContext context, IMapper mapper)
+        public GetBirdShowQueryHandler(BirdAPIContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
         public async Task<BaseResponse<BirdShowResponseModel>> Handle(GetBirdShowQuery request, CancellationToken cancellationToken)
         {
@@ -30,7 +28,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
                     .AddError($"Birdshow with id '{request.Id}' does not exist");
             }
 
-            var result = _mapper.Map<BirdShowResponseModel>(birdShow);
+            var result = birdShow.ToResponse();
 
             return new BaseResponse<BirdShowResponseModel>(result);
         }

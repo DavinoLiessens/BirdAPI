@@ -1,5 +1,3 @@
-using AutoMapper;
-using BirdAPI.Application.Features.Bird.AutoMapper;
 using BirdAPI.Domain.AggregatesModel.BirdAggregate;
 using BirdAPI.Domain.AggregatesModel.BreederAggregate;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
@@ -16,7 +14,6 @@ namespace BirdAPI.Tests
     public sealed class TestData : IDisposable
     {
         public BirdAPIContext Context { get; }
-        public IMapper Mapper { get; }
 
         public TestData()
         {
@@ -24,7 +21,6 @@ namespace BirdAPI.Tests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
             Context = new BirdAPIContext(options);
-            Mapper = new MapperConfiguration(cfg => cfg.AddMaps(typeof(BirdAutomapperProfile).Assembly)).CreateMapper();
         }
 
         public Owner AddOwner(string firstName = "Jan", string lastName = "Peeters", string email = "jan@example.test")

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Couple.Commands.InputModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
@@ -12,12 +12,10 @@ namespace BirdAPI.Application.Features.Couple.Commands
     public class UpdateCoupleBirdEggCommandHandler : IRequestHandler<UpdateCoupleBirdEggCommand, BaseResponse<BirdEggInputModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
 
-        public UpdateCoupleBirdEggCommandHandler(BirdAPIContext context, IMapper mapper)
+        public UpdateCoupleBirdEggCommandHandler(BirdAPIContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<BirdEggInputModel>> Handle(UpdateCoupleBirdEggCommand request, CancellationToken cancellationToken)
@@ -104,7 +102,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
 
             await _context.SaveChangesAsync();
 
-            var result = _mapper.Map<BirdEgg, BirdEggInputModel>(existingEgg);
+            var result = existingEgg.ToInputModel();
             return new BaseResponse<BirdEggInputModel>(result);
         }
     }

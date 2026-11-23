@@ -1,4 +1,4 @@
-using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.Enums;
@@ -13,15 +13,12 @@ namespace BirdAPI.Application.Features.Bird.Queries
     public class GetBirdsQueryHandler : IRequestHandler<GetBirdsQuery, BaseResponse<PagedResponse<BirdResponseModel>>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
 
         public GetBirdsQueryHandler(
-             BirdAPIContext context,
-             IMapper mapper
+             BirdAPIContext context
             )
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<PagedResponse<BirdResponseModel>>> Handle(GetBirdsQuery request, CancellationToken cancellationToken)
@@ -62,7 +59,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
             birds = birds.OrderBy(b => b.Id);
 
             // get paged result
-            var pagedResult = await birds.GetPaged<Domain.AggregatesModel.BirdAggregate.Bird, BirdResponseModel>(request.Page, request.PageSize, _mapper);
+            var pagedResult = await birds.GetPaged(request.Page, request.PageSize, x => x.ToResponse());
 
             return new BaseResponse<PagedResponse<BirdResponseModel>>(pagedResult);
         }

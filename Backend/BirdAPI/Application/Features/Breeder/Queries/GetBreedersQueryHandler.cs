@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Breeder.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.AggregatesModel.BirdAggregate;
@@ -11,15 +11,12 @@ namespace BirdAPI.Application.Features.Breeder.Queries
 {
     public class GetBreedersQueryHandler : IRequestHandler<GetBreedersQuery, BaseResponse<PagedResponse<BreederResponseModel>>>
     {
-        private readonly IMapper _mapper;
         private readonly BirdAPIContext _context;
 
         public GetBreedersQueryHandler(
-            IMapper mapper,
             BirdAPIContext context
             )
         {
-            _mapper = mapper;
             _context = context;
         }
 
@@ -34,7 +31,7 @@ namespace BirdAPI.Application.Features.Breeder.Queries
                                                b.LastName.StartsWith(request.SearchValue));
             }
 
-            var result = await breeders.OrderBy(b => b.Id).GetPaged<Domain.AggregatesModel.BreederAggregate.Breeder, BreederResponseModel>(request.Page, request.PageSize, _mapper);
+            var result = await breeders.OrderBy(b => b.Id).GetPaged(request.Page, request.PageSize, x => x.ToResponse());
             
             return new BaseResponse<PagedResponse<BreederResponseModel>>(result);
         }

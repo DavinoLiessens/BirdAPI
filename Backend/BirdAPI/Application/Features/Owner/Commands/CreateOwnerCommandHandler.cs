@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
 using MediatR;
@@ -10,16 +9,13 @@ namespace BirdAPI.Application.Features.Owner.Commands
     public class CreateOwnerCommandHandler : IRequestHandler<CreateOwnerCommand, BaseResponse<object>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public CreateOwnerCommandHandler(
              BirdAPIContext context,
-            IMapper mapper,
             IMediator mediator)
         {
             _context = context;
-            _mapper = mapper;
             _mediator = mediator;
         }
 

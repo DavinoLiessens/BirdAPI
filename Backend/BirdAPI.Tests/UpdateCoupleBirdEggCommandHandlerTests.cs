@@ -37,7 +37,7 @@ namespace BirdAPI.Tests
         {
             var (data, couple, egg) = Setup();
             using var _ = data;
-            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context, data.Mapper);
+            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context);
 
             var result = await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "YOUNG-1")), default);
 
@@ -56,7 +56,7 @@ namespace BirdAPI.Tests
             // very egg and rejected every later update ("already exist").
             var (data, couple, egg) = Setup();
             using var _ = data;
-            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context, data.Mapper);
+            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context);
             await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "YOUNG-1")), default);
 
             var update = CompleteEgg(egg.Id, couple.Id, "YOUNG-1");
@@ -72,7 +72,7 @@ namespace BirdAPI.Tests
         {
             var (data, couple, egg) = Setup();
             using var _ = data;
-            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context, data.Mapper);
+            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context);
             await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "YOUNG-1")), default);
 
             var result = await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "YOUNG-2")), default);
@@ -87,7 +87,7 @@ namespace BirdAPI.Tests
         {
             var (data, couple, egg) = Setup();
             using var _ = data;
-            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context, data.Mapper);
+            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context);
 
             var result = await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "F-1")), default);
 
@@ -106,7 +106,7 @@ namespace BirdAPI.Tests
             var mother = data.AddBird("M-1", "FEMALE", owner, otherBreeder);
             var couple = data.AddCouple(father, mother);
             var egg = data.AddEgg(couple);
-            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context, data.Mapper);
+            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context);
 
             var result = await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "YOUNG-1")), default);
 
@@ -120,7 +120,7 @@ namespace BirdAPI.Tests
         {
             var (data, couple, egg) = Setup();
             using var _ = data;
-            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context, data.Mapper);
+            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context);
 
             var result = await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id + 99, "YOUNG-1")), default);
 

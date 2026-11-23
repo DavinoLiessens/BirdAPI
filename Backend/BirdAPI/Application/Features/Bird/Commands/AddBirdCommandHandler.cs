@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.AggregatesModel.BreederAggregate;
@@ -13,17 +13,14 @@ namespace BirdAPI.Application.Features.Bird.Commands
     public class AddBirdCommandHandler : IRequestHandler<AddBirdCommand, BaseResponse<BirdResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public AddBirdCommandHandler(
             BirdAPIContext context,
-            IMapper mapper,
             IMediator mediator)
         {
             _mediator = mediator;
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<BirdResponseModel>> Handle(AddBirdCommand request, CancellationToken cancellationToken)
@@ -78,7 +75,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             await _context.SaveChangesAsync();
 
             // create just the bird
-            var result = _mapper.Map<BirdResponseModel>(newBird);
+            var result = newBird.ToResponse();
 
             return new BaseResponse<BirdResponseModel>(result);
         }

@@ -1,4 +1,3 @@
-using AutoMapper;
 using BirdAPI.BaseModels;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -8,151 +7,25 @@ namespace BirdAPI.Extensions
 {
     public static class IQueryableExtensions
     {
-        public static async Task<PagedResponse<Y>> GetPaged<T, Y>(this IEnumerable<T> query, int? page, int? pageSize, IMapper mapper)
-            where T : class
-            where Y : class
-        {
-            var totalAmount = query.Count();
-            int currentPage;
-            int resultPageSize;
-
-            if (page == null || page.Value == 0)
-                currentPage = 1;
-            else
-                currentPage = page.GetValueOrDefault();
-
-            if (pageSize == null || pageSize.Value == 0)
-                resultPageSize = totalAmount;
-            else
-                resultPageSize = pageSize.GetValueOrDefault();
-
-            var skip = (currentPage - 1) * resultPageSize;
-
-            query = query.Skip(skip);
-            if (resultPageSize != 0)
-                query = query.Take(resultPageSize);
-
-            var result = new PagedResponse<Y>
-            (mapper.Map<List<Y>>(query.ToList()), currentPage, resultPageSize, totalAmount);
-
-            return result;
-        }
-        public static async Task<PagedResponse<Z>> GetPaged<T, Y, Z>(this IEnumerable<T> query, int? page, int? pageSize, IMapper mapper)
-            where T : class
-            where Y : class, Z
-        {
-            var totalAmount = query.Count();
-            int currentPage;
-            int resultPageSize;
-
-            if (page == null || page.Value == 0)
-                currentPage = 1;
-            else
-                currentPage = page.GetValueOrDefault();
-
-            if (pageSize == null || pageSize.Value == 0)
-                resultPageSize = totalAmount;
-            else
-                resultPageSize = pageSize.GetValueOrDefault();
-
-            var skip = (currentPage - 1) * resultPageSize;
-
-            query = query.Skip(skip);
-            if (resultPageSize != 0)
-                query = query.Take(resultPageSize);
-
-            var result = new PagedResponse<Z>
-            (mapper.Map<List<Z>>((query.ToList()).OfType<Z>().ToList<Z>()), currentPage, resultPageSize, totalAmount);
-
-            return result;
-        }
-
-        public static async Task<PagedResponse<Y>> GetPaged<T, Y>(this IQueryable<T> query, int? page, int? pageSize, IMapper mapper)
+        /// <summary>
+        /// Pages a query and maps the page with <paramref name="map"/>.
+        /// Page 0/null means page 1; pageSize 0/null means "everything".
+        /// The query should be ordered, otherwise the page content is undefined.
+        /// </summary>
+        public static async Task<PagedResponse<Y>> GetPaged<T, Y>(this IQueryable<T> query, int? page, int? pageSize, Func<T, Y> map)
             where T : class
             where Y : class
         {
             var totalAmount = await query.CountAsync();
-            int currentPage;
-            int resultPageSize;
+            var currentPage = page.GetValueOrDefault() <= 0 ? 1 : page!.Value;
+            var resultPageSize = pageSize.GetValueOrDefault() <= 0 ? totalAmount : pageSize!.Value;
 
-            if (page == null || page.Value == 0)
-                currentPage = 1;
-            else
-                currentPage = page.GetValueOrDefault();
-
-            if (pageSize == null || pageSize.Value == 0)
-                resultPageSize = totalAmount;
-            else
-                resultPageSize = pageSize.GetValueOrDefault();
-
-            var skip = (currentPage - 1) * resultPageSize;
-
-            query = query.Skip(skip);
+            var pageQuery = query.Skip((currentPage - 1) * resultPageSize);
             if (resultPageSize != 0)
-                query = query.Take(resultPageSize);
+                pageQuery = pageQuery.Take(resultPageSize);
 
-            var result = new PagedResponse<Y>
-            (mapper.Map<List<Y>>(await query.ToListAsync()), currentPage, resultPageSize, totalAmount);
-
-            return result;
-        }
-
-        public static async Task<PagedResponse<Z>> GetPaged<T, Y, Z>(this IQueryable<T> query, int? page, int? pageSize, IMapper mapper)
-            where T : class
-            where Y : class, Z
-        {
-            var totalAmount = await query.CountAsync();
-            int currentPage;
-            int resultPageSize;
-
-            if (page == null || page.Value == 0)
-                currentPage = 1;
-            else
-                currentPage = page.GetValueOrDefault();
-
-            if (pageSize == null || pageSize.Value == 0)
-                resultPageSize = totalAmount;
-            else
-                resultPageSize = pageSize.GetValueOrDefault();
-
-            var skip = (currentPage - 1) * resultPageSize;
-
-            query = query.Skip(skip);
-            if (resultPageSize != 0)
-                query = query.Take(resultPageSize);
-
-            var result = new PagedResponse<Z>
-            (mapper.Map<List<Z>>((await query.ToListAsync()).OfType<Z>().ToList<Z>()), currentPage, resultPageSize, totalAmount);
-
-            return result;
-        }
-
-        public static async Task<PagedResponse<T>> GetPaged<T>(this IQueryable<T> query, int? page, int? pageSize) where T : class
-        {
-            var totalAmount = await query.CountAsync();
-            int currentPage;
-            int resultPageSize;
-
-            if (page == null || page.Value == 0)
-                currentPage = 1;
-            else
-                currentPage = page.GetValueOrDefault();
-
-            if (pageSize == null || pageSize.Value == 0)
-                resultPageSize = totalAmount;
-            else
-                resultPageSize = pageSize.GetValueOrDefault();
-
-            var skip = (currentPage - 1) * resultPageSize;
-
-            query = query.Skip(skip);
-            if (resultPageSize != 0)
-                query = query.Take(resultPageSize);
-
-            var result = new PagedResponse<T>
-           (await query.ToListAsync(), currentPage, resultPageSize, totalAmount);
-
-            return result;
+            var items = await pageQuery.ToListAsync();
+            return new PagedResponse<Y>(items.Select(map).ToList(), currentPage, resultPageSize, totalAmount);
         }
 
         private static PropertyInfo GetPropertyInfo(Type type, string propertyName)

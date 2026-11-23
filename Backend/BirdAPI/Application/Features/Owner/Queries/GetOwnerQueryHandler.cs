@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Owner.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
@@ -11,16 +11,13 @@ namespace BirdAPI.Application.Features.Owner.Queries
     public class GetOwnerQueryHandler : IRequestHandler<GetOwnerQuery, BaseResponse<OwnerResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public GetOwnerQueryHandler(
             BirdAPIContext context,
-            IMapper mapper,
             IMediator mediator)
         {
             _context = context;
-            _mapper = mapper;
             _mediator = mediator;
         }
 
@@ -35,7 +32,7 @@ namespace BirdAPI.Application.Features.Owner.Queries
                     .AddError($"Owner with id '{request.OwnerId}' does not exist");
             }
 
-            var result = _mapper.Map<OwnerResponseModel>(existingOwner);
+            var result = existingOwner.ToResponse();
 
             return new BaseResponse<OwnerResponseModel>(result);
         }

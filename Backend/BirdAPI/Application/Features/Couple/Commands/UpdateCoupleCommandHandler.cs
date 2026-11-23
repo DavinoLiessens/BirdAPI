@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
@@ -12,12 +12,10 @@ namespace BirdAPI.Application.Features.Couple.Commands
     public class UpdateCoupleCommandHandler : IRequestHandler<UpdateCoupleCommand, BaseResponse<CoupleResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
 
-        public UpdateCoupleCommandHandler(BirdAPIContext context, IMapper mapper)
+        public UpdateCoupleCommandHandler(BirdAPIContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<CoupleResponseModel>> Handle(UpdateCoupleCommand request, CancellationToken cancellationToken)
@@ -33,7 +31,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
 
             existingCouple.UpdateCouple(request.Model.Description);
 
-            var result = _mapper.Map<Domain.AggregatesModel.CoupleAggregate.Couple, CoupleResponseModel>(existingCouple);
+            var result = existingCouple.ToResponse();
             await _context.SaveChangesAsync();
 
             return new BaseResponse<CoupleResponseModel>(result);
