@@ -1,4 +1,4 @@
-﻿namespace BirdAPI.Application.Features.Couple.ResponseModels
+namespace BirdAPI.Application.Features.Couple.ResponseModels
 {
     public class BirdEggResponseModel
     {
@@ -10,5 +10,6 @@
         public int CoupleId { get; set; }
         public string? Gender { get; set; }
         public string? Color { get; set; }
+        public int? BirdId { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using BirdAPI.Domain.AggregatesModel.BreederAggregate;
+using BirdAPI.Domain.AggregatesModel.BreederAggregate;
 using BirdAPI.Domain.Enums;
 
 namespace BirdAPI.Application.Features.Bird.ResponseModels
@@ -11,8 +11,8 @@ namespace BirdAPI.Application.Features.Bird.ResponseModels
         public DateTime BirthDate{ get; set; }
         public string CageNumber { get; set; }
         public string Color { get; set; }
-        public Domain.AggregatesModel.BreederAggregate.Breeder Breeder { get; set; }
-        public Domain.AggregatesModel.OwnerAggregate.Owner Owner { get; set; }
+        public Breeder.ResponseModels.BreederResponseModel Breeder { get; set; }
+        public Owner.ResponseModels.OwnerResponseModel Owner { get; set; }
         public BirdType BirdType{ get; set; }
         public bool IsDead { get; set; }
     }

@@ -1,4 +1,4 @@
-using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
@@ -11,17 +11,14 @@ namespace BirdAPI.Application.Features.Bird.Commands
     public class UpdateBirdCommandHandler : IRequestHandler<UpdateBirdCommand, BaseResponse<BirdResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public UpdateBirdCommandHandler(
             BirdAPIContext context,
-            IMapper mapper,
             IMediator mediator
             )
         {
             _context = context;
-            _mapper = mapper;
             _mediator = mediator;
         }
 
@@ -76,7 +73,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
                 existingBird.BelongsToOwner(owner);
             }
 
-            var result = _mapper.Map<BirdResponseModel>(existingBird);
+            var result = existingBird.ToResponse();
 
             await _context.SaveChangesAsync();
 

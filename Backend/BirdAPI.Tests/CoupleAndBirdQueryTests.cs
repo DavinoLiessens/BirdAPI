@@ -27,7 +27,7 @@ namespace BirdAPI.Tests
             var father = data.AddBird("F-1", "MALE", owner, breeder);
             var mother = data.AddBird("M-1", "FEMALE", owner, breeder);
 
-            var result = await new CreateCoupleCommandHandler(data.Context, data.Mapper)
+            var result = await new CreateCoupleCommandHandler(data.Context)
                 .Handle(new CreateCoupleCommand(Couple(father.Id, mother.Id)), default);
 
             Assert.True(result.Success);
@@ -46,7 +46,7 @@ namespace BirdAPI.Tests
             var father = data.AddBird("F-1", fatherGender, owner, breeder);
             var mother = data.AddBird("M-1", motherGender, owner, breeder, isDead: motherDead);
 
-            var result = await new CreateCoupleCommandHandler(data.Context, data.Mapper)
+            var result = await new CreateCoupleCommandHandler(data.Context)
                 .Handle(new CreateCoupleCommand(Couple(father.Id, mother.Id)), default);
 
             Assert.False(result.Success);
@@ -60,7 +60,7 @@ namespace BirdAPI.Tests
             using var data = new TestData();
             var bird = data.AddBird("F-1", "MALE", data.AddOwner(), data.AddBreeder());
 
-            var result = await new CreateCoupleCommandHandler(data.Context, data.Mapper)
+            var result = await new CreateCoupleCommandHandler(data.Context)
                 .Handle(new CreateCoupleCommand(Couple(bird.Id, bird.Id)), default);
 
             Assert.False(result.Success);
@@ -78,7 +78,7 @@ namespace BirdAPI.Tests
             data.AddBird("NEW-YEAR", "MALE", owner, breeder, birthDate: new DateTime(2024, 1, 1));
             data.AddBird("OLD", "MALE", owner, breeder, birthDate: new DateTime(2023, 12, 31));
 
-            var result = await new GetBirdsQueryHandler(data.Context, data.Mapper)
+            var result = await new GetBirdsQueryHandler(data.Context)
                 .Handle(new GetBirdsQuery(1, 10, null, "ALL", "0", "2024"), default);
 
             Assert.Equal(new[] { "NEW-YEAR" }, result.Result.Results.Select(b => b.RingNumber));
@@ -90,7 +90,7 @@ namespace BirdAPI.Tests
             using var data = new TestData();
             data.AddBird("B-1", "MALE", data.AddOwner(), data.AddBreeder());
 
-            var result = await new GetBirdsQueryHandler(data.Context, data.Mapper)
+            var result = await new GetBirdsQueryHandler(data.Context)
                 .Handle(new GetBirdsQuery(1, 10, null, "ALL", "0", "not-a-year"), default);
 
             Assert.True(result.Success);
@@ -111,7 +111,7 @@ namespace BirdAPI.Tests
             egg.BirdId = young.Id; // linked by id; the egg's ring number is not even filled in
             data.Context.SaveChanges();
 
-            var result = await new GetBirdQueryHandler(data.Context, data.Mapper).Handle(new GetBirdQuery(young.Id), default);
+            var result = await new GetBirdQueryHandler(data.Context).Handle(new GetBirdQuery(young.Id), default);
 
             Assert.NotNull(result.Result.Parents);
             Assert.Equal(couple.Id, result.Result.Parents.CoupleId);
@@ -123,7 +123,7 @@ namespace BirdAPI.Tests
         {
             using var data = new TestData();
 
-            var result = await new GetBirdQueryHandler(data.Context, data.Mapper).Handle(new GetBirdQuery(12345), default);
+            var result = await new GetBirdQueryHandler(data.Context).Handle(new GetBirdQuery(12345), default);
 
             Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
         }

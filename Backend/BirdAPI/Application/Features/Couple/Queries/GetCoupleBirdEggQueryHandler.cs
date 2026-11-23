@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
@@ -12,12 +12,10 @@ namespace BirdAPI.Application.Features.Couple.Queries
     public class GetCoupleBirdEggQueryHandler : IRequestHandler<GetCoupleBirdEggQuery, BaseResponse<BirdEggResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
 
-        public GetCoupleBirdEggQueryHandler(BirdAPIContext context, IMapper mapper)
+        public GetCoupleBirdEggQueryHandler(BirdAPIContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<BirdEggResponseModel>> Handle(GetCoupleBirdEggQuery request, CancellationToken cancellationToken)
@@ -32,7 +30,7 @@ namespace BirdAPI.Application.Features.Couple.Queries
             }
 
             // return birdEgg
-            var result = _mapper.Map<BirdEgg, BirdEggResponseModel>(existingBirdEgg);
+            var result = existingBirdEgg.ToResponse();
 
             return new BaseResponse<BirdEggResponseModel>(result);
         }

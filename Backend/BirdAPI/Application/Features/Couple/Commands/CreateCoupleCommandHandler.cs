@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Couple.Queries;
 using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.BaseModels;
@@ -12,13 +12,11 @@ namespace BirdAPI.Application.Features.Couple.Commands
     public class CreateCoupleCommandHandler : IRequestHandler<CreateCoupleCommand, BaseResponse<CreatedCoupleResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public CreateCoupleCommandHandler(BirdAPIContext context, IMapper mapper)
+        public CreateCoupleCommandHandler(BirdAPIContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<CreatedCoupleResponseModel>> Handle(CreateCoupleCommand request, CancellationToken cancellationToken)
@@ -91,7 +89,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
             await _context.Couples.AddAsync(newCouple);
             await _context.SaveChangesAsync();
 
-            var result = _mapper.Map<Domain.AggregatesModel.CoupleAggregate.Couple, CreatedCoupleResponseModel>(newCouple);
+            var result = newCouple.ToCreatedResponse();
             result.Id = newCouple.Id;
 
             return new BaseResponse<CreatedCoupleResponseModel>(result);

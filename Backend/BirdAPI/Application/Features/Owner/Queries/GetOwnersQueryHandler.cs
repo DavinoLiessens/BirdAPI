@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Owner.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.AggregatesModel.BreederAggregate;
@@ -12,15 +12,12 @@ namespace BirdAPI.Application.Features.Owner.Queries
     public class GetOwnersQueryHandler : IRequestHandler<GetOwnersQuery, BaseResponse<PagedResponse<OwnerResponseModel>>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
 
         public GetOwnersQueryHandler(
-            BirdAPIContext context,
-             IMapper mapper
+            BirdAPIContext context
             )
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<PagedResponse<OwnerResponseModel>>> Handle(GetOwnersQuery request, CancellationToken cancellationToken)
@@ -33,7 +30,7 @@ namespace BirdAPI.Application.Features.Owner.Queries
                                            o.LastName.StartsWith(request.SearchValue));
             }
 
-            var result = await owners.OrderBy(o => o.Id).GetPaged<Domain.AggregatesModel.OwnerAggregate.Owner, OwnerResponseModel>(request.Page, request.PageSize, _mapper);
+            var result = await owners.OrderBy(o => o.Id).GetPaged(request.Page, request.PageSize, x => x.ToResponse());
 
             return new BaseResponse<PagedResponse<OwnerResponseModel>>(result);
 

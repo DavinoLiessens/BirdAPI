@@ -32,7 +32,6 @@ if (jwtSettings == null || string.IsNullOrWhiteSpace(jwtSettings.Secret) || Enco
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

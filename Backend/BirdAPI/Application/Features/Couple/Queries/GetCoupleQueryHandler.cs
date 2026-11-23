@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
@@ -10,15 +10,12 @@ namespace BirdAPI.Application.Features.Couple.Queries
 {
     public class GetCoupleQueryHandler : IRequestHandler<GetCoupleQuery, BaseResponse<CoupleResponseModel>>
     {
-        private readonly IMapper _mapper;
         private readonly BirdAPIContext _context;
 
         public GetCoupleQueryHandler(
-            IMapper mapper,
             BirdAPIContext context
             )
         {
-            _mapper = mapper;
             _context = context;
         }
 
@@ -37,7 +34,7 @@ namespace BirdAPI.Application.Features.Couple.Queries
                     .AddError($"Couple with id '{request.CoupleId}' does not exist");
             }
 
-            var result = _mapper.Map<Domain.AggregatesModel.CoupleAggregate.Couple, CoupleResponseModel>(existingCouple);
+            var result = existingCouple.ToResponse();
 
             return new BaseResponse<CoupleResponseModel>(result);
         }

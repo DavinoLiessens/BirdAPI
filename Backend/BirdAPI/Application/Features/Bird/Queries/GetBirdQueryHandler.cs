@@ -1,4 +1,4 @@
-using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
@@ -11,14 +11,11 @@ namespace BirdAPI.Application.Features.Bird.Queries
     public class GetBirdQueryHandler : IRequestHandler<GetBirdQuery, BaseResponse<BirdDetailResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
 
         public GetBirdQueryHandler(
-            BirdAPIContext context,
-            IMapper mapper)
+            BirdAPIContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<BirdDetailResponseModel>> Handle(GetBirdQuery request, CancellationToken cancellationToken)
@@ -36,7 +33,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
                     .AddError($"Bird with id '{request.BirdId}' does not exist");
             }
 
-            var result = _mapper.Map<BirdDetailResponseModel>(existingBird);
+            var result = existingBird.ToDetailResponse();
 
             // add couples to model
             var coupleMatchesForBird = await _context.BirdCouples
@@ -48,7 +45,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
                                                         .Select(bc => bc.Couple)
                                                         .ToListAsync();
 
-            result.BirdCouples = _mapper.Map<List<BirdCoupleResponseModel>>(coupleMatchesForBird);
+            result.BirdCouples = coupleMatchesForBird.Select(c => c.ToBirdCoupleResponse()).ToList();
 
             // add father and mother to model
             var coupleWhereBirdIsBorn = await _context.Couples
@@ -72,7 +69,7 @@ namespace BirdAPI.Application.Features.Bird.Queries
 
             // add bird shows
             var birdShows = await _context.BirdShows.Where(bs => bs.BirdId == existingBird.Id).ToListAsync();
-            result.BirdShows = _mapper.Map<List<BirdShowResponseModel>>(birdShows);
+            result.BirdShows = birdShows.Select(bs => bs.ToResponse()).ToList();
 
             return new BaseResponse<BirdDetailResponseModel>(result);
         }

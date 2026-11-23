@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using BirdAPI.Application.Features.Breeder.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
@@ -11,16 +10,13 @@ namespace BirdAPI.Application.Features.Breeder.Commands
     public class UpdateBreederCommandHandler : IRequestHandler<UpdateBreederCommand, BaseResponse<object>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public UpdateBreederCommandHandler(
             BirdAPIContext context,
-            IMapper mapper,
             IMediator mediator)
         {
             _context = context;
-            _mapper = mapper;
             _mediator = mediator;
         }
 

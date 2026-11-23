@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Couple.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.AggregatesModel.BirdAggregate;
@@ -11,15 +11,12 @@ namespace BirdAPI.Application.Features.Couple.Queries
 {
     public class GetCouplesQueryHandler : IRequestHandler<GetCouplesQuery, BaseResponse<PagedResponse<CouplesResponseModel>>>
     {
-        private readonly IMapper _mapper;
         private readonly BirdAPIContext _context;
 
         public GetCouplesQueryHandler(
-            IMapper mapper,
             BirdAPIContext context
             )
         {
-            _mapper = mapper;
             _context = context;
         }
 
@@ -37,7 +34,7 @@ namespace BirdAPI.Application.Features.Couple.Queries
                                          c.Father.RingNumber.Equals(request.SearchValue));
             }
 
-            var result = await couples.OrderBy(c => c.Id).GetPaged<Domain.AggregatesModel.CoupleAggregate.Couple, CouplesResponseModel>(request.Page, request.PageSize, _mapper);
+            var result = await couples.OrderBy(c => c.Id).GetPaged(request.Page, request.PageSize, c => c.ToListResponse());
 
             return new BaseResponse<PagedResponse<CouplesResponseModel>>(result);
         }
