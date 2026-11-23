@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,7 @@ import { BirdEggUpdateModal } from '../birdegg-update-modal/birdegg-update-modal
   styleUrls: ['./couple-detail.component.scss'],
   providers: [DialogService]
 })
-export class CoupleDetailComponent implements OnInit {
+export class CoupleDetailComponent implements OnInit, OnDestroy {
 
   // Observables
   public couple$: Observable<ICouple> = this.coupleFacade.getCouple();
@@ -144,5 +144,10 @@ export class CoupleDetailComponent implements OnInit {
       this.coupleFacade.clearBirdEggDetail();
     });
 
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

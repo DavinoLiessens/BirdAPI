@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
-import { catchError, concatMap, map } from "rxjs/operators";
+import { catchError, concatMap, map, switchMap } from "rxjs/operators";
 import { OwnerService } from "src/app/Services/owner.service";
 import { ICreateOwnerRequest, IGetOwnersRequest, IOwner, IOwnersResponse, IUpdateOwnerRequest } from "src/app/types/owner.types";
 import * as actions from './owner.actions';
@@ -16,7 +16,7 @@ export class OwnerEffects {
     // fetch owners
     getOwners$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getOwners.type),
-        concatMap(({ request }: { request: IGetOwnersRequest }) => this.ownerService.getAllOwners(request).pipe(
+        switchMap(({ request }: { request: IGetOwnersRequest }) => this.ownerService.getAllOwners(request).pipe(
             map((owners: IOwnersResponse) => actions.getOwnersSuccess({ owners: owners })),
             catchError((error: any) => of(actions.getOwnersError({ error }))),
         ))
@@ -25,7 +25,7 @@ export class OwnerEffects {
     // fetch owner
     getOwner$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getOwner.type),
-        concatMap(({ ownerId }: { ownerId: number }) => this.ownerService.getOwner(ownerId).pipe(
+        switchMap(({ ownerId }: { ownerId: number }) => this.ownerService.getOwner(ownerId).pipe(
             map((owner: IOwner) => actions.getOwnerSuccess({ ownerDetail: owner })),
             catchError((error: any) => of(actions.getOwnerError({ error }))),
         ))

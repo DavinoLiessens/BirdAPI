@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { SelectItemGroup } from "primeng/api";
@@ -9,12 +9,13 @@ import { BirdFacade } from "src/app/store/entities/bird/bird.facade";
 import { CoupleFacade } from "src/app/store/entities/couple/couple.facade";
 import { IBirdEgg, IBirdEggRequest, IUpdateBirdEggRequest } from "src/app/types/birdEgg.types";
 import { IGenderOption } from "src/app/types/dropdown.types";
+import { toDateOnly } from 'src/app/utils/date.utils';
 
 @Component({
     selector: 'birdegg-update-modal',
     templateUrl: './birdegg-update-modal.html',
 })
-export class BirdEggUpdateModal implements OnInit {
+export class BirdEggUpdateModal implements OnInit, OnDestroy {
     @Input() public request: IBirdEggRequest;
 
     private destroyed$: Subject<boolean> = new Subject<boolean>();
@@ -52,6 +53,7 @@ export class BirdEggUpdateModal implements OnInit {
         this.groupedColors = this.birdFacade.createBirdTypeColors();
         this.createGenderOptions();
 
+        this.listenForResult();
     }
 
     public handleSubmit(): void {
@@ -63,10 +65,10 @@ export class BirdEggUpdateModal implements OnInit {
 
         const request: IUpdateBirdEggRequest = {
             id: this.birdEgg.id,
-            layedOn: this.birdEgg.layedOn,
+            layedOn: toDateOnly(this.birdEgg.layedOn),
             coupleId: this.birdEgg.coupleId,
-            cameOutOn: cameOutOn !== '' ? cameOutOn : null,
-            flyOutOn:  flyOutOn !== '' ? flyOutOn : null,
+            cameOutOn: toDateOnly(cameOutOn),
+            flyOutOn: toDateOnly(flyOutOn),
             ringNumber:  ringNumber !== '' ? ringNumber : null,
             color: color !== '' ? color : null,
             gender: gender !== '' ? gender : null,
@@ -74,7 +76,10 @@ export class BirdEggUpdateModal implements OnInit {
 
         // facade update Birdegg
         this.coupleFacade.updateBirdEggRequest(request);
+    }
 
+    // Subscribed once (not per submit), so a second submit does not add duplicate handlers
+    private listenForResult(): void {
         this.coupleFacade.onUpdateBirdEggSuccess().pipe(
             takeUntil(this.destroyed$),
         ).subscribe(() => {
@@ -121,5 +126,10 @@ export class BirdEggUpdateModal implements OnInit {
           { type: 'Pop', value: 'FEMALE' },
           { type: 'Man', value: 'MALE' }
         ];
+    }
+
+    public ngOnDestroy(): void {
+        this.destroyed$.next(true);
+        this.destroyed$.complete();
     }
 }

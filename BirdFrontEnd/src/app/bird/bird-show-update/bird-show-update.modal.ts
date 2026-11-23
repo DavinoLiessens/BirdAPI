@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
@@ -12,7 +12,7 @@ import { IBirdShow, ICreateBirdShowRequest, IUpdateBirdShowRequest } from "src/a
     templateUrl: './bird-show-update.modal.html',
     providers: [DialogService]
 })
-export class BirdShowUpdateModal implements OnInit {
+export class BirdShowUpdateModal implements OnInit, OnDestroy {
     public birdShowForm: FormGroup;
     public birdShow$: Observable<IBirdShow> = this.birdFacade.getBirdShow();
     private destroyed$: Subject<boolean> = new Subject<boolean>();
@@ -41,6 +41,8 @@ export class BirdShowUpdateModal implements OnInit {
                 });
             }            
         });
+
+        this.listenForResult();
     } 
 
     public handleSubmit(): void {
@@ -52,7 +54,10 @@ export class BirdShowUpdateModal implements OnInit {
         };
 
         this.birdFacade.updateBirdShowRequest(this.config.data.request.id, request);
+    }
 
+    // Subscribed once (not per submit), so a second submit does not add duplicate handlers
+    private listenForResult(): void {
         this.birdFacade.onUpdateBirdShowSuccess().pipe(
             takeUntil(this.destroyed$)
         ).subscribe(() => {
@@ -77,5 +82,10 @@ export class BirdShowUpdateModal implements OnInit {
 
     public goBack() {
         this.ref.close();
+    }
+
+    public ngOnDestroy(): void {
+        this.destroyed$.next(true);
+        this.destroyed$.complete();
     }
 }

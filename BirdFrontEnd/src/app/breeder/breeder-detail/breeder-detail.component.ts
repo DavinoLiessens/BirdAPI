@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -12,7 +12,7 @@ import { IBreeder, IGetBreedersRequest, IUpdateBreederRequest } from "src/app/ty
     templateUrl: './breeder-detail.component.html',
     styleUrls: ['./breeder-detail.component.scss']
 })
-export class BreederDetailComponent implements OnInit {
+export class BreederDetailComponent implements OnInit, OnDestroy {
 
     // Observables
     public breeder$: Observable<IBreeder> = this.breederFacade.getBreeder();
@@ -96,5 +96,10 @@ export class BreederDetailComponent implements OnInit {
                 timeOut: 6000,
             });
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.destroyed$.next(true);
+        this.destroyed$.complete();
     }
 }

@@ -17,10 +17,10 @@ export interface IBirdEggRequest {
 
 export interface ICreateBirdEggRequest {
     id?: number; // pass null in object
-    layedOn: Date;
+    layedOn: string | null;
     coupleId: number;
-    cameOutOn?: Date;
-    flyOutOn?: Date;
+    cameOutOn?: string | null;
+    flyOutOn?: string | null;
     ringNumber?: string;
     color?: string;
     gender?: string;
@@ -28,10 +28,10 @@ export interface ICreateBirdEggRequest {
 
 export interface IUpdateBirdEggRequest {
     id?: number; // not changeable
-    layedOn: Date; // not changeable
+    layedOn: string | null; // not changeable
     coupleId: number; // not changeable
-    cameOutOn?: Date;
-    flyOutOn?: Date;
+    cameOutOn?: string | null;
+    flyOutOn?: string | null;
     ringNumber?: string;
     color?: string;
     gender?: string;

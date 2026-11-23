@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -12,7 +12,7 @@ import { IGetOwnersRequest, IOwner, IUpdateOwnerRequest } from 'src/app/types/ow
   templateUrl: './owner-detail.component.html',
   styleUrls: ['./owner-detail.component.scss']
 })
-export class OwnerDetailComponent implements OnInit {
+export class OwnerDetailComponent implements OnInit, OnDestroy {
 
   // Observables
   public owner$: Observable<IOwner> = this.ownerFacade.getOwner();
@@ -99,4 +99,8 @@ export class OwnerDetailComponent implements OnInit {
     });
   }
 
+  public ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
 }

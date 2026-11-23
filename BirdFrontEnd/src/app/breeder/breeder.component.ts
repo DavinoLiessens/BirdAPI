@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { debounceTime, takeUntil } from "rxjs/operators";
 import { BreederFacade } from "../store/entities/breeder/breeder.facade";
@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from "@angular/router";
     templateUrl: './breeder.component.html',
     styleUrls: ['./breeder.component.scss']
 })
-export class BreederComponent implements OnInit {
+export class BreederComponent implements OnInit, OnDestroy {
 
     // Observables
     private destroyed$: Subject<boolean> = new Subject<boolean>();
@@ -121,5 +121,10 @@ export class BreederComponent implements OnInit {
 
     private GetAllBreeders(request: IGetBreedersRequest): void {
         this.breederFacade.getAllBreedersRequest(request);
+    }
+
+    public ngOnDestroy(): void {
+        this.destroyed$.next(true);
+        this.destroyed$.complete();
     }
 }
