@@ -96,7 +96,7 @@
         <!-- Couples -->
         <h2 class="p-mt-5">Koppel geweest met</h2>
         <div class="couples">
-          <p-table #dt1 [value]="bird?.birdCouples ?? []" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+          <p-table #dt1 [value]="bird?.birdCouples" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
             styleClass="p-datatable-customers p-datatable-gridlines" [paginator]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <ng-template #header>
@@ -161,7 +161,7 @@
             class="p-button-raised" (click)="openCreateBirdShowModel(bird.id)"></button>
           </div>
           <div class="shows">
-            <p-table #dt1 [value]="bird?.birdShows ?? []" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+            <p-table #dt1 [value]="bird?.birdShows" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
               styleClass="p-datatable-customers p-datatable-gridlines" [paginator]="true"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
               <ng-template #header>

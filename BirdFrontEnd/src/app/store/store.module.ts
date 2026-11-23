@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -13,5 +13,5 @@ import { MetaReducers } from './entities/entities.metareducers';
         StoreDevtoolsModule.instrument({
             maxAge: 25,
             logOnly: environment.production,
-        })], providers: [provideHttpClient(withXhr(), withInterceptorsFromDi())] })
+        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppStoreModule { }

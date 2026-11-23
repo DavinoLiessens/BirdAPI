@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -16,7 +16,6 @@ import { BirdEggUpdateModal } from '../birdegg-update-modal/birdegg-update-modal
     templateUrl: './couple-detail.component.html',
     styleUrls: ['./couple-detail.component.scss'],
     providers: [DialogService],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CoupleDetailComponent implements OnInit, OnDestroy {

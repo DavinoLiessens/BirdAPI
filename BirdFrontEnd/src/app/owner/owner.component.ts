@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { OwnerFacade } from '../store/entities/owner/owner.facade';
@@ -10,7 +10,6 @@ import { ActivatedRoute, Router } from '@angular/router';
     selector: 'c-owner-overview',
     templateUrl: './owner.component.html',
     styleUrls: ['./owner.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class OwnerComponent implements OnInit, OnDestroy {
