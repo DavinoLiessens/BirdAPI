@@ -51,12 +51,12 @@
           <p-table #dt1 [value]="couple?.birdEggs ?? []" dataKey="id"
             [rows]="10" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-            <ng-template pTemplate="caption">
+            <ng-template #caption>
               <div class="p-d-flex p-jc-end">
                 <button pButton pRipple type="button" label="Ei toevoegen" icon="pi pi-plus" class="detail-button" style="margin-left: 5px;" (click)="openModal(couple.id)"></button>
               </div>
             </ng-template>
-            <ng-template pTemplate="header">
+            <ng-template #header>
               <tr>
                 <th>
                   <div class="p-d-flex p-jc-between p-ai-center">
@@ -95,7 +95,7 @@
                 </th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-egg>
+            <ng-template #body let-egg>
               <tr>
                 <td>
                   <p>{{egg.layedOn | date: 'dd/MM/yyyy' }}</p>
@@ -123,7 +123,7 @@
                 </td>
               </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage">
+            <ng-template #emptymessage>
               <tr>
                 <td colspan="7">Geen ei gevonden.</td>
               </tr>

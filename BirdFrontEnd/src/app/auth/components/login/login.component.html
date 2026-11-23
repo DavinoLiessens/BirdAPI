@@ -1,7 +1,7 @@
 <div class="login-container">
   <div class="login-wrapper">
     <p-card styleClass="login-card">
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <div class="login-header">
           <i class="pi pi-user login-icon"></i>
           <h2>Inloggen</h2>
@@ -9,7 +9,7 @@
         </div>
       </ng-template>
 
-      <ng-template pTemplate="content">
+      <ng-template #content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <!-- Email Field -->
           <div class="p-field">

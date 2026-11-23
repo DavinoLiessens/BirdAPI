@@ -2,7 +2,7 @@
   @if (!(loading$ | async) && birds) {
     <p-table #dt1 [value]="birds" dataKey="id"
       styleClass="p-datatable-customers p-datatable-gridlines">
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="p-d-flex">
           <p-iconfield iconPosition="left" style="margin-left: 20px;">
             <p-inputicon styleClass="pi pi-search" />
@@ -10,32 +10,32 @@
           </p-iconfield>
         </div>
       </ng-template>
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th></th>
           <th></th>
           <th></th>
           <th>
-            <p-columnFilter field="gender" matchMode="equals" [showMenu]="false">
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-columnfilter field="gender" matchMode="equals" [showMenu]="false">
+              <ng-template #filter let-value let-filter="filterCallback">
                 <p-select [ngModel]="selectedGender" [options]="genderOptions" optionLabel="type" optionValue="value" (onChange)="FilterGender($event.value)" placeholder="Alles"></p-select>
               </ng-template>
-            </p-columnFilter>
+            </p-columnfilter>
           </th>
           <th>
-            <p-columnFilter field="birdType" matchMode="equals" [showMenu]="false">
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-columnfilter field="birdType" matchMode="equals" [showMenu]="false">
+              <ng-template #filter let-value let-filter="filterCallback">
                 <p-select [ngModel]="selectedTypeOfBird" [options]="typeOfBirdOptions" optionLabel="type" optionValue="value" (onChange)="FilterTypeOfBird($event.value)" placeholder="Alles"></p-select>
               </ng-template>
-            </p-columnFilter>
+            </p-columnfilter>
           </th>
           <th></th>
           <th>
-            <p-columnFilter field="year" matchMode="equals" [showMenu]="false">
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-columnfilter field="year" matchMode="equals" [showMenu]="false">
+              <ng-template #filter let-value let-filter="filterCallback">
                 <p-select [ngModel]="selectedYear" [options]="yearDropdownOptions" optionLabel="name" optionValue="value" (onChange)="FilterYear($event.value)" [placeholder]="selectedYear"></p-select>
               </ng-template>
-            </p-columnFilter>
+            </p-columnfilter>
           </th>
           <th></th>
           <th></th>
@@ -93,7 +93,7 @@
         </th> -->
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-bird>
+    <ng-template #body let-bird>
       <tr [ngClass]="{ 'is-dead': bird.isDead }">
         <td>
           <p class="ringnumber">{{ bird.ringNumber }}</p>
@@ -127,12 +127,12 @@
       </td> -->
     </tr>
   </ng-template>
-  <ng-template pTemplate="summary">
+  <ng-template #summary>
     <div>
       <p-paginator class="p-d-flex p-jc-center" [rows]="pagination.pageSize" [first]="first" [totalRecords]="pagination.totalAmount" currentPageReportTemplate="{first} van de {totalRecords} resultaten" showCurrentPageReport="true" [rowsPerPageOptions]="[5,10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
     </div>
   </ng-template>
-  <ng-template pTemplate="emptymessage">
+  <ng-template #emptymessage>
     <tr>
       <td colspan="7">Geen vogels gevonden.</td>
     </tr>

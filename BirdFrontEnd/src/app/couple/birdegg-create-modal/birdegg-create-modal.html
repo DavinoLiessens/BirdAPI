@@ -20,7 +20,7 @@
       <div class="form-group">
         <label for="color">Kleur</label>
         <p-select [options]="groupedColors" autoWidth="false" [style]="{'width':'100%'}" formControlName="color" optionLabel="label" optionValue="value" [showClear]="true" [filter]="true" filterBy="label" placeholder="Selecteer een kleur..." [group]="true">
-          <ng-template let-group pTemplate="group">
+          <ng-template #group let-group>
             <div class="p-d-flex p-ai-center">
               <img src="../../../assets/{{group.label}}.jpg" class="p-mr-2" style="width: 32px"/>
               <span>{{group.label}}</span>

@@ -2,7 +2,7 @@
   @if (!(loading$ | async) && couples) {
     <p-table #dt1 [value]="couples" dataKey="id"
       styleClass="p-datatable-customers p-datatable-gridlines">
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="p-d-flex">
           <p-iconfield iconPosition="left" style="margin-left: 20px;">
             <p-inputicon styleClass="pi pi-search" />
@@ -10,7 +10,7 @@
           </p-iconfield>
         </div>
       </ng-template>
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th>
             <div class="p-d-flex p-jc-between p-ai-center">
@@ -44,7 +44,7 @@
           </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-couple>
+      <ng-template #body let-couple>
         <tr>
           <td>
             <p>{{couple.name}}</p>
@@ -67,12 +67,12 @@
           </td>
         </tr>
       </ng-template>
-      <ng-template pTemplate="summary">
+      <ng-template #summary>
         <div>
           <p-paginator class="p-d-flex p-jc-center" [rows]="pagination.pageSize" [first]="first" [totalRecords]="pagination.totalAmount" currentPageReportTemplate="{first} van de {totalRecords} resultaten" showCurrentPageReport="true" [rowsPerPageOptions]="[5,10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
         </div>
       </ng-template>
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr>
           <td colspan="7">Geen koppel gevonden.</td>
         </tr>

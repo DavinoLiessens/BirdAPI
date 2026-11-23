@@ -1,7 +1,7 @@
 <div class="register-container">
   <div class="register-wrapper">
     <p-card styleClass="register-card">
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <div class="register-header">
           <i class="pi pi-user-plus register-icon"></i>
           <h2>Registreren</h2>
@@ -9,7 +9,7 @@
         </div>
       </ng-template>
 
-      <ng-template pTemplate="content">
+      <ng-template #content>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <!-- First Name -->
           <div class="p-field">
@@ -148,7 +148,7 @@
                     f['password'].invalid && f['password'].touched
                 }"
                 >
-                <ng-template pTemplate="footer">
+                <ng-template #footer>
                   <p-divider></p-divider>
                   <p class="password-requirements">Vereisten:</p>
                   <ul class="password-requirements-list">

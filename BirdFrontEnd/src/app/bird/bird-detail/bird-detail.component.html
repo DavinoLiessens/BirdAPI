@@ -99,7 +99,7 @@
           <p-table #dt1 [value]="bird?.birdCouples ?? []" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
             styleClass="p-datatable-customers p-datatable-gridlines" [paginator]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-            <ng-template pTemplate="header">
+            <ng-template #header>
               <tr>
                 <th>
                   <div class="p-d-flex p-jc-between p-ai-center">
@@ -128,7 +128,7 @@
                 </th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-couple>
+            <ng-template #body let-couple>
               <tr>
                 <td>
                   <p>{{ couple.name }}</p>
@@ -148,7 +148,7 @@
                 </td>
               </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage">
+            <ng-template #emptymessage>
               <tr>
                 <td colspan="7">Geen koppels gevonden.</td>
               </tr>
@@ -164,7 +164,7 @@
             <p-table #dt1 [value]="bird?.birdShows ?? []" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
               styleClass="p-datatable-customers p-datatable-gridlines" [paginator]="true"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-              <ng-template pTemplate="header">
+              <ng-template #header>
                 <tr>
                   <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
@@ -188,7 +188,7 @@
                   </th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-show>
+              <ng-template #body let-show>
                 <tr>
                   <td>
                     <p>{{ show.location }}</p>
@@ -206,7 +206,7 @@
                   </td>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="emptymessage">
+              <ng-template #emptymessage>
                 <tr>
                   <td colspan="7">Geen tentoonstellingen gevonden.</td>
                 </tr>
