@@ -1,12 +1,12 @@
 <div class="page">
   <div class="page-wrapper">
     <div class="page-header">
-      <h1>Breeder management</h1>
+      <h1>Contact management</h1>
     </div>
     <div class="page-body">
-      @if (breederForm && !(loading$ | async)) {
-        <form [formGroup]="breederForm">
-          <h2>Kweker bewerken</h2>
+      @if (contactForm && !(loading$ | async)) {
+        <form [formGroup]="contactForm">
+          <h2>Contact bewerken</h2>
           <div class="form-group">
             <label for="firstName">Voornaam</label>
             <input pInputText type="text" class="form-control" formControlName="firstName" id="firstName" placeholder="Davino">
@@ -25,7 +25,7 @@
           </div>
           <div class="form-footer">
             <button pButton type="button" class="p-button-outlined" (click)="goBack()" label="Terug"></button>
-            <button pButton type="submit" (click)="onSubmit()" [disabled]="!breederForm.valid" label="Opslaan"></button>
+            <button pButton type="submit" (click)="onSubmit()" [disabled]="!contactForm.valid" label="Opslaan"></button>
           </div>
         </form>
       }

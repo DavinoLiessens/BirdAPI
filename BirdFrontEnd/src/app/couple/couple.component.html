@@ -19,6 +19,11 @@
           </th>
           <th>
             <div class="p-d-flex p-jc-between p-ai-center">
+              Seizoen
+            </div>
+          </th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
               Gestart op
             </div>
           </th>
@@ -48,6 +53,9 @@
         <tr>
           <td>
             <p>{{couple.name}}</p>
+          </td>
+          <td>
+            <p>{{couple.year}} &middot; ronde {{couple.round}}</p>
           </td>
           <td>
             <p>{{couple.startedAt | date: 'dd/MM/yyyy' }}</p>

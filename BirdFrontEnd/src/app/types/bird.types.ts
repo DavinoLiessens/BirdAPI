@@ -1,6 +1,5 @@
-import { IBreeder } from "./breeder.types";
 import { ICouple } from "./couple.types";
-import { IOwner } from "./owner.types";
+import { IContact } from "./contact.types";
 import { PagedResponse } from "./paged-response.types";
 import { IFilterRequest, IPaginationRequest, ISearchRequest } from "./pagination.types";
 
@@ -12,9 +11,9 @@ export interface IBird {
     birthDate: Date;
     color: string;
     cageNumber: string;
-    breeder: IBreeder;
+    breeder: IContact;
     breederId: number;
-    owner: IOwner;
+    owner: IContact;
     ownerId: number;
     isDead: boolean;
 }
@@ -27,9 +26,9 @@ export interface IBirdDetail {
     birthDate: Date;
     color: string;
     cageNumber: string;
-    breeder: IBreeder;
+    breeder: IContact;
     breederId: number;
-    owner: IOwner;
+    owner: IContact;
     ownerId: number;
     description: string;
     isDead: boolean;

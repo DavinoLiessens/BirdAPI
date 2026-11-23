@@ -1,40 +1,40 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { OwnerFacade } from '../store/entities/owner/owner.facade';
-import { IGetOwnersRequest, IOwner } from '../types/owner.types';
+import { ContactFacade } from '../store/entities/contact/contact.facade';
+import { IGetContactsRequest, IContact } from '../types/contact.types';
 import { IPagination } from '../types/pagination.types';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'c-owner-overview',
-    templateUrl: './owner.component.html',
-    styleUrls: ['./owner.component.scss'],
+    selector: 'c-contact-overview',
+    templateUrl: './contact.component.html',
+    styleUrls: ['./contact.component.scss'],
     standalone: false
 })
-export class OwnerComponent implements OnInit, OnDestroy {
+export class ContactComponent implements OnInit, OnDestroy {
 
   // Observables
   private destroyed$: Subject<boolean> = new Subject<boolean>();
-  public owners$: Observable<IOwner[]> = this.ownerFacade.getOwners();
-  public pagination$: Observable<IPagination> = this.ownerFacade.getPagination();
-  public loading$: Observable<boolean> = this.ownerFacade.getLoading();
+  public contacts$: Observable<IContact[]> = this.contactFacade.getContacts();
+  public pagination$: Observable<IPagination> = this.contactFacade.getPagination();
+  public loading$: Observable<boolean> = this.contactFacade.getLoading();
   public search$: Subject<string> = new Subject<string>();
 
   // local variables
-  public owners: IOwner[];
+  public contacts: IContact[];
   public pagination: IPagination;
   public search: string = '';
   public page: number = 1;
   public pageSize: number = 10;
   public first: number = (this.page - 1) * this.pageSize;
 
-  constructor(private ownerFacade: OwnerFacade, private router: Router, private route: ActivatedRoute) { }
+  constructor(private contactFacade: ContactFacade, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     // Subscribe to changes in the query parameters
     this.route.queryParams.pipe(takeUntil(this.destroyed$)).subscribe((params) => {
-      let request: IGetOwnersRequest = {
+      let request: IGetContactsRequest = {
         page: this.page,
         pageSize: this.pageSize,
         searchValue: ''
@@ -54,15 +54,15 @@ export class OwnerComponent implements OnInit, OnDestroy {
       }
 
       this.CalculateFirst();
-      this.GetAllOwners(request);
+      this.GetAllContacts(request);
     });
 
-    // get all owners
-    this.owners$.pipe(
+    // get all contacts
+    this.contacts$.pipe(
       takeUntil(this.destroyed$),
-    ).subscribe((owners: IOwner[]) => {
-      if (owners !== null || owners !== undefined) {
-        this.owners = owners;
+    ).subscribe((contacts: IContact[]) => {
+      if (contacts !== null || contacts !== undefined) {
+        this.contacts = contacts;
       }
     });
 
@@ -99,25 +99,25 @@ export class OwnerComponent implements OnInit, OnDestroy {
     this.pageSize = event.rows;
     this.CalculateFirst();
 
-    const request: IGetOwnersRequest = {
+    const request: IGetContactsRequest = {
       page: this.page,
       pageSize: this.pageSize,
       searchValue: this.search
     };
 
-    this.GetAllOwners(request);
+    this.GetAllContacts(request);
   }
 
-  public deleteOwner(id: number) {
-    console.log("Deleting owner with id: ", id);
+  public deleteContact(id: number) {
+    console.log("Deleting contact with id: ", id);
   }
 
   private CalculateFirst() {
     this.first = (this.page - 1) * this.pageSize;
   }
 
-  private GetAllOwners(request: IGetOwnersRequest): void {
-    this.ownerFacade.getAllOwnersRequest(request);
+  private GetAllContacts(request: IGetContactsRequest): void {
+    this.contactFacade.getAllContactsRequest(request);
   }
 
   public ngOnDestroy(): void {

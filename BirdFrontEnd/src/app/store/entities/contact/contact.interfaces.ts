@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { IOwner } from "src/app/types/owner.types";
+import { IContact } from "src/app/types/contact.types";
 import { IPagination } from "src/app/types/pagination.types";
 
-export interface IOwnerState {
-    owners: IOwner[];
-    ownerDetail: IOwner;
+export interface IContactState {
+    contacts: IContact[];
+    contactDetail: IContact;
     pagination: IPagination;
     loadingAll: boolean;
     loadingDetail: boolean;

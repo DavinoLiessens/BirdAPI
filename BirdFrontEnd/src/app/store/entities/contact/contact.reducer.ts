@@ -1,28 +1,28 @@
-import { Action, createReducer, on } from '@ngrx/store';
-import * as actions from './breeder.actions';
-import { initialState } from './breeder.initial-state';
-import { IBreederState } from './breeder.interfaces';
+import { IContactState } from "./contact.interfaces";
+import * as actions from './contact.actions';
+import { Action, createReducer, on } from "@ngrx/store";
+import { initialState } from "./contact.initial-state";
 
 const reducer = createReducer(
     initialState,
 
-    // GET Breeders
-    on(actions.getBreeders, (state) => {
+    // GET Contacts
+    on(actions.getContacts, (state) => {
         return {
             ...state,
             loadingAll: true,
         };
     }),
-    on(actions.getBreedersSuccess, (state, { breeders }) => {
+    on(actions.getContactsSuccess, (state, { contacts }) => {
         return {
             ...state,
-            breeders: breeders.results,
-            pagination: breeders.pagination,
+            contacts: contacts.results,
+            pagination: contacts.pagination,
             loadingAll: false,
             errors: null
         };
     }),
-    on(actions.getBreedersError, (state, { error }) => {
+    on(actions.getContactsError, (state, { error }) => {
         return {
             ...state,
             loadingAll: false,
@@ -30,22 +30,22 @@ const reducer = createReducer(
         };
     }),
 
-    // GET Breeder
-    on(actions.getBreeder, (state) => {
+    // GET Contact
+    on(actions.getContact, (state) => {
         return {
             ...state,
             loadingDetail: true,
         };
     }),
-    on(actions.getBreederSuccess, (state, { breederDetail }) => {
+    on(actions.getContactSuccess, (state, { contactDetail }) => {
         return {
             ...state,
-            breederDetail: breederDetail,
+            contactDetail: contactDetail,
             loadingDetail: false,
             errors: null
         };
     }),
-    on(actions.getBreederError, (state, { error }) => {
+    on(actions.getContactError, (state, { error }) => {
         return {
             ...state,
             loadingDetail: false,
@@ -53,21 +53,21 @@ const reducer = createReducer(
         };
     }),
 
-    // UPDATE Breeder
-    on(actions.updateBreeder, (state) => {
+    // UPDATE Contact
+    on(actions.updateContact, (state) => {
         return {
             ...state,
             loading: true,
         };
     }),
-    on(actions.updateBreederSuccess, (state) => {
+    on(actions.updateContactSuccess, (state) => {
         return {
             ...state,
             loading: false,
             errors: null
         };
     }),
-    on(actions.updateBreederError, (state, { error }) => {
+    on(actions.updateContactError, (state, { error }) => {
         return {
             ...state,
             loading: false,
@@ -76,14 +76,14 @@ const reducer = createReducer(
     }),
 
     // Clear detail
-    on(actions.clearBreederDetail, (state) => {
+    on(actions.clearContactDetail, (state) => {
         return {
             ...state,
-            breederDetail: null
+            contactDetail: null
         }
     }),
 );
 
-export function breederReducer(state: IBreederState | undefined, action: Action) {
+export function contactReducer(state: IContactState | undefined, action: Action) {
     return reducer(state, action);
 }

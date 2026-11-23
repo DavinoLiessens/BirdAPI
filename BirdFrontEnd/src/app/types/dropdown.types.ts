@@ -8,12 +8,7 @@ export interface IBirdTypeOption {
     value: number;
 }
 
-export interface IBreederDropdownOption {
-    name: string;
-    value: number;
-}
-
-export interface IOwnerDropdownOption {
+export interface IContactDropdownOption {
     name: string;
     value: number;
 }

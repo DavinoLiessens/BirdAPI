@@ -38,6 +38,14 @@
                   inputId="dateformat"
                 ></p-datepicker>
               </div>
+              <div class="p-d-flex p-flex-column p-col-2">
+                <label for="year">Jaar</label>
+                <input pInputText type="number" class="form-control" formControlName="year" id="year" />
+              </div>
+              <div class="p-d-flex p-flex-column p-col-2">
+                <label for="round">Kweekronde</label>
+                <p-select formControlName="round" inputId="round" [options]="roundOptions" optionLabel="label" optionValue="value"></p-select>
+              </div>
               <div class="p-d-flex p-flex-column p-col-3">
                 <label for="cageNumber">Kotnummer</label>
                 <input

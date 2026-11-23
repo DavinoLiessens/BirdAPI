@@ -33,8 +33,7 @@ import { PaginatorModule } from 'primeng/paginator';
 // *** COMPONENTS ***
 import { AppComponent } from './app.component';
 import { BirdComponent, BirdDetailComponent, BirdCreateComponent, BirdShowCreateModal, BirdShowUpdateModal } from './bird/index';
-import { OwnerComponent, OwnerDetailComponent, OwnerCreateComponent } from './owner/index';
-import { BreederComponent, BreederDetailComponent, BreederCreateComponent} from './breeder/index';
+import { ContactComponent, ContactDetailComponent, ContactCreateComponent } from './contact/index';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoaderComponent } from './ui/components/index';
 
@@ -69,16 +68,13 @@ const BirdPreset = definePreset(Lara, {
         BirdComponent,
         BirdDetailComponent,
         BirdCreateComponent,
-        OwnerComponent,
-        OwnerDetailComponent,
-        OwnerCreateComponent,
+        ContactComponent,
+        ContactDetailComponent,
+        ContactCreateComponent,
         PageNotFoundComponent,
         CoupleComponent,
         CoupleCreateComponent,
         CoupleDetailComponent,
-        BreederComponent,
-        BreederCreateComponent,
-        BreederDetailComponent,
         BirdEggCreateModal,
         BirdEggUpdateModal,
         LoaderComponent,

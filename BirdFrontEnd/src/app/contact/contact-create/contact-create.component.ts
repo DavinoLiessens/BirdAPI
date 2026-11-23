@@ -9,28 +9,29 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BreederFacade } from 'src/app/store/entities/breeder/breeder.facade';
-import { ICreateBreederRequest } from 'src/app/types/breeder.types';
+import { ContactFacade } from 'src/app/store/entities/contact/contact.facade';
+import { ICreateContactRequest } from 'src/app/types/contact.types';
 import { FormUtilsService } from 'src/app/Services/form-utils.service';
 import { APP_CONFIG } from 'src/app/config/app.config';
+
 @Component({
-    selector: 'c-breeder-create',
-    templateUrl: './breeder-create.component.html',
-    styleUrls: ['./breeder-create.component.scss'],
+    selector: 'app-contact-create',
+    templateUrl: './contact-create.component.html',
+    styleUrls: ['./contact-create.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class BreederCreateComponent implements OnInit, OnDestroy {
+export class ContactCreateComponent implements OnInit, OnDestroy {
   private readonly destroyed$ = new Subject<void>();
   private readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
   // Form and observables
-  breederForm!: UntypedFormGroup;
+  contactForm!: UntypedFormGroup;
   readonly loading$ = this.isLoading$.asObservable();
 
   constructor(
     private readonly fb: UntypedFormBuilder,
-    private readonly breederFacade: BreederFacade,
+    private readonly contactFacade: ContactFacade,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly toastrService: ToastrService,
@@ -44,7 +45,7 @@ export class BreederCreateComponent implements OnInit, OnDestroy {
   }
 
   private initializeForm(): void {
-    this.breederForm = this.fb.group({
+    this.contactForm = this.fb.group({
       firstName: [
         '',
         [
@@ -64,35 +65,34 @@ export class BreederCreateComponent implements OnInit, OnDestroy {
       phoneNumber: [
         '',
         [
-          Validators.required,
-          Validators.pattern(/^[0-9+\-\s()]+$/), // Basic phone number pattern
+          Validators.pattern(/^[0-9+\-\s()]+$/), // Optional; basic phone number pattern
         ],
       ],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.email]], // Optional
     });
   }
 
   onSubmit(): void {
-    if (this.breederForm.invalid) {
+    if (this.contactForm.invalid) {
       this.markFormGroupTouched();
       return;
     }
 
     this.isLoading$.next(true);
 
-    const formValue = this.breederForm.value;
-    const request: ICreateBreederRequest = {
+    const formValue = this.contactForm.value;
+    const request: ICreateContactRequest = {
       firstName: formValue.firstName,
       lastName: formValue.lastName,
       phoneNumber: formValue.phoneNumber,
       email: formValue.email,
     };
 
-    this.breederFacade.createBreeder(request);
+    this.contactFacade.createContact(request);
   }
 
   private markFormGroupTouched(): void {
-    this.formUtils.markFormGroupTouched(this.breederForm);
+    this.formUtils.markFormGroupTouched(this.contactForm);
   }
 
   goBack(): void {
@@ -100,12 +100,12 @@ export class BreederCreateComponent implements OnInit, OnDestroy {
   }
 
   private setupSuccessHandling(): void {
-    this.breederFacade
-      .onCreateBreederSuccess()
+    this.contactFacade
+      .onCreateContactSuccess()
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         this.isLoading$.next(false);
-        this.toastrService.success('Kweker succesvol aangemaakt!', 'Gelukt', {
+        this.toastrService.success('Contact succesvol aangemaakt!', 'Gelukt', {
           timeOut: APP_CONFIG.ui.toastTimeout,
         });
         this.goBack();
@@ -113,13 +113,13 @@ export class BreederCreateComponent implements OnInit, OnDestroy {
   }
 
   private setupErrorHandling(): void {
-    this.breederFacade
-      .onCreateBreederError()
+    this.contactFacade
+      .onCreateContactError()
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         this.isLoading$.next(false);
         this.toastrService.error(
-          'Er is een fout opgetreden bij het aanmaken van de kweker. Probeer het opnieuw.',
+          'Er is een fout opgetreden bij het aanmaken van de contact. Probeer het opnieuw.',
           'Fout',
           { timeOut: APP_CONFIG.ui.toastTimeout + 2000 }
         );
