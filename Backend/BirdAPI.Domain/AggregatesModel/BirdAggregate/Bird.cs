@@ -1,27 +1,29 @@
-using BirdAPI.Domain.AggregatesModel.BreederAggregate;
+using BirdAPI.Domain.AggregatesModel.ContactAggregate;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
-using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
 using BirdAPI.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Wwsv.Domain.SeedWork;
 
 namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
 {
-    public class Bird : Entity
+    public class Bird : Entity, ITenantEntity
     {
-        public string RingNumber { get; set; }
+        public int KwekerijId { get; private set; }
+
+        /// <summary>The ring number as entered. Unique per kwekerij (compared via <see cref="NormalizedRingNumber"/>).</summary>
+        public string RingNumber { get; private set; }
+        public string NormalizedRingNumber { get; private set; }
+
         public string Gender { get; set; }
         public BirdType BirdType { get; set; }
         public DateTime BirthDate { get; set; }
         public string Color { get; set; }
+
+        /// <summary>Where the bird is housed now (a couple keeps its own cage number per season).</summary>
         public string CageNumber { get; set; }
-        public virtual Breeder Breeder { get; set; }
+
+        public virtual Contact Breeder { get; set; }
         public int BreederId { get; set; }
-        public virtual Owner Owner { get; set; }
+        public virtual Contact Owner { get; set; }
         public int OwnerId { get; set; }
 
         public readonly List<CoupleBird> _birdCouples;
@@ -39,7 +41,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
 
         public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, string cageNumber, string? description = null, bool isDead = false) : this()
         {
-            RingNumber = ringNumber;
+            SetRingNumber(ringNumber);
             Gender = gender;
             BirdType = birdType;
             BirthDate = birthDate;
@@ -49,19 +51,19 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             IsDead = isDead;
         }
 
-        public Bird BelongsToOwner(Owner owner)
+        public void AssignToKwekerij(int kwekerijId) => KwekerijId = kwekerijId;
+
+        public Bird BelongsToOwner(Contact owner)
         {
             Owner = owner;
             OwnerId = owner.Id;
-
             return this;
         }
 
-        public Bird BelongsToBreeder(Breeder breeder)
+        public Bird BelongsToBreeder(Contact breeder)
         {
             Breeder = breeder;
             BreederId = breeder.Id;
-
             return this;
         }
 
@@ -69,25 +71,28 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
         {
             var birdCouple = new CoupleBird(couple, this);
             _birdCouples.Add(birdCouple);
-
             return this;
         }
 
         public Bird UpdateBird(string ringNumber, string cageNumber, string description, bool dead)
         {
-            RingNumber = ringNumber;
+            SetRingNumber(ringNumber);
             CageNumber = cageNumber;
             Description = description;
             IsDead = dead;
-
             return this;
         }
 
         public Bird AddBirdShow(BirdShow birdShow)
         {
             _birdShows.Add(birdShow);
-
             return this;
+        }
+
+        private void SetRingNumber(string ringNumber)
+        {
+            RingNumber = ringNumber.Trim();
+            NormalizedRingNumber = Wwsv.Domain.SeedWork.RingNumber.Normalize(ringNumber);
         }
     }
 }

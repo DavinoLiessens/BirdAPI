@@ -34,7 +34,7 @@ namespace BirdAPI.Application.Features.Couple.Queries
                                          c.Father.RingNumber.Equals(request.SearchValue));
             }
 
-            var result = await couples.OrderBy(c => c.Id).GetPaged(request.Page, request.PageSize, c => c.ToListResponse());
+            var result = await couples.OrderByDescending(c => c.Year).ThenByDescending(c => c.Round).ThenBy(c => c.Name).GetPaged(request.Page, request.PageSize, c => c.ToListResponse());
 
             return new BaseResponse<PagedResponse<CouplesResponseModel>>(result);
         }

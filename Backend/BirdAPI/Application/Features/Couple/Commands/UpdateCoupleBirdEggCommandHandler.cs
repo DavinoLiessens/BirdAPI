@@ -1,3 +1,5 @@
+using BirdAPI.Application.Common;
+using Wwsv.Domain.SeedWork;
 using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Couple.Commands.InputModels;
 using BirdAPI.BaseModels;
@@ -34,7 +36,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
             // A ring number must be unique, but the bird that was already created from this egg
             // naturally has the same ring number and must not count as a conflict.
             if (ringNumber != null &&
-                await _context.Birds.AnyAsync(b => b.RingNumber == ringNumber && b.Id != existingEgg.BirdId, cancellationToken))
+                await _context.Birds.AnyAsync(b => b.NormalizedRingNumber == RingNumber.Normalize(ringNumber) && b.Id != existingEgg.BirdId, cancellationToken))
             {
                 return new BaseResponse<BirdEggInputModel>(false, HttpStatusCode.BadRequest)
                                 .AddError($"Bird with ringnumber {ringNumber} already exist!");
@@ -64,7 +66,6 @@ namespace BirdAPI.Application.Features.Couple.Commands
                 // All data is known: the young bird becomes a bird of its own
                 var couple = await _context.Couples
                                            .Include(c => c.Father)
-                                           .ThenInclude(f => f.Owner)
                                            .FirstOrDefaultAsync(c => c.Id == existingEgg.CoupleId, cancellationToken);
                 if (couple == null)
                 {
@@ -72,15 +73,12 @@ namespace BirdAPI.Application.Features.Couple.Commands
                                     .AddError($"No couple found with id {existingEgg.CoupleId}");
                 }
 
-                // The young bird belongs to the owner of the couple (the owner of the father)
-                // and was bred by the breeder record of that same person.
-                var owner = couple.Father.Owner;
-                var breeder = await _context.Breeders.FirstOrDefaultAsync(b => b.Email == owner.Email, cancellationToken)
-                              ?? await _context.Breeders.FirstOrDefaultAsync(b => b.FirstName == owner.FirstName && b.LastName == owner.LastName, cancellationToken);
-                if (breeder == null)
+                // A young bird from our own couple is bred and owned by the kwekerij itself
+                var self = await _context.GetSelfAsync(cancellationToken);
+                if (self == null)
                 {
                     return new BaseResponse<BirdEggInputModel>(false, HttpStatusCode.BadRequest)
-                                    .AddError($"No breeder found for owner {owner.FirstName} {owner.LastName}. Create a breeder with the same name or email first.");
+                                    .AddError("This kwekerij has no own contact yet.");
                 }
 
                 var newBird = new Domain.AggregatesModel.BirdAggregate.Bird(
@@ -90,8 +88,8 @@ namespace BirdAPI.Application.Features.Couple.Commands
                     model.CameOutOn.Value,
                     model.Color,
                     couple.CageNumber);
-                newBird.BelongsToOwner(owner);
-                newBird.BelongsToBreeder(breeder);
+                newBird.BelongsToOwner(self);
+                newBird.BelongsToBreeder(self);
 
                 await _context.Birds.AddAsync(newBird, cancellationToken);
                 await _context.SaveChangesAsync();

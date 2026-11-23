@@ -1,9 +1,12 @@
-﻿using Wwsv.Domain.SeedWork;
+using Wwsv.Domain.SeedWork;
 
 namespace BirdAPI.Domain.AggregatesModel.CoupleAggregate
 {
-    public class BirdEgg : Entity
+    public class BirdEgg : Entity, ITenantEntity
     {
+        public int KwekerijId { get; private set; }
+        public void AssignToKwekerij(int kwekerijId) => KwekerijId = kwekerijId;
+
         public DateTime LayedOn { get; set; }
         public DateTime? CameOutOn { get; set; }
         public string? RingNumber { get; set; }

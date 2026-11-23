@@ -1,9 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 ﻿using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BirdAPI.Infrastructure.EntityTypeConfiguration.CoupleAggregate
 {
-    public class BirdEggEntityTypeConfiguration
+    public class BirdEggEntityTypeConfiguration : IEntityTypeConfiguration<BirdEgg>
     {
         public void Configure(EntityTypeBuilder<BirdEgg> builder)
         {

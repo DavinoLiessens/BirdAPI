@@ -22,10 +22,8 @@ namespace BirdAPI.Tests
         public async Task Valid_couple_is_created()
         {
             using var data = new TestData();
-            var owner = data.AddOwner();
-            var breeder = data.AddBreeder();
-            var father = data.AddBird("F-1", "MALE", owner, breeder);
-            var mother = data.AddBird("M-1", "FEMALE", owner, breeder);
+            var father = data.AddBird("F-1", "MALE");
+            var mother = data.AddBird("M-1", "FEMALE");
 
             var result = await new CreateCoupleCommandHandler(data.Context)
                 .Handle(new CreateCoupleCommand(Couple(father.Id, mother.Id)), default);
@@ -41,10 +39,8 @@ namespace BirdAPI.Tests
         public async Task Invalid_couple_is_rejected(string fatherGender, string motherGender, bool motherDead)
         {
             using var data = new TestData();
-            var owner = data.AddOwner();
-            var breeder = data.AddBreeder();
-            var father = data.AddBird("F-1", fatherGender, owner, breeder);
-            var mother = data.AddBird("M-1", motherGender, owner, breeder, isDead: motherDead);
+            var father = data.AddBird("F-1", fatherGender);
+            var mother = data.AddBird("M-1", motherGender, isDead: motherDead);
 
             var result = await new CreateCoupleCommandHandler(data.Context)
                 .Handle(new CreateCoupleCommand(Couple(father.Id, mother.Id)), default);
@@ -58,7 +54,7 @@ namespace BirdAPI.Tests
         public async Task Same_bird_as_father_and_mother_is_rejected()
         {
             using var data = new TestData();
-            var bird = data.AddBird("F-1", "MALE", data.AddOwner(), data.AddBreeder());
+            var bird = data.AddBird("F-1", "MALE");
 
             var result = await new CreateCoupleCommandHandler(data.Context)
                 .Handle(new CreateCoupleCommand(Couple(bird.Id, bird.Id)), default);
@@ -73,10 +69,8 @@ namespace BirdAPI.Tests
         public async Task Year_filter_uses_the_birth_year()
         {
             using var data = new TestData();
-            var owner = data.AddOwner();
-            var breeder = data.AddBreeder();
-            data.AddBird("NEW-YEAR", "MALE", owner, breeder, birthDate: new DateTime(2024, 1, 1));
-            data.AddBird("OLD", "MALE", owner, breeder, birthDate: new DateTime(2023, 12, 31));
+            data.AddBird("NEW-YEAR", "MALE", birthDate: new DateTime(2024, 1, 1));
+            data.AddBird("OLD", "MALE", birthDate: new DateTime(2023, 12, 31));
 
             var result = await new GetBirdsQueryHandler(data.Context)
                 .Handle(new GetBirdsQuery(1, 10, null, "ALL", "0", "2024"), default);
@@ -88,7 +82,7 @@ namespace BirdAPI.Tests
         public async Task Invalid_year_is_ignored_instead_of_crashing()
         {
             using var data = new TestData();
-            data.AddBird("B-1", "MALE", data.AddOwner(), data.AddBreeder());
+            data.AddBird("B-1", "MALE");
 
             var result = await new GetBirdsQueryHandler(data.Context)
                 .Handle(new GetBirdsQuery(1, 10, null, "ALL", "0", "not-a-year"), default);
@@ -101,12 +95,10 @@ namespace BirdAPI.Tests
         public async Task Parents_are_found_via_the_egg_the_bird_came_from()
         {
             using var data = new TestData();
-            var owner = data.AddOwner();
-            var breeder = data.AddBreeder();
-            var father = data.AddBird("F-1", "MALE", owner, breeder);
-            var mother = data.AddBird("M-1", "FEMALE", owner, breeder);
+            var father = data.AddBird("F-1", "MALE");
+            var mother = data.AddBird("M-1", "FEMALE");
             var couple = data.AddCouple(father, mother);
-            var young = data.AddBird("YOUNG-1", "MALE", owner, breeder);
+            var young = data.AddBird("YOUNG-1", "MALE");
             var egg = data.AddEgg(couple);
             egg.BirdId = young.Id; // linked by id; the egg's ring number is not even filled in
             data.Context.SaveChanges();
@@ -133,7 +125,7 @@ namespace BirdAPI.Tests
         {
             using var data = new TestData();
 
-            var bird = data.AddBird("B-1", "MALE", data.AddOwner(), data.AddBreeder());
+            var bird = data.AddBird("B-1", "MALE");
 
             Assert.NotEqual(default, bird.Created);
         }

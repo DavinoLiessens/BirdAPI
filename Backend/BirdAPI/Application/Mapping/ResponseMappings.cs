@@ -1,12 +1,10 @@
 using BirdAPI.Application.Features.Bird.ResponseModels;
-using BirdAPI.Application.Features.Breeder.ResponseModels;
 using BirdAPI.Application.Features.Couple.Commands.InputModels;
 using BirdAPI.Application.Features.Couple.ResponseModels;
-using BirdAPI.Application.Features.Owner.ResponseModels;
+using BirdAPI.Application.Features.Contact.ResponseModels;
 using BirdAPI.Domain.AggregatesModel.BirdAggregate;
-using BirdAPI.Domain.AggregatesModel.BreederAggregate;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
-using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
+using BirdAPI.Domain.AggregatesModel.ContactAggregate;
 
 namespace BirdAPI.Application.Mapping
 {
@@ -16,22 +14,14 @@ namespace BirdAPI.Application.Mapping
     /// </summary>
     public static class ResponseMappings
     {
-        public static OwnerResponseModel ToResponse(this Owner owner) => new()
+        public static ContactResponseModel ToResponse(this Contact contact) => new()
         {
-            Id = owner.Id,
-            FirstName = owner.FirstName,
-            LastName = owner.LastName,
-            Email = owner.Email,
-            PhoneNumber = owner.PhoneNumber,
-        };
-
-        public static BreederResponseModel ToResponse(this Breeder breeder) => new()
-        {
-            Id = breeder.Id,
-            FirstName = breeder.FirstName,
-            LastName = breeder.LastName,
-            Email = breeder.Email,
-            PhoneNumber = breeder.PhoneNumber,
+            Id = contact.Id,
+            FirstName = contact.FirstName,
+            LastName = contact.LastName,
+            Email = contact.Email,
+            PhoneNumber = contact.PhoneNumber,
+            IsSelf = contact.IsSelf,
         };
 
         public static BirdResponseModel ToResponse(this Bird bird) => new()
@@ -104,6 +94,9 @@ namespace BirdAPI.Application.Mapping
             Name = couple.Name,
             CageNumber = couple.CageNumber,
             StartedAt = couple.StartedAt,
+            Year = couple.Year,
+            Round = couple.Round,
+            EndedAt = couple.EndedAt,
             FatherRingNumber = couple.Father?.RingNumber,
             MotherRingNumber = couple.Mother?.RingNumber,
         };
@@ -113,6 +106,9 @@ namespace BirdAPI.Application.Mapping
             Id = couple.Id,
             Name = couple.Name,
             StartedAt = couple.StartedAt,
+            Year = couple.Year,
+            Round = couple.Round,
+            EndedAt = couple.EndedAt,
             CageNumber = couple.CageNumber,
             FatherRingNumber = couple.Father?.RingNumber,
             MotherRingNumber = couple.Mother?.RingNumber,
@@ -125,6 +121,9 @@ namespace BirdAPI.Application.Mapping
             Id = couple.Id,
             Name = couple.Name,
             StartedAt = couple.StartedAt,
+            Year = couple.Year,
+            Round = couple.Round,
+            EndedAt = couple.EndedAt,
             CageNumber = couple.CageNumber,
             FatherRingNumber = couple.Father?.RingNumber,
             MotherRingNumber = couple.Mother?.RingNumber,
@@ -136,6 +135,8 @@ namespace BirdAPI.Application.Mapping
             Id = couple.Id,
             Name = couple.Name,
             StartedAt = couple.StartedAt,
+            Year = couple.Year,
+            Round = couple.Round,
             FatherRingNumber = couple.Father?.RingNumber,
             MotherRingNumber = couple.Mother?.RingNumber,
         };
