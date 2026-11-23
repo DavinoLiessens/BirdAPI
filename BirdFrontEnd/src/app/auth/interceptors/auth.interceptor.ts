@@ -31,7 +31,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+        // A 401 from the auth endpoints (e.g. wrong password) is handled by the form itself
+        const isAuthEndpoint = request.url.includes('/auth/');
+        if (error.status === 401 && !isAuthEndpoint) {
           // Token expired or invalid
           this.authService.logout();
           this.router.navigate(['/login'], {

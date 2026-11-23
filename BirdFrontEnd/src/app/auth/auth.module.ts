@@ -11,7 +11,6 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { DividerModule } from 'primeng/divider';
-import { MessageService } from 'primeng/api';
 
 // Components
 import { LoginComponent } from './components/login/login.component';
@@ -48,7 +47,6 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   providers: [
     AuthService,
     AuthGuard,
-    MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ForgotPasswordRequest } from '../../models/auth.models';
-import { MessageService } from 'primeng/api';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-forgot-password',
@@ -19,7 +19,7 @@ export class ForgotPasswordComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private messageService: MessageService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -45,22 +45,12 @@ export class ForgotPasswordComponent implements OnInit {
       () => {
         this.loading = false;
         this.emailSent = true;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'E-mail verzonden',
-          detail:
-            'Als dit e-mailadres bij ons bekend is, ontvangt u binnen enkele minuten een e-mail met instructies.',
-        });
+        this.toastr.success('Als dit e-mailadres bij ons bekend is, ontvangt u binnen enkele minuten een e-mail met instructies.', 'E-mail verzonden');
       },
       (error) => {
         this.loading = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Fout opgetreden',
-          detail:
-            error.message ||
-            'Er is een fout opgetreden. Probeer het later opnieuw.',
-        });
+        this.toastr.error(error.message ||
+            'Er is een fout opgetreden. Probeer het later opnieuw.', 'Fout opgetreden');
       }
     );
   }

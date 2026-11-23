@@ -12,10 +12,12 @@ namespace BirdAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         [HttpPost("login")]
@@ -33,7 +35,8 @@ namespace BirdAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Er is een fout opgetreden tijdens het inloggen", error = ex.Message });
+                _logger.LogError(ex, "Unexpected error in {Action}", ControllerContext.ActionDescriptor.ActionName);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Er is een fout opgetreden tijdens het inloggen" });
             }
         }
 
@@ -52,7 +55,8 @@ namespace BirdAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Er is een fout opgetreden tijdens de registratie", error = ex.Message });
+                _logger.LogError(ex, "Unexpected error in {Action}", ControllerContext.ActionDescriptor.ActionName);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Er is een fout opgetreden tijdens de registratie" });
             }
         }
 
@@ -67,7 +71,8 @@ namespace BirdAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Er is een fout opgetreden", error = ex.Message });
+                _logger.LogError(ex, "Unexpected error in {Action}", ControllerContext.ActionDescriptor.ActionName);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Er is een fout opgetreden" });
             }
         }
 
@@ -86,7 +91,8 @@ namespace BirdAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Er is een fout opgetreden", error = ex.Message });
+                _logger.LogError(ex, "Unexpected error in {Action}", ControllerContext.ActionDescriptor.ActionName);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Er is een fout opgetreden" });
             }
         }
 
@@ -108,7 +114,8 @@ namespace BirdAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Er is een fout opgetreden", error = ex.Message });
+                _logger.LogError(ex, "Unexpected error in {Action}", ControllerContext.ActionDescriptor.ActionName);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Er is een fout opgetreden" });
             }
         }
     }
