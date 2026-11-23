@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
@@ -11,6 +11,7 @@ import { ICreateBirdShowRequest } from "src/app/types/bird.types";
     selector: 'bird-show-create-modal',
     templateUrl: './bird-show-create.modal.html',
     providers: [DialogService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BirdShowCreateModal implements OnInit, OnDestroy {

@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -20,6 +20,7 @@ import { APP_CONFIG } from 'src/app/config/app.config';
     selector: 'app-bird-detail',
     templateUrl: './bird-detail.component.html',
     styleUrls: ['./bird-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BirdDetailComponent implements OnInit, OnDestroy {

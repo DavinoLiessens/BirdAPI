@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,7 @@ import { IGetContactsRequest, IContact, IUpdateContactRequest } from 'src/app/ty
     selector: 'app-contact-detail',
     templateUrl: './contact-detail.component.html',
     styleUrls: ['./contact-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ContactDetailComponent implements OnInit, OnDestroy {
