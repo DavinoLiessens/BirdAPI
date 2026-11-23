@@ -2,7 +2,7 @@
   @if (!(loading$ | async) && contacts) {
     <p-table #dt1 [value]="contacts" dataKey="id"
       styleClass="p-datatable-customers p-datatable-gridlines">
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="p-d-flex">
           <p-iconfield iconPosition="left" style="margin-left: 20px;">
             <p-inputicon styleClass="pi pi-search" />
@@ -10,30 +10,30 @@
           </p-iconfield>
         </div>
       </ng-template>
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th>
             <div class="p-d-flex p-jc-between p-ai-center">
               Voornaam
-              <!-- <p-columnFilter type="text" field="firstname" display="menu" (onclick)="FilterFirstname()"></p-columnFilter>-->
+              <!-- <p-columnfilter type="text" field="firstname" display="menu" (onclick)="FilterFirstname()"></p-columnfilter>-->
             </div>
           </th>
           <th>
             <div class="p-d-flex p-jc-between p-ai-center">
               Naam
-              <!-- <p-columnFilter type="text" field="lastname" display="menu"></p-columnFilter>-->
+              <!-- <p-columnfilter type="text" field="lastname" display="menu"></p-columnfilter>-->
             </div>
           </th>
           <th>
             <div class="p-d-flex p-jc-between p-ai-center">
               Telefoon
-              <!-- <p-columnFilter type="text" field="lastname" display="menu"></p-columnFilter>-->
+              <!-- <p-columnfilter type="text" field="lastname" display="menu"></p-columnfilter>-->
             </div>
           </th>
           <th>
             <div class="p-d-flex p-jc-between p-ai-center">
               Email
-              <!-- <p-columnFilter type="text" field="lastname" display="menu"></p-columnFilter>-->
+              <!-- <p-columnfilter type="text" field="lastname" display="menu"></p-columnfilter>-->
             </div>
           </th>
           <th>
@@ -48,7 +48,7 @@
         </th>                 -->
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-contact>
+    <ng-template #body let-contact>
       <tr>
         <td>
           <p>{{ contact.firstName }}</p>
@@ -70,12 +70,12 @@
       </td> -->
     </tr>
   </ng-template>
-  <ng-template pTemplate="summary">
+  <ng-template #summary>
     <div>
       <p-paginator class="p-d-flex p-jc-center" [rows]="pagination.pageSize" [first]="first" [totalRecords]="pagination.totalAmount" currentPageReportTemplate="{first} van de {totalRecords} resultaten" showCurrentPageReport="true" [rowsPerPageOptions]="[5,10,20,30]" (onPageChange)="paginate($event)"></p-paginator>
     </div>
   </ng-template>
-  <ng-template pTemplate="emptymessage">
+  <ng-template #emptymessage>
     <tr>
       <td colspan="7">Geen contacten gevonden.</td>
     </tr>

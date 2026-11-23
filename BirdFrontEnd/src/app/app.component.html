@@ -1,9 +1,9 @@
 @if (isAuthenticated) {
   <p-toolbar>
     <div class="p-toolbar-group-left">
-      <p-splitButton label="Vogels" (onClick)="navigateToPage('/birds')" [model]="birdItems" class="button-toolbar" ></p-splitButton>
-      <p-splitButton label="Koppels" (onClick)="navigateToPage('/couples')" [model]="coupleItems" class="button-toolbar"></p-splitButton>
-      <p-splitButton label="Contacten" (onClick)="navigateToPage('/contacts')" [model]="contactItems" class="button-toolbar"></p-splitButton>
+      <p-splitbutton label="Vogels" (onClick)="navigateToPage('/birds')" [model]="birdItems" class="button-toolbar" ></p-splitbutton>
+      <p-splitbutton label="Koppels" (onClick)="navigateToPage('/couples')" [model]="coupleItems" class="button-toolbar"></p-splitbutton>
+      <p-splitbutton label="Contacten" (onClick)="navigateToPage('/contacts')" [model]="contactItems" class="button-toolbar"></p-splitbutton>
     </div>
     <div class="p-toolbar-group-right">
       @if (currentUser) {
