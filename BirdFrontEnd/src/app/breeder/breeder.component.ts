@@ -9,7 +9,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 @Component({
     selector: 'c-breeder-overview',
     templateUrl: './breeder.component.html',
-    styleUrls: ['./breeder.component.scss']
+    styleUrls: ['./breeder.component.scss'],
+    standalone: false
 })
 export class BreederComponent implements OnInit, OnDestroy {
 

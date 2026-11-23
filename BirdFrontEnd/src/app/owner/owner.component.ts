@@ -7,9 +7,10 @@ import { IPagination } from '../types/pagination.types';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'c-owner-overview',
-  templateUrl: './owner.component.html',
-  styleUrls: ['./owner.component.scss']
+    selector: 'c-owner-overview',
+    templateUrl: './owner.component.html',
+    styleUrls: ['./owner.component.scss'],
+    standalone: false
 })
 export class OwnerComponent implements OnInit, OnDestroy {
 

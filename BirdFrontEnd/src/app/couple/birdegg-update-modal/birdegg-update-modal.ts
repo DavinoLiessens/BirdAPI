@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { SelectItemGroup } from "primeng/api";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
@@ -14,6 +14,7 @@ import { toDateOnly } from 'src/app/utils/date.utils';
 @Component({
     selector: 'birdegg-update-modal',
     templateUrl: './birdegg-update-modal.html',
+    standalone: false
 })
 export class BirdEggUpdateModal implements OnInit, OnDestroy {
     @Input() public request: IBirdEggRequest;
@@ -22,7 +23,7 @@ export class BirdEggUpdateModal implements OnInit, OnDestroy {
     public loading$: Observable<boolean> = this.coupleFacade.getLoadingModal();
     public birdEgg$: Observable<IBirdEgg> = this.coupleFacade.getBirdEgg();
 
-    public birdEggForm: FormGroup;
+    public birdEggForm: UntypedFormGroup;
     public birdEgg: IBirdEgg;
 
     public groupedColors: SelectItemGroup[] = [];
@@ -33,7 +34,7 @@ export class BirdEggUpdateModal implements OnInit, OnDestroy {
         public config: DynamicDialogConfig,
         private coupleFacade: CoupleFacade,
         private birdFacade: BirdFacade,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private toastrService: ToastrService
     ) { }
 

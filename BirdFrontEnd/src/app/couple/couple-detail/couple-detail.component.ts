@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -12,10 +12,11 @@ import { BirdEggCreateModal } from '../birdegg-create-modal/birdegg-create-modal
 import { BirdEggUpdateModal } from '../birdegg-update-modal/birdegg-update-modal';
 
 @Component({
-  selector: 'c-couple-detail',
-  templateUrl: './couple-detail.component.html',
-  styleUrls: ['./couple-detail.component.scss'],
-  providers: [DialogService]
+    selector: 'c-couple-detail',
+    templateUrl: './couple-detail.component.html',
+    styleUrls: ['./couple-detail.component.scss'],
+    providers: [DialogService],
+    standalone: false
 })
 export class CoupleDetailComponent implements OnInit, OnDestroy {
 
@@ -26,12 +27,12 @@ export class CoupleDetailComponent implements OnInit, OnDestroy {
 
   // local variables
   public coupleId: string;
-  public coupleForm: FormGroup;
+  public coupleForm: UntypedFormGroup;
   public couple: ICouple;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private coupleFacade: CoupleFacade,
     private toastrService: ToastrService,
     private dialogService: DialogService

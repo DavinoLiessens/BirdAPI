@@ -4,7 +4,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -14,21 +14,22 @@ import { ICreateBreederRequest } from 'src/app/types/breeder.types';
 import { FormUtilsService } from 'src/app/Services/form-utils.service';
 import { APP_CONFIG } from 'src/app/config/app.config';
 @Component({
-  selector: 'c-breeder-create',
-  templateUrl: './breeder-create.component.html',
-  styleUrls: ['./breeder-create.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'c-breeder-create',
+    templateUrl: './breeder-create.component.html',
+    styleUrls: ['./breeder-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BreederCreateComponent implements OnInit, OnDestroy {
   private readonly destroyed$ = new Subject<void>();
   private readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
   // Form and observables
-  breederForm!: FormGroup;
+  breederForm!: UntypedFormGroup;
   readonly loading$ = this.isLoading$.asObservable();
 
   constructor(
-    private readonly fb: FormBuilder,
+    private readonly fb: UntypedFormBuilder,
     private readonly breederFacade: BreederFacade,
     private readonly router: Router,
     private readonly route: ActivatedRoute,

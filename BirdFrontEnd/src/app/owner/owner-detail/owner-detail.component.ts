@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject } from 'rxjs';
@@ -8,9 +8,10 @@ import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
 import { IGetOwnersRequest, IOwner, IUpdateOwnerRequest } from 'src/app/types/owner.types';
 
 @Component({
-  selector: 'app-owner-detail',
-  templateUrl: './owner-detail.component.html',
-  styleUrls: ['./owner-detail.component.scss']
+    selector: 'app-owner-detail',
+    templateUrl: './owner-detail.component.html',
+    styleUrls: ['./owner-detail.component.scss'],
+    standalone: false
 })
 export class OwnerDetailComponent implements OnInit, OnDestroy {
 
@@ -21,10 +22,10 @@ export class OwnerDetailComponent implements OnInit, OnDestroy {
 
   // local variables
   public ownerId: string;
-  public ownerForm: FormGroup;
+  public ownerForm: UntypedFormGroup;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private ownerFacade: OwnerFacade,
     private router: Router,
     private route: ActivatedRoute,

@@ -8,9 +8,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IBirdTypeOption, IGenderOption, IYearDropdownOption } from '../types/dropdown.types';
 
 @Component({
-  selector: 'c-bird-overview',
-  templateUrl: './bird.component.html',
-  styleUrls: ['./bird.component.scss']
+    selector: 'c-bird-overview',
+    templateUrl: './bird.component.html',
+    styleUrls: ['./bird.component.scss'],
+    standalone: false
 })
 export class BirdComponent implements OnInit, OnDestroy {
 

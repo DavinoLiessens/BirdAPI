@@ -7,9 +7,10 @@ import { IPagination } from '../types/pagination.types';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'c-couple-overview',
-  templateUrl: './couple.component.html',
-  styleUrls: ['./couple.component.scss']
+    selector: 'c-couple-overview',
+    templateUrl: './couple.component.html',
+    styleUrls: ['./couple.component.scss'],
+    standalone: false
 })
 export class CoupleComponent implements OnInit, OnDestroy {
   private destroyed$: Subject<boolean> = new Subject<boolean>();
