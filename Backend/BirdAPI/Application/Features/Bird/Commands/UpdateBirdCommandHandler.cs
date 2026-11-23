@@ -1,3 +1,4 @@
+using Wwsv.Domain.SeedWork;
 using BirdAPI.Application.Mapping;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
@@ -37,7 +38,8 @@ namespace BirdAPI.Application.Features.Bird.Commands
 
             // if you update the ringnumber also make sure you update the birdEgg if exists
             // else you can't find the couple references anymore
-            if (await _context.Birds.AnyAsync(b => b.RingNumber == request.Model.RingNumber && b.Id != request.Id))
+            var normalizedRingNumber = RingNumber.Normalize(request.Model.RingNumber);
+            if (await _context.Birds.AnyAsync(b => b.NormalizedRingNumber == normalizedRingNumber && b.Id != request.Id))
             {
                 return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
                     .AddError($"Bird with ringnumber '{request.Model.RingNumber}' already exist");
@@ -63,7 +65,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             if (request.Model.OwnerId != existingBird.OwnerId)
             {
                 // search for owner
-                var owner = await _context.Owners.FirstOrDefaultAsync(o => o.Id == request.Model.OwnerId);
+                var owner = await _context.Contacts.FirstOrDefaultAsync(o => o.Id == request.Model.OwnerId);
 
                 if (owner == null) 
                     return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)

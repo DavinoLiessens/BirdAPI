@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +7,11 @@ using Wwsv.Domain.SeedWork;
 
 namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
 {
-    public class BirdShow : Entity
+    public class BirdShow : Entity, ITenantEntity
     {
+        public int KwekerijId { get; private set; }
+        public void AssignToKwekerij(int kwekerijId) => KwekerijId = kwekerijId;
+
         public string Location { get; set; }
         public int Points { get; set; }
         public int Rank { get; set; }

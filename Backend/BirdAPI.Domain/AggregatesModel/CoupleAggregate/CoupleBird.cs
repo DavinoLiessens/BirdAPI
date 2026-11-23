@@ -1,4 +1,4 @@
-﻿using BirdAPI.Domain.AggregatesModel.BirdAggregate;
+using BirdAPI.Domain.AggregatesModel.BirdAggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +8,11 @@ using Wwsv.Domain.SeedWork;
 
 namespace BirdAPI.Domain.AggregatesModel.CoupleAggregate
 {
-    public class CoupleBird : EntityLong
+    public class CoupleBird : EntityLong, ITenantEntity
     {
+        public int KwekerijId { get; private set; }
+        public void AssignToKwekerij(int kwekerijId) => KwekerijId = kwekerijId;
+
         public Bird Bird { get; set; }
         public int BirdId { get; set; }
         public int CoupleId { get; set; }

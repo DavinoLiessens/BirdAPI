@@ -23,17 +23,15 @@ namespace BirdAPI.Tests
         private static (TestData data, Domain.AggregatesModel.CoupleAggregate.Couple couple, Domain.AggregatesModel.CoupleAggregate.BirdEgg egg) Setup()
         {
             var data = new TestData();
-            var owner = data.AddOwner();
-            var breeder = data.AddBreeder();
-            var father = data.AddBird("F-1", "MALE", owner, breeder);
-            var mother = data.AddBird("M-1", "FEMALE", owner, breeder);
+            var father = data.AddBird("F-1", "MALE");
+            var mother = data.AddBird("M-1", "FEMALE");
             var couple = data.AddCouple(father, mother);
             var egg = data.AddEgg(couple);
             return (data, couple, egg);
         }
 
         [Fact]
-        public async Task Complete_egg_becomes_a_bird_owned_by_the_couple_owner()
+        public async Task Complete_egg_becomes_a_bird_bred_and_owned_by_the_kwekerij_itself()
         {
             var (data, couple, egg) = Setup();
             using var _ = data;
@@ -43,8 +41,9 @@ namespace BirdAPI.Tests
 
             Assert.True(result.Success);
             var bird = await data.Context.Birds.Include(b => b.Owner).Include(b => b.Breeder).SingleAsync(b => b.RingNumber == "YOUNG-1");
-            Assert.Equal("jan@example.test", bird.Owner.Email);
-            Assert.Equal("jan@example.test", bird.Breeder.Email);
+            Assert.True(bird.Owner.IsSelf);
+            Assert.True(bird.Breeder.IsSelf);
+            Assert.Equal(data.Kwekerij.Id, bird.KwekerijId);
             Assert.Equal(new DateTime(2024, 4, 14), bird.BirthDate);
             Assert.Equal(bird.Id, (await data.Context.BirdEggs.SingleAsync(e => e.Id == egg.Id)).BirdId);
         }
@@ -83,37 +82,18 @@ namespace BirdAPI.Tests
         }
 
         [Fact]
-        public async Task Ring_number_of_another_bird_is_rejected()
+        public async Task Ring_number_of_another_bird_is_rejected_even_with_other_casing()
         {
             var (data, couple, egg) = Setup();
             using var _ = data;
             var handler = new UpdateCoupleBirdEggCommandHandler(data.Context);
 
-            var result = await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "F-1")), default);
+            var result = await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "f-1 ")), default);
 
             Assert.False(result.Success);
             Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
         }
 
-        [Fact]
-        public async Task Missing_breeder_for_the_owner_gives_a_clear_error_instead_of_a_crash()
-        {
-            var data = new TestData();
-            using var _ = data;
-            var owner = data.AddOwner();
-            var otherBreeder = data.AddBreeder("Piet", "Janssens", "piet@example.test");
-            var father = data.AddBird("F-1", "MALE", owner, otherBreeder);
-            var mother = data.AddBird("M-1", "FEMALE", owner, otherBreeder);
-            var couple = data.AddCouple(father, mother);
-            var egg = data.AddEgg(couple);
-            var handler = new UpdateCoupleBirdEggCommandHandler(data.Context);
-
-            var result = await handler.Handle(new UpdateCoupleBirdEggCommand(CompleteEgg(egg.Id, couple.Id, "YOUNG-1")), default);
-
-            Assert.False(result.Success);
-            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
-            Assert.False(await data.Context.Birds.AnyAsync(b => b.RingNumber == "YOUNG-1"));
-        }
 
         [Fact]
         public async Task Egg_of_another_couple_is_not_found()

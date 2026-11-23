@@ -2,7 +2,6 @@ using BirdAPI.Application.Services;
 using BirdAPI.Config;
 using BirdAPI.Domain.AggregatesModel.UserAggregate;
 using BirdAPI.Infrastructure;
-using BirdAPI.Infrastructure.Seed;
 using BirdAPI.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -115,7 +114,10 @@ builder.Services.AddAuthorization();
 // Custom Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.AddHostedService<InitializeDatabaseService>();
+// Multi-tenancy: the kwekerij of the logged-in user (from the JWT) scopes all data
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentKwekerij, HttpCurrentKwekerij>();
+
 builder.Services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp"; });
 
 

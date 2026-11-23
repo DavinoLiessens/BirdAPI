@@ -1,4 +1,4 @@
-﻿namespace BirdAPI.Application.Features.Bird.ResponseModels
+namespace BirdAPI.Application.Features.Bird.ResponseModels
 {
     public class BirdCoupleResponseModel
     {
@@ -7,5 +7,7 @@
         public string FatherRingNumber { get; set; }
         public string MotherRingNumber { get; set; }
         public DateTime StartedAt { get; set; }
+        public int Year { get; set; }
+        public int Round { get; set; }
     }
 }

@@ -1,83 +1,72 @@
-using BirdAPI.Application.Mapping;
+using BirdAPI.Application.Common;
 using BirdAPI.Application.Features.Bird.ResponseModels;
+using BirdAPI.Application.Mapping;
 using BirdAPI.BaseModels;
-using BirdAPI.Domain.AggregatesModel.BreederAggregate;
-using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
 using BirdAPI.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using Wwsv.Domain.SeedWork;
 
 namespace BirdAPI.Application.Features.Bird.Commands
 {
     public class AddBirdCommandHandler : IRequestHandler<AddBirdCommand, BaseResponse<BirdResponseModel>>
     {
         private readonly BirdAPIContext _context;
-        private readonly IMediator _mediator;
 
-        public AddBirdCommandHandler(
-            BirdAPIContext context,
-            IMediator mediator)
+        public AddBirdCommandHandler(BirdAPIContext context)
         {
-            _mediator = mediator;
             _context = context;
         }
 
         public async Task<BaseResponse<BirdResponseModel>> Handle(AddBirdCommand request, CancellationToken cancellationToken)
         {
-            // Validation
-            if (await _context.Birds.AnyAsync(b => b.RingNumber == request.Model.RingNumber))
+            var model = request.Model;
+
+            if (string.IsNullOrWhiteSpace(model.RingNumber))
             {
                 return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
-                    .AddError($"Bird with ringnumber '{request.Model.RingNumber}' already exists");
+                    .AddError("Validation Error: Ringnumber is required!");
             }
 
-            // create new bird
-            var newBird = new Domain.AggregatesModel.BirdAggregate.Bird(
-                                                        request.Model.RingNumber,
-                                                        request.Model.Gender,
-                                                        request.Model.BirdType,
-                                                        request.Model.BirthDate,
-                                                        request.Model.Color,
-                                                        request.Model.CageNumber,
-                                                        request.Model.Description,
-                                                        request.Model.IsDead
-                                                        );
+            var normalized = RingNumber.Normalize(model.RingNumber);
+            if (await _context.Birds.AnyAsync(b => b.NormalizedRingNumber == normalized, cancellationToken))
+            {
+                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError($"Bird with ringnumber '{model.RingNumber}' already exists");
+            }
 
-            // get breeder from db
-            var breeder = await _context.Breeders.FirstOrDefaultAsync(b => b.Id == request.Model.BreederId);
-
+            // Breeder and owner default to the kwekerij itself (the logged-in user)
+            var breeder = await _context.GetContactOrSelfAsync(model.BreederId, cancellationToken);
             if (breeder == null)
             {
-                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.NotFound)
-                    .AddError($"No breeder found with id '{request.Model.BreederId}'");
+                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError($"No breeder found with id '{model.BreederId}'");
             }
 
-            // get owner from db
-            var owner = await _context.Owners.FirstOrDefaultAsync(o => o.Id == request.Model.OwnerId);
-
+            var owner = await _context.GetContactOrSelfAsync(model.OwnerId, cancellationToken);
             if (owner == null)
             {
-                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.NotFound)
-                    .AddError($"No owner found with id '{request.Model.OwnerId}'");
+                return new BaseResponse<BirdResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError($"No owner found with id '{model.OwnerId}'");
             }
 
-            newBird.BelongsToOwner(owner);
-            var ownerBird = new OwnerBird(owner, newBird);
-            await _context.OwnerBird.AddAsync(ownerBird);
-
+            var newBird = new Domain.AggregatesModel.BirdAggregate.Bird(
+                model.RingNumber,
+                model.Gender,
+                model.BirdType,
+                model.BirthDate,
+                model.Color,
+                model.CageNumber,
+                model.Description,
+                model.IsDead);
             newBird.BelongsToBreeder(breeder);
-            var breederBird = new BreederBird(breeder, newBird);
-            await _context.BreederBird.AddAsync(breederBird);
+            newBird.BelongsToOwner(owner);
 
-            // add to db
-            await _context.Birds.AddAsync(newBird);
-            await _context.SaveChangesAsync();
+            await _context.Birds.AddAsync(newBird, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
-            // create just the bird
-            var result = newBird.ToResponse();
-
-            return new BaseResponse<BirdResponseModel>(result);
+            return new BaseResponse<BirdResponseModel>(newBird.ToResponse());
         }
     }
 }

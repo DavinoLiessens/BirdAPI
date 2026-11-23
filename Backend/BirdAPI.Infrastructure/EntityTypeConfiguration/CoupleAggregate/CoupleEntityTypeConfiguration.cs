@@ -1,10 +1,10 @@
-﻿using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
+using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BirdAPI.Infrastructure.EntityTypeConfiguration.CoupleAggregate
 {
-    public class CoupleEntityTypeConfiguration
+    public class CoupleEntityTypeConfiguration : IEntityTypeConfiguration<Couple>
     {
         public void Configure(EntityTypeBuilder<Couple> builder)
         {
@@ -26,7 +26,9 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.CoupleAggregate
                 .IsRequired()
 				.OnDelete(DeleteBehavior.NoAction);
 
-			builder.HasMany(o => o.BirdEggs);
+			builder.HasMany(o => o.BirdEggs).WithOne().HasForeignKey(e => e.CoupleId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasIndex(c => new { c.KwekerijId, c.Year, c.Round });
+            builder.HasOne<Domain.AggregatesModel.KwekerijAggregate.Kwekerij>().WithMany().HasForeignKey(c => c.KwekerijId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

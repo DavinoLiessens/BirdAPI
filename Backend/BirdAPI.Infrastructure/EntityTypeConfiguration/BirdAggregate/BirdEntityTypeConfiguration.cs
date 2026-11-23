@@ -1,4 +1,4 @@
-﻿using BirdAPI.Domain.AggregatesModel.BirdAggregate;
+using BirdAPI.Domain.AggregatesModel.BirdAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -34,6 +34,11 @@ namespace BirdAPI.Infrastructure.EntityTypeConfiguration.BirdAggregate
                 .OnDelete(DeleteBehavior.Restrict);
 
 
+            builder.Property(b => b.RingNumber).IsRequired().HasMaxLength(100);
+            builder.Property(b => b.NormalizedRingNumber).IsRequired().HasMaxLength(100);
+            // A ring number identifies a bird: unique within a kwekerij
+            builder.HasIndex(b => new { b.KwekerijId, b.NormalizedRingNumber }).IsUnique();
+            builder.HasOne<Domain.AggregatesModel.KwekerijAggregate.Kwekerij>().WithMany().HasForeignKey(b => b.KwekerijId).OnDelete(DeleteBehavior.Restrict);
             builder.Ignore(b => b.DomainEvents);
         }
     }

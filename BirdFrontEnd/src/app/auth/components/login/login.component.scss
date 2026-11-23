@@ -14,6 +14,7 @@
 
 ::ng-deep .login-card {
   border-radius: 16px;
+  overflow: hidden; // clip the gradient header to the card's rounded corners
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 
   .p-card-body {
@@ -30,7 +31,6 @@
   padding: 2.5rem 2rem 1.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border-radius: 16px 16px 0 0;
 
   .login-icon {
     font-size: 3rem;

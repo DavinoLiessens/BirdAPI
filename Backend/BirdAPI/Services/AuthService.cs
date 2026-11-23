@@ -1,3 +1,7 @@
+using BirdAPI.Domain.AggregatesModel.ContactAggregate;
+using BirdAPI.Domain.AggregatesModel.KwekerijAggregate;
+using BirdAPI.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using BirdAPI.Application.DTOs.Auth;
 using BirdAPI.Application.Services;
 using BirdAPI.Config;
@@ -18,6 +22,7 @@ namespace BirdAPI.Services
     public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly BirdAPIContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
         private readonly IHostEnvironment _environment;
@@ -25,12 +30,14 @@ namespace BirdAPI.Services
 
         public AuthService(
             UserManager<ApplicationUser> userManager,
+            BirdAPIContext context,
             SignInManager<ApplicationUser> signInManager,
             IOptions<JwtSettings> jwtSettings,
             IHostEnvironment environment,
             ILogger<AuthService> logger)
         {
             _userManager = userManager;
+            _context = context;
             _signInManager = signInManager;
             _jwtSettings = jwtSettings.Value;
             _environment = environment;
@@ -65,7 +72,8 @@ namespace BirdAPI.Services
             user.LastLoginAt = DateTime.UtcNow;
             await _userManager.UpdateAsync(user);
 
-            var token = GenerateJwtToken(user);
+            var kwekerij = await EnsureKwekerijAsync(user);
+            var token = GenerateJwtToken(user, kwekerij.Id);
 
             return new AuthResponse
             {
@@ -107,7 +115,8 @@ namespace BirdAPI.Services
                 throw new InvalidOperationException($"Registratie mislukt: {errors}");
             }
 
-            var token = GenerateJwtToken(user);
+            var kwekerij = await EnsureKwekerijAsync(user);
+            var token = GenerateJwtToken(user, kwekerij.Id);
 
             return new AuthResponse
             {
@@ -189,7 +198,44 @@ namespace BirdAPI.Services
             }
         }
 
-        private string GenerateJwtToken(ApplicationUser user)
+        /// <summary>
+        /// Every account has exactly one kwekerij. On first login/registration it is either
+        /// the kwekerij prepared for this email address (existing data, e.g. after the
+        /// migration) or a new, empty one. The kwekerij always has a "self" contact, which is
+        /// the default breeder/owner of new birds.
+        /// </summary>
+        private async Task<Kwekerij> EnsureKwekerijAsync(ApplicationUser user)
+        {
+            var kwekerij = await _context.Kwekerijen.FirstOrDefaultAsync(k => k.UserId == user.Id);
+            if (kwekerij == null)
+            {
+                var email = user.Email!.Trim().ToLower();
+                kwekerij = await _context.Kwekerijen.FirstOrDefaultAsync(k => k.UserId == null && k.ClaimEmail != null && k.ClaimEmail.ToLower() == email);
+                if (kwekerij != null)
+                {
+                    kwekerij.ClaimBy(user.Id);
+                }
+                else
+                {
+                    kwekerij = new Kwekerij(user.GetFullName(), user.Id);
+                    _context.Kwekerijen.Add(kwekerij);
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            var hasSelf = await _context.Contacts.IgnoreQueryFilters().AnyAsync(c => c.KwekerijId == kwekerij.Id && c.IsSelf);
+            if (!hasSelf)
+            {
+                var self = new Contact(user.FirstName ?? "", user.LastName ?? "", user.Email, user.PhoneNumber, isSelf: true);
+                self.AssignToKwekerij(kwekerij.Id);
+                _context.Contacts.Add(self);
+                await _context.SaveChangesAsync();
+            }
+
+            return kwekerij;
+        }
+
+        private string GenerateJwtToken(ApplicationUser user, int kwekerijId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
@@ -199,7 +245,8 @@ namespace BirdAPI.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.GetFullName()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(HttpCurrentKwekerij.ClaimType, kwekerijId.ToString())
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor

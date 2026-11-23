@@ -8,10 +8,10 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
 import { birdReducer } from 'src/app/store/entities/bird/bird.reducer';
-import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
+import { ContactFacade } from 'src/app/store/entities/contact/contact.facade';
 import { IBird, IBirdDetail, IBirdShowRequest, IGetBirdsRequest, IUpdateBirdRequest } from 'src/app/types/bird.types';
-import { IOwnerDropdownOption } from 'src/app/types/dropdown.types';
-import { IGetOwnersRequest, IOwner } from 'src/app/types/owner.types';
+import { IContactDropdownOption } from 'src/app/types/dropdown.types';
+import { IContact, IGetContactsRequest } from 'src/app/types/contact.types';
 import { BirdShowCreateModal } from '../bird-show-create/bird-show-create.modal';
 import { BirdShowUpdateModal } from '../bird-show-update/bird-show-update.modal';
 import { APP_CONFIG } from 'src/app/config/app.config';
@@ -27,20 +27,20 @@ export class BirdDetailComponent implements OnInit, OnDestroy {
   // local variables
   public birdForm: UntypedFormGroup;
   public birdId: string;
-  public owners: IOwnerDropdownOption[] = [];
+  public owners: IContactDropdownOption[] = [];
   public bird: IBirdDetail;
 
   // Observables
   public bird$: Observable<IBirdDetail> = this.birdFacade.getBird();
-  public owners$: Observable<IOwner[]> = this.ownerFacade.getOwners();
+  public owners$: Observable<IContact[]> = this.contactFacade.getContacts();
   private destroyed$: Subject<boolean> = new Subject<boolean>();
   public loading$: Observable<boolean> = this.birdFacade.getLoadingDetail();
-  private owner: IOwnerDropdownOption;
+  private owner: IContactDropdownOption;
 
   constructor(
     private fb: UntypedFormBuilder,
     private birdFacade: BirdFacade,
-    private ownerFacade: OwnerFacade,
+    private contactFacade: ContactFacade,
     private router: Router,
     private route: ActivatedRoute,
     private toastrService: ToastrService,
@@ -115,17 +115,17 @@ export class BirdDetailComponent implements OnInit, OnDestroy {
   private getAllOwners(): void {
     // Load all owners: the bird's current owner must always be selectable,
     // not only when it happens to be on the first page.
-    const request: IGetOwnersRequest = {
+    const request: IGetContactsRequest = {
       page: 1,
       pageSize: APP_CONFIG.api.maxPageSize,
     };
-    this.ownerFacade.getAllOwnersRequest(request);
+    this.contactFacade.getAllContactsRequest(request);
 
     this.owners$.pipe(
       takeUntil(this.destroyed$),
-    ).subscribe((owners: IOwner[]) => {
+    ).subscribe((owners: IContact[]) => {
       // Rebuild the list on every emission instead of appending to it (avoids duplicates)
-      this.owners = (owners ?? []).map((owner: IOwner) => ({
+      this.owners = (owners ?? []).map((owner: IContact) => ({
         name: `${owner.firstName} ${owner.lastName}`,
         value: owner.id,
       }));

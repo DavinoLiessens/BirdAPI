@@ -1,4 +1,4 @@
-﻿using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
+using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace BirdAPI.Infrastructure.EntityTypeConfiguration.CoupleAggregate
 {
-    public class BirdCouplesEntityTypeConfiguration
+    public class BirdCouplesEntityTypeConfiguration : IEntityTypeConfiguration<CoupleBird>
     {
         public void Configure(EntityTypeBuilder<CoupleBird> builder)
         {
+            builder.ToTable("BirdCouples");
             builder.HasKey(o => o.Id);
             builder.Property(o => o.Id).ValueGeneratedOnAdd();
-
-            builder.HasKey(bc => new { bc.BirdId, bc.CoupleId });
 
             builder.HasOne(bc => bc.Bird)
                 .WithMany(b => b.BirdCouples)

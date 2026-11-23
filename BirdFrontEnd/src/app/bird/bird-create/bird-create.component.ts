@@ -8,15 +8,13 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SelectItemGroup } from 'primeng/api';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
-import { BreederFacade } from 'src/app/store/entities/breeder/breeder.facade';
-import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
+import { ContactFacade } from 'src/app/store/entities/contact/contact.facade';
 import { ICreateBirdRequest } from 'src/app/types/bird.types';
-import { IBreeder, IGetBreedersRequest } from 'src/app/types/breeder.types';
 import { IBirdTypeOption, IGenderOption } from 'src/app/types/dropdown.types';
-import { IGetOwnersRequest, IOwner } from 'src/app/types/owner.types';
+import { IContact } from 'src/app/types/contact.types';
 import {
   DropdownUtilsService,
   DropdownOption,
@@ -51,31 +49,26 @@ export class BirdCreateComponent implements OnInit, OnDestroy {
   readonly groupedColors: SelectItemGroup[] =
     this.birdFacade.createBirdTypeColors();
 
-  // Reactive dropdown options
+  // Breeder and owner both come from the contact list of the kwekerij
   readonly breeders$: Observable<DropdownOption<number>[]>;
   readonly owners$: Observable<DropdownOption<number>[]>;
 
   constructor(
     private readonly fb: UntypedFormBuilder,
     private readonly birdFacade: BirdFacade,
-    private readonly breederFacade: BreederFacade,
-    private readonly ownerFacade: OwnerFacade,
+    private readonly contactFacade: ContactFacade,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly toastrService: ToastrService,
     private readonly dropdownUtils: DropdownUtilsService,
     private readonly formUtils: FormUtilsService
   ) {
-    // Set up reactive streams for dropdown options
-    this.breeders$ = this.breederFacade.getBreeders().pipe(
-      filter((breeders) => breeders != null),
-      map((breeders) => this.mapBreedersToDropdownOptions(breeders))
+    const contactOptions$ = this.contactFacade.getContacts().pipe(
+      filter((contacts) => contacts != null),
+      map((contacts) => this.mapContactsToDropdownOptions(contacts))
     );
-
-    this.owners$ = this.ownerFacade.getOwners().pipe(
-      filter((owners) => owners != null),
-      map((owners) => this.mapOwnersToDropdownOptions(owners))
-    );
+    this.breeders$ = contactOptions$;
+    this.owners$ = contactOptions$;
   }
 
   ngOnInit(): void {
@@ -119,55 +112,40 @@ export class BirdCreateComponent implements OnInit, OnDestroy {
 
   private loadData(): void {
     this.isLoading$.next(true);
-    this.loadBreeders();
-    this.loadOwners();
+    this.contactFacade.getAllContactsRequest({
+      page: 1,
+      pageSize: APP_CONFIG.api.maxPageSize,
+    });
 
-    // Stop loading once both lists are in (the requests above set both flags to true synchronously)
-    combineLatest([this.breederFacade.getLoading(), this.ownerFacade.getLoading()])
+    // Once the contacts are in: stop loading and preselect the kwekerij itself
+    // as breeder and owner (the usual case for a bird bred here)
+    this.contactFacade
+      .getContacts()
       .pipe(
-        filter(([breedersLoading, ownersLoading]) => !breedersLoading && !ownersLoading),
+        filter((contacts) => contacts != null),
         take(1),
         takeUntil(this.destroyed$)
       )
-      .subscribe(() => this.isLoading$.next(false));
+      .subscribe((contacts) => {
+        const self = contacts.find((c) => c.isSelf);
+        if (self) {
+          if (!this.birdForm.get('breederId').value) this.birdForm.get('breederId').setValue(self.id);
+          if (!this.birdForm.get('ownerId').value) this.birdForm.get('ownerId').setValue(self.id);
+        }
+        this.isLoading$.next(false);
+      });
   }
 
-  private loadBreeders(): void {
-    const request: IGetBreedersRequest = {
-      page: 1,
-      pageSize: APP_CONFIG.api.maxPageSize,
-    };
-    this.breederFacade.getAllBreedersRequest(request);
-  }
-
-  private loadOwners(): void {
-    const request: IGetOwnersRequest = {
-      page: 1,
-      pageSize: APP_CONFIG.api.maxPageSize,
-    };
-    this.ownerFacade.getAllOwnersRequest(request);
-  }
-
-  private mapBreedersToDropdownOptions(
-    breeders: IBreeder[]
-  ): DropdownOption<number>[] {
-    return breeders
-      .map((breeder) => ({
-        label: `${breeder.firstName} ${breeder.lastName}`,
-        value: breeder.id,
-      }))
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }
-
-  private mapOwnersToDropdownOptions(
-    owners: IOwner[]
-  ): DropdownOption<number>[] {
-    return owners
-      .map((owner) => ({
-        label: `${owner.firstName} ${owner.lastName}`,
-        value: owner.id,
-      }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+  private mapContactsToDropdownOptions(contacts: IContact[]): DropdownOption<number>[] {
+    return [...contacts]
+      .sort((a, b) => Number(b.isSelf) - Number(a.isSelf) ||
+        `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`))
+      .map((contact) => ({
+        label: contact.isSelf
+          ? `${contact.firstName} ${contact.lastName} (mijn kwekerij)`
+          : `${contact.firstName} ${contact.lastName}`,
+        value: contact.id,
+      }));
   }
 
   onSubmit(): void {

@@ -44,6 +44,11 @@ export class CoupleCreateComponent implements OnInit, OnDestroy {
   // Form with proper typing
   coupleForm!: UntypedFormGroup;
 
+  readonly roundOptions = [
+    { label: 'Ronde 1', value: 1 },
+    { label: 'Ronde 2', value: 2 },
+  ];
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -91,6 +96,9 @@ export class CoupleCreateComponent implements OnInit, OnDestroy {
           CustomValidators.notTooOldDate(50), // Max 50 years in past
         ],
       ],
+      // Breeding season: two rounds per year
+      year: [new Date().getFullYear(), [Validators.required, Validators.min(1990), Validators.max(2100)]],
+      round: [1, Validators.required],
       fatherId: ['', [Validators.required]],
       motherId: ['', [Validators.required]],
       cageNumber: [
@@ -157,6 +165,8 @@ export class CoupleCreateComponent implements OnInit, OnDestroy {
     const request: ICreateCoupleRequest = {
       name: formValue.name,
       startedAt: toDateOnly(formValue.startedAt),
+      year: Number(formValue.year),
+      round: Number(formValue.round),
       fatherId: parseInt(formValue.fatherId, 10),
       motherId: parseInt(formValue.motherId, 10),
       cageNumber: formValue.cageNumber,

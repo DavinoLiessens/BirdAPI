@@ -10,8 +10,8 @@ namespace BirdAPI.Application.Features.Bird.ResponseModels
         public DateTime BirthDate { get; set; }
         public string CageNumber { get; set; }
         public string Color { get; set; }
-        public Breeder.ResponseModels.BreederResponseModel Breeder { get; set; }
-        public Owner.ResponseModels.OwnerResponseModel Owner { get; set; }
+        public Contact.ResponseModels.ContactResponseModel Breeder { get; set; }
+        public Contact.ResponseModels.ContactResponseModel Owner { get; set; }
         public string Description { get; set; }
         public BirdType BirdType { get; set; }
         public bool IsDead { get; set; }

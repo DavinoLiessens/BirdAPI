@@ -13,9 +13,8 @@ import { UserInfo } from './auth/models/auth.models';
 export class AppComponent {
   title = 'Bird Database';
   birdItems: MenuItem[];
-  ownerItems: MenuItem[];
+  contactItems: MenuItem[];
   coupleItems: MenuItem[];
-  breederItems: MenuItem[];
   isAuthenticated = false;
   currentUser: UserInfo | null = null;
 
@@ -44,31 +43,19 @@ export class AppComponent {
       }
     ];
 
-    this.ownerItems = [
+    this.contactItems = [
       {
-        label: 'Overzicht Eigenaars',
+        label: 'Overzicht Contacten',
         icon: 'pi pi-home',
-        routerLink: '/owners'
+        routerLink: '/contacts'
       },
       {
-        label: 'Eigenaar Aanmaken',
+        label: 'Contact Aanmaken',
         icon: 'pi pi-plus',
-        routerLink: '/owners/create'
+        routerLink: '/contacts/create'
       }
     ];
 
-    this.breederItems = [
-      {
-        label: 'Overzicht Kwekers',
-        icon: 'pi pi-home',
-        routerLink: '/breeders'
-      },
-      {
-        label: 'Kweker Aanmaken',
-        icon: 'pi pi-plus',
-        routerLink: '/breeders/create'
-      }
-    ];
 
     this.coupleItems = [
       {
