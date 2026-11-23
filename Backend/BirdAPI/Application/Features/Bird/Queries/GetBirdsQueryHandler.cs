@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.Enums;
@@ -53,10 +53,13 @@ namespace BirdAPI.Application.Features.Bird.Queries
                 birds = birds.Where(b => b.BirdType == result.BirdType);                
             }
 
-            if (!string.IsNullOrWhiteSpace(request.Year) && request.Year != "ALL")
+            if (!string.IsNullOrWhiteSpace(request.Year) && request.Year != "ALL" && int.TryParse(request.Year, out var year))
             {
-                birds = birds.Where(b => b.BirthDate.Year == int.Parse(request.Year));
+                birds = birds.Where(b => b.BirthDate.Year == year);
             }
+
+            // Paging without a fixed order returns rows in an undefined order
+            birds = birds.OrderBy(b => b.Id);
 
             // get paged result
             var pagedResult = await birds.GetPaged<Domain.AggregatesModel.BirdAggregate.Bird, BirdResponseModel>(request.Page, request.PageSize, _mapper);

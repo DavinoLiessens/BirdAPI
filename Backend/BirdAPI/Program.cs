@@ -40,11 +40,29 @@ builder.Services.AddSwaggerGen();
 // Database Context
 builder.Services.AddDbContext<BirdAPIContext>(options =>
 {
-    options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=db-bird;Trusted_Connection=True;", sqloptions =>
+    var connectionString = builder.Configuration["BirdAPI:ConnectionString"]
+        ?? throw new InvalidOperationException("BirdAPI:ConnectionString is not configured.");
+
+    options.UseSqlServer(connectionString, sqloptions =>
     {
         sqloptions.MigrationsAssembly(typeof(Program).Assembly.GetName().Name);
         sqloptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
     });
+
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging();
+    }
+});
+
+// CORS: only the origins listed in configuration (e.g. the Angular dev server).
+// In production the SPA is served by this API itself, so no cross-origin access is needed.
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy => policy.WithOrigins(allowedOrigins)
+                                             .AllowAnyHeader()
+                                             .AllowAnyMethod());
 });
 
 // Identity Configuration
@@ -112,15 +130,11 @@ if (app.Environment.IsDevelopment())
     //app.UseSwaggerUI();
 }
 
-app.UseCors(builder =>
-    builder.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod());
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSpaStaticFiles();
 app.UseRouting();
+app.UseCors(); // must be between UseRouting and UseAuthentication
 
 // Authentication & Authorization middleware - IMPORTANT: Order matters!
 app.UseAuthentication();

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BirdAPI.Application.Features.Couple.Commands.InputModels;
 using BirdAPI.BaseModels;
-using BirdAPI.Domain.AggregatesModel.BirdAggregate;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
 using BirdAPI.Infrastructure;
 using MediatR;
@@ -23,75 +22,89 @@ namespace BirdAPI.Application.Features.Couple.Commands
 
         public async Task<BaseResponse<BirdEggInputModel>> Handle(UpdateCoupleBirdEggCommand request, CancellationToken cancellationToken)
         {
-            var existingEgg = await _context.BirdEggs.FirstOrDefaultAsync(be => be.Id == request.Model.Id);
+            var model = request.Model;
 
+            var existingEgg = await _context.BirdEggs.FirstOrDefaultAsync(be => be.Id == model.Id && be.CoupleId == model.CoupleId, cancellationToken);
             if (existingEgg == null)
             {
-                return new BaseResponse<BirdEggInputModel>(false, HttpStatusCode.BadRequest)
-                                .AddError($"No birdEgg found with id {request.Model.Id}");
+                return new BaseResponse<BirdEggInputModel>(false, HttpStatusCode.NotFound)
+                                .AddError($"No birdEgg found with id {model.Id} for couple {model.CoupleId}");
             }
 
-            // check if ringnumber is unique
-            if (await _context.Birds.AnyAsync(b => b.RingNumber == request.Model.RingNumber))
+            var ringNumber = string.IsNullOrWhiteSpace(model.RingNumber) ? null : model.RingNumber.Trim();
+
+            // A ring number must be unique, but the bird that was already created from this egg
+            // naturally has the same ring number and must not count as a conflict.
+            if (ringNumber != null &&
+                await _context.Birds.AnyAsync(b => b.RingNumber == ringNumber && b.Id != existingEgg.BirdId, cancellationToken))
             {
                 return new BaseResponse<BirdEggInputModel>(false, HttpStatusCode.BadRequest)
-                                .AddError($"Bird with ringnumber {request.Model.RingNumber} already exist!");
+                                .AddError($"Bird with ringnumber {ringNumber} already exist!");
             }
 
-            if (request.Model.CameOutOn != existingEgg.CameOutOn)
+            existingEgg.UpdateCameOutOn(model.CameOutOn);
+            existingEgg.UpdateFlyOutOn(model.FlyOutOn);
+            existingEgg.UpdateGender(model.Gender);
+            existingEgg.UpdateColor(model.Color);
+            existingEgg.UpdateRingNumber(ringNumber);
+
+            if (existingEgg.BirdId != null)
             {
-                existingEgg.UpdateCameOutOn(request.Model.CameOutOn);
+                // Keep the bird that was created from this egg in sync with its ring number
+                var existingBird = await _context.Birds.FirstOrDefaultAsync(b => b.Id == existingEgg.BirdId, cancellationToken);
+                if (existingBird != null && ringNumber != null && existingBird.RingNumber != ringNumber)
+                {
+                    existingBird.UpdateBird(ringNumber, existingBird.CageNumber, existingBird.Description, existingBird.IsDead ?? false);
+                }
             }
-
-            if (request.Model.FlyOutOn != existingEgg.FlyOutOn)
+            else if (model.CameOutOn != null &&
+                     model.FlyOutOn != null &&
+                     ringNumber != null &&
+                     model.Color != null &&
+                     model.Gender != null)
             {
-                existingEgg.UpdateFlyOutOn(request.Model.FlyOutOn);
-            }
+                // All data is known: the young bird becomes a bird of its own
+                var couple = await _context.Couples
+                                           .Include(c => c.Father)
+                                           .ThenInclude(f => f.Owner)
+                                           .FirstOrDefaultAsync(c => c.Id == existingEgg.CoupleId, cancellationToken);
+                if (couple == null)
+                {
+                    return new BaseResponse<BirdEggInputModel>(false, HttpStatusCode.NotFound)
+                                    .AddError($"No couple found with id {existingEgg.CoupleId}");
+                }
 
-            if (request.Model.Gender != existingEgg.Gender)
-            {
-                existingEgg.UpdateGender(request.Model.Gender);
-            }
+                // The young bird belongs to the owner of the couple (the owner of the father)
+                // and was bred by the breeder record of that same person.
+                var owner = couple.Father.Owner;
+                var breeder = await _context.Breeders.FirstOrDefaultAsync(b => b.Email == owner.Email, cancellationToken)
+                              ?? await _context.Breeders.FirstOrDefaultAsync(b => b.FirstName == owner.FirstName && b.LastName == owner.LastName, cancellationToken);
+                if (breeder == null)
+                {
+                    return new BaseResponse<BirdEggInputModel>(false, HttpStatusCode.BadRequest)
+                                    .AddError($"No breeder found for owner {owner.FirstName} {owner.LastName}. Create a breeder with the same name or email first.");
+                }
 
-            if (request.Model.Color != existingEgg.Color)
-            {
-                existingEgg.UpdateColor(request.Model.Color);
-            }
-
-            if (request.Model.RingNumber != existingEgg.RingNumber)
-            {
-                existingEgg.UpdateRingNumber(request.Model.RingNumber);
-            }
-
-            // create new bird if all values are filled in and the bird does not exist yet
-            if (request.Model.CameOutOn != null && 
-                request.Model.FlyOutOn != null && 
-                request.Model.RingNumber != null && 
-                request.Model.Color != null && 
-                request.Model.Gender != null &&
-                existingEgg.BirdId == null)
-            {               
-                var couple = await _context.Couples.Include(c => c.Father).FirstOrDefaultAsync(c => c.Id == request.Model.CoupleId);
-                var breeder = await _context.Breeders.FirstOrDefaultAsync(b => b.FirstName == "Gerry" && b.LastName == "Liessens");
-                var owner = await _context.Owners.FirstOrDefaultAsync(o => o.FirstName == "Gerry" && o.LastName == "Liessens");
-
-                var birdType = couple.Father.BirdType;
-                var cageNumber = couple.CageNumber;
-                var newBird = new Domain.AggregatesModel.BirdAggregate.Bird(request.Model.RingNumber, request.Model.Gender, birdType, (DateTime)request.Model.CameOutOn, request.Model.Color, cageNumber);
+                var newBird = new Domain.AggregatesModel.BirdAggregate.Bird(
+                    ringNumber,
+                    model.Gender,
+                    couple.Father.BirdType,
+                    model.CameOutOn.Value,
+                    model.Color,
+                    couple.CageNumber);
                 newBird.BelongsToOwner(owner);
                 newBird.BelongsToBreeder(breeder);
 
-                await _context.Birds.AddAsync(newBird);
+                await _context.Birds.AddAsync(newBird, cancellationToken);
                 await _context.SaveChangesAsync();
 
-                // assign the birdId after saveChanges
+                // The id is only known after saving
                 existingEgg.BirdId = newBird.Id;
             }
 
-            var result = _mapper.Map<BirdEgg, BirdEggInputModel>(existingEgg);
-
             await _context.SaveChangesAsync();
 
+            var result = _mapper.Map<BirdEgg, BirdEggInputModel>(existingEgg);
             return new BaseResponse<BirdEggInputModel>(result);
         }
     }

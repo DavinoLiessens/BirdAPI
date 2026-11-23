@@ -32,7 +32,7 @@ namespace BirdAPI.Application.Features.Breeder.Queries
 
             if (existingBreeder == null)
             {
-                return new BaseResponse<BreederResponseModel>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<BreederResponseModel>(false, HttpStatusCode.NotFound)
                     .AddError($"Breeder with id '{request.BreederId}' does not exist");
             }
 

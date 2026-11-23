@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { OwnerFacade } from '../store/entities/owner/owner.facade';
@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './owner.component.html',
   styleUrls: ['./owner.component.scss']
 })
-export class OwnerComponent implements OnInit {
+export class OwnerComponent implements OnInit, OnDestroy {
 
   // Observables
   private destroyed$: Subject<boolean> = new Subject<boolean>();
@@ -117,5 +117,10 @@ export class OwnerComponent implements OnInit {
 
   private GetAllOwners(request: IGetOwnersRequest): void {
     this.ownerFacade.getAllOwnersRequest(request);
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

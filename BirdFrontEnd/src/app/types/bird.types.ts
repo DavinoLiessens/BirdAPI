@@ -42,7 +42,7 @@ export interface ICreateBirdRequest {
     ringNumber: string;
     gender: string;
     birdType: string;
-    birthDate: number;
+    birthDate: string | null;
     color: string;
     cageNumber: string;
     breederId: number;

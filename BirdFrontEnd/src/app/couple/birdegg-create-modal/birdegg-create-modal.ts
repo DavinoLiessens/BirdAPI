@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { SelectItemGroup } from "primeng/api";
@@ -9,13 +9,14 @@ import { BirdFacade } from "src/app/store/entities/bird/bird.facade";
 import { CoupleFacade } from "src/app/store/entities/couple/couple.facade";
 import { ICreateBirdEggRequest } from "src/app/types/birdEgg.types";
 import { IGenderOption } from "src/app/types/dropdown.types";
+import { toDateOnly } from 'src/app/utils/date.utils';
 
 @Component({
     selector: 'birdegg-create-modal',
     templateUrl: './birdegg-create-modal.html',
     providers: [DialogService]
 })
-export class BirdEggCreateModal implements OnInit {
+export class BirdEggCreateModal implements OnInit, OnDestroy {
     public birdEggForm: FormGroup;
     private destroyed$: Subject<boolean> = new Subject<boolean>();
     public loading$: Observable<boolean> = this.coupleFacade.getLoadingModal();
@@ -43,22 +44,27 @@ export class BirdEggCreateModal implements OnInit {
 
         this.groupedColors = this.birdFacade.createBirdTypeColors();
         this.createGenderOptions();
+
+        this.listenForResult();
     }
 
     public handleSubmit(): void {
         const request: ICreateBirdEggRequest = {
             id: null,
-            layedOn: this.birdEggForm.get('layedOn').value,
+            layedOn: toDateOnly(this.birdEggForm.get('layedOn').value),
             coupleId: this.config.data.coupleId,
-            cameOutOn: this.birdEggForm.get('cameOutOn').value ?? null,
-            flyOutOn: this.birdEggForm.get('flyOutOn').value ?? null,
+            cameOutOn: toDateOnly(this.birdEggForm.get('cameOutOn').value),
+            flyOutOn: toDateOnly(this.birdEggForm.get('flyOutOn').value),
             ringNumber: this.birdEggForm.get('ringNumber').value ?? null,
             color: this.birdEggForm.get('color').value ?? null,
             gender: this.birdEggForm.get('gender').value ?? null,
         }
 
         this.coupleFacade.createBirdEgg(request);
+    }
 
+    // Subscribed once (not per submit), so a second submit does not add duplicate handlers
+    private listenForResult(): void {
         this.coupleFacade.onCreateBirdEggSuccess().pipe(
             takeUntil(this.destroyed$)
         ).subscribe(() => {
@@ -90,5 +96,10 @@ export class BirdEggCreateModal implements OnInit {
           { type: 'Pop', value: 'FEMALE' },
           { type: 'Man', value: 'MALE' }
         ];
+    }
+
+    public ngOnDestroy(): void {
+        this.destroyed$.next(true);
+        this.destroyed$.complete();
     }
 }

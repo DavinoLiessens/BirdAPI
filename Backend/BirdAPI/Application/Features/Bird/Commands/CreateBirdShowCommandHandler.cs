@@ -1,9 +1,9 @@
-﻿using BirdAPI.Application.Features.Bird.ResponseModels;
+using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Domain.AggregatesModel.BirdAggregate;
 using BirdAPI.Infrastructure;
 using MediatR;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BirdAPI.Application.Features.Bird.Commands
@@ -18,11 +18,11 @@ namespace BirdAPI.Application.Features.Bird.Commands
         }
         public async Task<BaseResponse<object>> Handle(CreateBirdShowCommand request, CancellationToken cancellationToken)
         {
-            var bird = _context.Birds.FirstOrDefault(b => b.Id == request.Model.BirdId);
+            var bird = await _context.Birds.FirstOrDefaultAsync(b => b.Id == request.Model.BirdId, cancellationToken);
 
             if (bird == null)
             {
-                return new BaseResponse<object>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<object>(false, HttpStatusCode.NotFound)
                     .AddError($"Bird with id '{request.Model.BirdId}' does not exist");
             }
 
@@ -30,7 +30,7 @@ namespace BirdAPI.Application.Features.Bird.Commands
             newBirdShow.BelongsToBird(bird.Id);
 
             _context.BirdShows.Add(newBirdShow);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return new BaseResponse<object>();
         }

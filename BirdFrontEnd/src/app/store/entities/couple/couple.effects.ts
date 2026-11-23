@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect, Effect } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { CoupleService } from 'src/app/Services/couple.service';
 import { IBirdEgg, IBirdEggRequest, ICreateBirdEggRequest, IUpdateBirdEggRequest } from 'src/app/types/birdEgg.types';
 import { ICouple, ICouplesResponse, ICreateCoupleRequest, ICreatedCoupleResponseModel, IGetCouplesRequest, IUpdateCoupleRequest } from 'src/app/types/couple.types';
@@ -17,7 +17,7 @@ export class CoupleEffects {
     // fetch couples
     getCouples$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getCouples.type),
-        concatMap(({ request }: { request: IGetCouplesRequest }) => this.couplesService.getAllCouples(request).pipe(
+        switchMap(({ request }: { request: IGetCouplesRequest }) => this.couplesService.getAllCouples(request).pipe(
             map((couples: ICouplesResponse) => actions.getCouplesSuccess({ couples: couples })),
             catchError((error: any) => of(actions.getCouplesError({ error }))),
         ))
@@ -26,7 +26,7 @@ export class CoupleEffects {
     // fetch couple
     getCouple$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getCouple.type),
-        concatMap(({ coupleId }: { coupleId: number }) => this.couplesService.getCouple(coupleId).pipe(
+        switchMap(({ coupleId }: { coupleId: number }) => this.couplesService.getCouple(coupleId).pipe(
             map((couple: ICouple) => actions.getCoupleSuccess({ coupleDetail: couple })),
             catchError((error: any) => of(actions.getCoupleError({ error }))),
         ))
@@ -71,7 +71,7 @@ export class CoupleEffects {
     // get birdEgg
     getCoupleBirdEgg$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getBirdEgg.type),
-        concatMap(({ request }: { request: IBirdEggRequest }) => this.couplesService.getCoupleBirdEgg(request).pipe(
+        switchMap(({ request }: { request: IBirdEggRequest }) => this.couplesService.getCoupleBirdEgg(request).pipe(
             map((response: IBirdEgg) => actions.getBirdEggSuccess({ response })),
             catchError((error: any) => of(actions.getBirdEggError({ error }))),
         ))

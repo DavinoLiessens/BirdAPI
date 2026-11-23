@@ -52,6 +52,30 @@ namespace BirdAPI.Application.Features.Couple.Commands
                     .AddError($"No bird found with id {request.Model.MotherId}");
             }
 
+            if (father.Id == mother.Id)
+            {
+                return new BaseResponse<CreatedCoupleResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError("Validation Error: Father and mother must be different birds!");
+            }
+
+            if (father.Gender != "MALE")
+            {
+                return new BaseResponse<CreatedCoupleResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError($"Validation Error: Father '{father.RingNumber}' is not a male!");
+            }
+
+            if (mother.Gender != "FEMALE")
+            {
+                return new BaseResponse<CreatedCoupleResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError($"Validation Error: Mother '{mother.RingNumber}' is not a female!");
+            }
+
+            if (father.IsDead == true || mother.IsDead == true)
+            {
+                return new BaseResponse<CreatedCoupleResponseModel>(false, HttpStatusCode.BadRequest)
+                    .AddError("Validation Error: A dead bird cannot be part of a new couple!");
+            }
+
             // Execute
             var newCouple = new Domain.AggregatesModel.CoupleAggregate.Couple(request.Model.Name,
                                                                               father,

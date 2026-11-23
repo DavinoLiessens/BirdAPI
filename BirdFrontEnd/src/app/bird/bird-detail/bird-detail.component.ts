@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,13 +14,14 @@ import { IOwnerDropdownOption } from 'src/app/types/dropdown.types';
 import { IGetOwnersRequest, IOwner } from 'src/app/types/owner.types';
 import { BirdShowCreateModal } from '../bird-show-create/bird-show-create.modal';
 import { BirdShowUpdateModal } from '../bird-show-update/bird-show-update.modal';
+import { APP_CONFIG } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-bird-detail',
   templateUrl: './bird-detail.component.html',
   styleUrls: ['./bird-detail.component.scss']
 })
-export class BirdDetailComponent implements OnInit {
+export class BirdDetailComponent implements OnInit, OnDestroy {
 
   // local variables
   public birdForm: FormGroup;
@@ -111,24 +112,22 @@ export class BirdDetailComponent implements OnInit {
   }
 
   private getAllOwners(): void {
+    // Load all owners: the bird's current owner must always be selectable,
+    // not only when it happens to be on the first page.
+    const request: IGetOwnersRequest = {
+      page: 1,
+      pageSize: APP_CONFIG.api.maxPageSize,
+    };
+    this.ownerFacade.getAllOwnersRequest(request);
+
     this.owners$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe((owners: IOwner[]) => {
-      // fetch owners if null or undefined
-      if (owners === null || owners === undefined) {
-        const request: IGetOwnersRequest = {
-          page: 1,
-          pageSize: 10,
-        };
-        this.ownerFacade.getAllOwnersRequest(request);
-      }
-
-      if (owners !== null && owners !== undefined) {
-        owners.forEach((owner: IOwner) => {
-          const fullname = owner.firstName + " " + owner.lastName;
-          this.owners.push({ name: fullname, value: owner.id });
-        });
-      }
+      // Rebuild the list on every emission instead of appending to it (avoids duplicates)
+      this.owners = (owners ?? []).map((owner: IOwner) => ({
+        name: `${owner.firstName} ${owner.lastName}`,
+        value: owner.id,
+      }));
     });
   }
 
@@ -198,5 +197,10 @@ export class BirdDetailComponent implements OnInit {
         timeOut: 6000,
       });
     });
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

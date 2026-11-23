@@ -24,6 +24,7 @@ import {
 import { FormUtilsService } from 'src/app/Services/form-utils.service';
 import { APP_CONFIG } from 'src/app/config/app.config';
 import { CustomValidators } from 'src/app/validators/custom-validators';
+import { toDateOnly } from 'src/app/utils/date.utils';
 
 @Component({
   selector: 'c-bird-create',
@@ -172,7 +173,7 @@ export class BirdCreateComponent implements OnInit, OnDestroy {
       ringNumber: formValue.ringNumber,
       gender: formValue.gender,
       birdType: formValue.birdType,
-      birthDate: formValue.birthDate,
+      birthDate: toDateOnly(formValue.birthDate),
       color: formValue.color,
       cageNumber: formValue.cageNumber,
       breederId: parseInt(formValue.breederId, 10),

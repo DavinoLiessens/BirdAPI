@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { BirdFacade } from '../store/entities/bird/bird.facade';
@@ -12,7 +12,7 @@ import { IBirdTypeOption, IGenderOption, IYearDropdownOption } from '../types/dr
   templateUrl: './bird.component.html',
   styleUrls: ['./bird.component.scss']
 })
-export class BirdComponent implements OnInit {
+export class BirdComponent implements OnInit, OnDestroy {
 
   // Observables
   private destroyed$: Subject<boolean> = new Subject<boolean>();
@@ -239,5 +239,10 @@ export class BirdComponent implements OnInit {
     types.forEach(type => {
       this.typeOfBirdOptions.push(type);
     });
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

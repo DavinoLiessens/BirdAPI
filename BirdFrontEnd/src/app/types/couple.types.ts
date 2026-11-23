@@ -18,7 +18,7 @@ export interface ICreateCoupleRequest {
     name: string;
     fatherId: number;
     motherId: number;
-    startedAt: Date;
+    startedAt: string | null;
     cageNumber: string;
     description?: string;
 }

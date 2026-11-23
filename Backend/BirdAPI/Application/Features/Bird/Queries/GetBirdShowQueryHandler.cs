@@ -1,9 +1,9 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BirdAPI.Application.Features.Bird.ResponseModels;
 using BirdAPI.BaseModels;
 using BirdAPI.Infrastructure;
 using MediatR;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BirdAPI.Application.Features.Bird.Queries
@@ -20,11 +20,13 @@ namespace BirdAPI.Application.Features.Bird.Queries
         }
         public async Task<BaseResponse<BirdShowResponseModel>> Handle(GetBirdShowQuery request, CancellationToken cancellationToken)
         {
-            var birdShow = _context.BirdShows.Include(bs => bs.BirdId).FirstOrDefault(bs => bs.BirdId == request.BirdId && bs.Id == request.Id);
+            var birdShow = await _context.BirdShows
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(bs => bs.BirdId == request.BirdId && bs.Id == request.Id, cancellationToken);
 
             if (birdShow == null)
             {
-                return new BaseResponse<BirdShowResponseModel>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<BirdShowResponseModel>(false, HttpStatusCode.NotFound)
                     .AddError($"Birdshow with id '{request.Id}' does not exist");
             }
 

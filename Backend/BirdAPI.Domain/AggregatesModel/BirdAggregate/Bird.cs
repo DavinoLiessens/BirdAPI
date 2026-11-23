@@ -1,4 +1,4 @@
-﻿using BirdAPI.Domain.AggregatesModel.BreederAggregate;
+using BirdAPI.Domain.AggregatesModel.BreederAggregate;
 using BirdAPI.Domain.AggregatesModel.CoupleAggregate;
 using BirdAPI.Domain.AggregatesModel.OwnerAggregate;
 using BirdAPI.Domain.Enums;
@@ -37,7 +37,7 @@ namespace BirdAPI.Domain.AggregatesModel.BirdAggregate
             _birdShows = new List<BirdShow>();
         }
 
-        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, string cageNumber, string? description = null, bool isDead = false)
+        public Bird(string ringNumber, string gender, BirdType birdType, DateTime birthDate, string color, string cageNumber, string? description = null, bool isDead = false) : this()
         {
             RingNumber = ringNumber;
             Gender = gender;

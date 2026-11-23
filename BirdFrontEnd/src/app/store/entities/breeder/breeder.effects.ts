@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect, Effect } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { BreederService } from 'src/app/Services/breeder.service';
 import { IBreeder, IBreedersResponse, ICreateBreederRequest, IGetBreedersRequest, IUpdateBreederRequest } from 'src/app/types/breeder.types';
 import * as actions from './breeder.actions';
@@ -16,7 +16,7 @@ export class BreederEffects {
     // fetch breeders
     getBreeders$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getBreeders.type),
-        concatMap(({ request }: { request: IGetBreedersRequest }) => this.breedersService.getAllBreeders(request).pipe(
+        switchMap(({ request }: { request: IGetBreedersRequest }) => this.breedersService.getAllBreeders(request).pipe(
             map((breeders: IBreedersResponse) => actions.getBreedersSuccess({ breeders: breeders })),
             catchError((error: any) => of(actions.getBreedersError({ error }))),
         ))
@@ -25,7 +25,7 @@ export class BreederEffects {
     // fetch breeder
     getBreeder$ = createEffect(() => this.actions$.pipe(
         ofType(actions.getBreeder.type),
-        concatMap(({ breederId }: { breederId: number }) => this.breedersService.getBreeder(breederId).pipe(
+        switchMap(({ breederId }: { breederId: number }) => this.breedersService.getBreeder(breederId).pipe(
             map((breeder: IBreeder) => actions.getBreederSuccess({ breederDetail: breeder })),
             catchError((error: any) => of(actions.getBreederError({ error }))),
         ))

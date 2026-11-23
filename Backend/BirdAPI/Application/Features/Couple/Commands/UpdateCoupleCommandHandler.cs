@@ -27,7 +27,7 @@ namespace BirdAPI.Application.Features.Couple.Commands
                                                     .FirstOrDefaultAsync(c => c.Id == request.Model.CoupleId);
             if (existingCouple == null)
             {
-                return new BaseResponse<CoupleResponseModel>(false, HttpStatusCode.BadRequest)
+                return new BaseResponse<CoupleResponseModel>(false, HttpStatusCode.NotFound)
                     .AddError($"No couple found with id {request.Model.CoupleId}");
             }
 

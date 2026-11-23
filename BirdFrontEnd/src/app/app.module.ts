@@ -45,7 +45,6 @@ import { BirdEggUpdateModal } from './couple/birdegg-update-modal/birdegg-update
 // *** STORE CONFIG ***
 import { AppStoreModule } from './store/store.module';
 import { CoreStoreModule } from './store/entities/store.module';
-import { BaseService } from './Services/base.service';
 
 // *** AUTH MODULE ***
 import { AuthModule } from './auth/auth.module';
@@ -105,7 +104,7 @@ import { AuthModule } from './auth/auth.module';
     ProgressSpinnerModule,
     PaginatorModule
   ],
-  providers: [BaseService, DialogService],
+  providers: [DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

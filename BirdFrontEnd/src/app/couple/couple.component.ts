@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { CoupleFacade } from '../store/entities/couple/couple.facade';
@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './couple.component.html',
   styleUrls: ['./couple.component.scss']
 })
-export class CoupleComponent implements OnInit {
+export class CoupleComponent implements OnInit, OnDestroy {
   private destroyed$: Subject<boolean> = new Subject<boolean>();
   public couples$: Observable<ICouple[]> = this.coupleFacade.getCouples();
   public pagination$: Observable<IPagination> = this.coupleFacade.getPagination();
@@ -117,5 +117,10 @@ export class CoupleComponent implements OnInit {
 
   private GetAllCouples(request: IGetCouplesRequest): void {
     this.coupleFacade.getAllCouplesRequest(request);
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

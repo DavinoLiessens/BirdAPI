@@ -34,7 +34,7 @@ namespace BirdAPI.Application.Features.Breeder.Queries
                                                b.LastName.StartsWith(request.SearchValue));
             }
 
-            var result = await breeders.GetPaged<Domain.AggregatesModel.BreederAggregate.Breeder, BreederResponseModel>(request.Page, request.PageSize, _mapper);
+            var result = await breeders.OrderBy(b => b.Id).GetPaged<Domain.AggregatesModel.BreederAggregate.Breeder, BreederResponseModel>(request.Page, request.PageSize, _mapper);
             
             return new BaseResponse<PagedResponse<BreederResponseModel>>(result);
         }

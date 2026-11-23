@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using BirdAPI.Application.Features.Bird.Commands;
 using BirdAPI.Application.Features.Bird.Commands.InputModels;
 using BirdAPI.Application.Features.Bird.Queries;
@@ -55,15 +55,18 @@ namespace BirdAPI.Controllers
         }
 
         [HttpPost("{birdId}/birdshow")]
-        public async Task<IActionResult> AddBirdShow([FromBody] BirdShowInputModel model)
+        public async Task<IActionResult> AddBirdShow(int birdId, [FromBody] BirdShowInputModel model)
         {
+            // The route is the source of truth for which bird this show belongs to
+            model.BirdId = birdId;
             var command = new CreateBirdShowCommand(model);
             return new JsonContentResult<object>(await _mediator.Send(command));
         }
 
         [HttpPut("{birdId}/birdshow/{id}")]
-        public async Task<IActionResult> UpdateBirdShow(int id, [FromBody] BirdShowInputModel model)
+        public async Task<IActionResult> UpdateBirdShow(int birdId, int id, [FromBody] BirdShowInputModel model)
         {
+            model.BirdId = birdId;
             var command = new UpdateBirdShowCommand(id, model);
             return new JsonContentResult<object>(await _mediator.Send(command));
         }

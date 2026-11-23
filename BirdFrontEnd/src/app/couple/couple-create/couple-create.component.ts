@@ -20,6 +20,7 @@ import {
 import { FormUtilsService } from 'src/app/Services/form-utils.service';
 import { APP_CONFIG } from 'src/app/config/app.config';
 import { CustomValidators } from 'src/app/validators/custom-validators';
+import { toDateOnly } from 'src/app/utils/date.utils';
 
 @Component({
   selector: 'c-couple-create',
@@ -154,7 +155,7 @@ export class CoupleCreateComponent implements OnInit, OnDestroy {
     const formValue = this.coupleForm.value;
     const request: ICreateCoupleRequest = {
       name: formValue.name,
-      startedAt: formValue.startedAt,
+      startedAt: toDateOnly(formValue.startedAt),
       fatherId: parseInt(formValue.fatherId, 10),
       motherId: parseInt(formValue.motherId, 10),
       cageNumber: formValue.cageNumber,
