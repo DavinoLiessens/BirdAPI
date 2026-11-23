@@ -6,10 +6,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 // PrimeNG Modules
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { DividerModule } from 'primeng/divider';
 
 // Components
@@ -38,10 +40,12 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     // PrimeNG
     CardModule,
     InputTextModule,
+    IconFieldModule,
+    InputIconModule,
     PasswordModule,
     ButtonModule,
     CheckboxModule,
-    CalendarModule,
+    DatePickerModule,
     DividerModule,
   ],
   providers: [

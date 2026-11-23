@@ -4,12 +4,12 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { SelectItemGroup } from 'primeng/api/selectitemgroup';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { SelectItemGroup } from 'primeng/api';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { BirdFacade } from 'src/app/store/entities/bird/bird.facade';
 import { BreederFacade } from 'src/app/store/entities/breeder/breeder.facade';
 import { OwnerFacade } from 'src/app/store/entities/owner/owner.facade';
@@ -27,17 +27,18 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 import { toDateOnly } from 'src/app/utils/date.utils';
 
 @Component({
-  selector: 'c-bird-create',
-  templateUrl: './bird-create.component.html',
-  styleUrls: ['./bird-create.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'c-bird-create',
+    templateUrl: './bird-create.component.html',
+    styleUrls: ['./bird-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdCreateComponent implements OnInit, OnDestroy {
   private readonly destroyed$ = new Subject<void>();
   private readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
   // Form
-  birdForm!: FormGroup;
+  birdForm!: UntypedFormGroup;
 
   // Observables with proper typing
   readonly loading$ = this.isLoading$.asObservable();
@@ -55,7 +56,7 @@ export class BirdCreateComponent implements OnInit, OnDestroy {
   readonly owners$: Observable<DropdownOption<number>[]>;
 
   constructor(
-    private readonly fb: FormBuilder,
+    private readonly fb: UntypedFormBuilder,
     private readonly birdFacade: BirdFacade,
     private readonly breederFacade: BreederFacade,
     private readonly ownerFacade: OwnerFacade,
@@ -120,6 +121,15 @@ export class BirdCreateComponent implements OnInit, OnDestroy {
     this.isLoading$.next(true);
     this.loadBreeders();
     this.loadOwners();
+
+    // Stop loading once both lists are in (the requests above set both flags to true synchronously)
+    combineLatest([this.breederFacade.getLoading(), this.ownerFacade.getLoading()])
+      .pipe(
+        filter(([breedersLoading, ownersLoading]) => !breedersLoading && !ownersLoading),
+        take(1),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(() => this.isLoading$.next(false));
   }
 
   private loadBreeders(): void {

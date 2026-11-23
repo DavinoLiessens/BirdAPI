@@ -1,46 +1,44 @@
 <div class="modal-body">
-    <form [formGroup]="birdEggForm" *ngIf="birdEggForm && !(loading$ | async)">
-        <div class="form-group">
-            <label for="name">Datum gelegd</label>
-            <p-calendar formControlName="layedOn" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
-        </div>
-        
-        <div class="form-group">
-            <label for="name">Datum uitgekomen</label>
-            <p-calendar formControlName="cameOutOn" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
-        </div>
-        
-        <div class="form-group">
-            <label for="name">Datum uitgevlogen</label>
-            <p-calendar formControlName="flyOutOn" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
-        </div>
-        
-        <div class="form-group">
-            <label for="ringNumber">Ringnummer</label>
-            <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber">
-        </div>
-
-        <div class="form-group">
-            <label for="color">Kleur</label>
-            <p-dropdown [options]="groupedColors" autoWidth="false" [style]="{'width':'100%'}" formControlName="color" optionLabel="label" optionValue="value" [showClear]="true" [filter]="true" filterBy="label" placeholder="Selecteer een kleur..." [group]="true">
-                <ng-template let-group pTemplate="group">
-                    <div class="p-d-flex p-ai-center">
-                        <img src="../../../assets/{{group.label}}.jpg" class="p-mr-2" style="width: 32px"/>
-                        <span>{{group.label}}</span>
-                    </div>
-                </ng-template>
-            </p-dropdown>                
-        </div>
-
-        <div class="form-group">
-            <label for="gender">Geslacht</label>
-            <p-dropdown [options]="genderOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-dropdown>                
-        </div>
-
-        <div class="form-footer">
-            <button pButton type="submit" (click)="goBack()" label="Terug"></button>
-            <button pButton type="submit" (click)="handleSubmit()" label="Opslaan"></button>
-        </div>                      
+  @if (birdEggForm && !(loading$ | async)) {
+    <form [formGroup]="birdEggForm">
+      <div class="form-group">
+        <label for="name">Datum gelegd</label>
+        <p-datepicker formControlName="layedOn" dateFormat="dd-mm-yy" inputId="dateformat"></p-datepicker>
+      </div>
+      <div class="form-group">
+        <label for="name">Datum uitgekomen</label>
+        <p-datepicker formControlName="cameOutOn" dateFormat="dd-mm-yy" inputId="dateformat"></p-datepicker>
+      </div>
+      <div class="form-group">
+        <label for="name">Datum uitgevlogen</label>
+        <p-datepicker formControlName="flyOutOn" dateFormat="dd-mm-yy" inputId="dateformat"></p-datepicker>
+      </div>
+      <div class="form-group">
+        <label for="ringNumber">Ringnummer</label>
+        <input pInputText type="text" class="form-control" formControlName="ringNumber" id="ringNumber">
+      </div>
+      <div class="form-group">
+        <label for="color">Kleur</label>
+        <p-select [options]="groupedColors" autoWidth="false" [style]="{'width':'100%'}" formControlName="color" optionLabel="label" optionValue="value" [showClear]="true" [filter]="true" filterBy="label" placeholder="Selecteer een kleur..." [group]="true">
+          <ng-template #group let-group>
+            <div class="p-d-flex p-ai-center">
+              <img src="../../../assets/{{group.label}}.jpg" class="p-mr-2" style="width: 32px"/>
+              <span>{{group.label}}</span>
+            </div>
+          </ng-template>
+        </p-select>
+      </div>
+      <div class="form-group">
+        <label for="gender">Geslacht</label>
+        <p-select [options]="genderOptions" autoWidth="false" [style]="{'width':'100%'}" placeholder="Selecteer een geslacht..." optionLabel="type" optionValue="value" formControlName="gender"></p-select>
+      </div>
+      <div class="form-footer">
+        <button pButton type="submit" (click)="goBack()" label="Terug"></button>
+        <button pButton type="submit" (click)="handleSubmit()" label="Opslaan"></button>
+      </div>
     </form>
-    <c-loader *ngIf="(loading$ | async)"></c-loader>
+  }
+  @if ((loading$ | async)) {
+    <c-loader></c-loader>
+  }
 </div>

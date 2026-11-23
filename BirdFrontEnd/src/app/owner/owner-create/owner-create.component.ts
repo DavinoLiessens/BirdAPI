@@ -4,7 +4,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -15,21 +15,22 @@ import { FormUtilsService } from 'src/app/Services/form-utils.service';
 import { APP_CONFIG } from 'src/app/config/app.config';
 
 @Component({
-  selector: 'app-owner-create',
-  templateUrl: './owner-create.component.html',
-  styleUrls: ['./owner-create.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-owner-create',
+    templateUrl: './owner-create.component.html',
+    styleUrls: ['./owner-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OwnerCreateComponent implements OnInit, OnDestroy {
   private readonly destroyed$ = new Subject<void>();
   private readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
   // Form and observables
-  ownerForm!: FormGroup;
+  ownerForm!: UntypedFormGroup;
   readonly loading$ = this.isLoading$.asObservable();
 
   constructor(
-    private readonly fb: FormBuilder,
+    private readonly fb: UntypedFormBuilder,
     private readonly ownerFacade: OwnerFacade,
     private readonly router: Router,
     private readonly route: ActivatedRoute,

@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RegisterRequest } from '../../models/auth.models';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    standalone: false
 })
 export class RegisterComponent implements OnInit {
-  registerForm!: FormGroup;
+  registerForm!: UntypedFormGroup;
   loading = false;
   returnUrl = '/';
   maxDate = new Date();
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
@@ -47,7 +48,7 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls;
   }
 
-  passwordMatchValidator(form: FormGroup) {
+  passwordMatchValidator(form: UntypedFormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
 
@@ -97,7 +98,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  private markFormGroupTouched(formGroup: FormGroup): void {
+  private markFormGroupTouched(formGroup: UntypedFormGroup): void {
     Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
       control?.markAsTouched();

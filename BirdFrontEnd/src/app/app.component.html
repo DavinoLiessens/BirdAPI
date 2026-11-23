@@ -1,17 +1,20 @@
-<p-toolbar *ngIf="isAuthenticated">
+@if (isAuthenticated) {
+  <p-toolbar>
     <div class="p-toolbar-group-left">
-        <p-splitButton label="Vogels" (onClick)="navigateToPage('/birds')" [model]="birdItems" class="button-toolbar" ></p-splitButton>
-        <p-splitButton label="Eigenaars" (onClick)="navigateToPage('/owners')" [model]="ownerItems" class="button-toolbar"></p-splitButton>
-        <p-splitButton label="Kwekers" (onClick)="navigateToPage('/breeders')" [model]="breederItems" class="button-toolbar"></p-splitButton>
-        <p-splitButton label="Koppels" (onClick)="navigateToPage('/couples')" [model]="coupleItems" class="button-toolbar"></p-splitButton>
+      <p-splitbutton label="Vogels" (onClick)="navigateToPage('/birds')" [model]="birdItems" class="button-toolbar" ></p-splitbutton>
+      <p-splitbutton label="Eigenaars" (onClick)="navigateToPage('/owners')" [model]="ownerItems" class="button-toolbar"></p-splitbutton>
+      <p-splitbutton label="Kwekers" (onClick)="navigateToPage('/breeders')" [model]="breederItems" class="button-toolbar"></p-splitbutton>
+      <p-splitbutton label="Koppels" (onClick)="navigateToPage('/couples')" [model]="coupleItems" class="button-toolbar"></p-splitbutton>
     </div>
-    
     <div class="p-toolbar-group-right">
-        <span class="user-name" *ngIf="currentUser">
-            <i class="pi pi-user"></i> {{ currentUser.fullName }}
+      @if (currentUser) {
+        <span class="user-name">
+          <i class="pi pi-user"></i> {{ currentUser.fullName }}
         </span>
-        <p-button label="Uitloggen" icon="pi pi-sign-out" (onClick)="logout()" styleClass="p-button-text"></p-button>
+      }
+      <p-button label="Uitloggen" icon="pi pi-sign-out" (onClick)="logout()" styleClass="p-button-text"></p-button>
     </div>
-</p-toolbar>
+  </p-toolbar>
+}
 
 <router-outlet></router-outlet>
